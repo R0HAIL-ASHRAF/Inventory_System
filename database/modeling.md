@@ -30,7 +30,7 @@
 ```
 
 ### as personal device(ie computer)
-
+```
 specs: {
     cpu: string (required),
     ram_gb: int (required),
@@ -49,7 +49,7 @@ assignment: {
     cabin_id: ObjectId (optional),
     assigned_date: Date (required)
 }
-
+```
 ### as shared device
 
 ```
