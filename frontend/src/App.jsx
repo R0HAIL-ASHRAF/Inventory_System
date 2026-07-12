@@ -1,16 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./components/layout/Layout";
 import Dashboard from "./pages/Dashboard";
-
-// Composition root — owns "which page is active" and hands it to Layout
-// as children. Swap the useState below for React Router once you have
-// real routes; Layout and each page don't need to change either way.
+import Devices from "./pages/Devices";
+import NewDevice from "../src/pages/AddNewDevice";
+import { MUTED } from "./theme";
 
 function Placeholder({ name }) {
   return (
     <div
       className="bg-white rounded-2xl p-8 flex items-center justify-center"
-      style={{ border: "1px solid #E7EBF0", minHeight: 400, color: "#94A3B8" }}
+      style={{ border: "1px solid #E7E2CE", minHeight: 400, color: MUTED }}
     >
       {name} page goes here
     </div>
@@ -18,17 +18,21 @@ function Placeholder({ name }) {
 }
 
 export default function App() {
-  const [page] = useState("dashboard");
-
-  const pages = {
-    dashboard: <Dashboard />,
-    devices: <Placeholder name="Devices" />,
-    shared: <Placeholder name="Shared Equipment" />,
-    employees: <Placeholder name="Employees" />,
-    departments: <Placeholder name="Departments" />,
-    logs: <Placeholder name="Activity Logs" />,
-    settings: <Placeholder name="Settings" />,
-  };
-
-  return <Layout>{pages[page] ?? <Dashboard />}</Layout>;
+  return (
+    <BrowserRouter>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/devices" element={<Devices />} />
+          <Route path="/devices/new" element={<NewDevice />} />
+          <Route path="/shared-equipment" element={<Placeholder name="Shared Equipment" />} />
+          <Route path="/employees" element={<Placeholder name="Employees" />} />
+          <Route path="/departments" element={<Placeholder name="Departments" />} />
+          <Route path="/logs" element={<Placeholder name="Activity Logs" />} />
+          <Route path="/settings" element={<Placeholder name="Settings" />} />
+          <Route path="*" element={<Placeholder name="Not found" />} />
+        </Routes>
+      </Layout>
+    </BrowserRouter>
+  );
 }

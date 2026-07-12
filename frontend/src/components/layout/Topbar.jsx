@@ -1,7 +1,8 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { Search, Bell, ChevronDown, Plus, LogOut, Settings, UserCircle } from "lucide-react";
 import { INK, MUTED, BORDER, ACCENT, BRAND, SURFACE, PAGE_BG, MONO } from "../../theme";
-import NotificationPanel from "../dashboard/NotificationPanel";
+import NotificationPanel from "../dashboard/NotificationPanel"
 import { NOTIFICATIONS } from "../../data";
 
 export default function Topbar() {
@@ -32,11 +33,9 @@ export default function Topbar() {
             onFocus={() => setFocused(true)}
             onBlur={() => setFocused(false)}
             className="bg-transparent border-none outline-none text-sm w-full placeholder:text-slate-400"
-            style={{ 
-              color: INK,
-              boxShadow:"none",
-              outline: "none"
-
+            style={{ color: INK,
+              outline:"none",
+              boxShadow:"none"
              }}
           />
         </div>
@@ -44,16 +43,6 @@ export default function Topbar() {
 
       {/* Right: actions */}
       <div className="flex items-center gap-3 shrink-0">
-        <button
-          className="hidden sm:flex items-center gap-1.5 rounded-lg px-3 h-9 text-sm font-medium transition-opacity duration-150 hover:opacity-90"
-          style={{ backgroundColor: BRAND, color: SURFACE }}
-        >
-          <Plus size={15} strokeWidth={2.5} />
-          New Device
-        </button>
-
-        <div style={{ width: 1, height: 24, backgroundColor: BORDER }} />
-
         <div className="relative">
           <button
             onClick={() => setNotifOpen((v) => !v)}

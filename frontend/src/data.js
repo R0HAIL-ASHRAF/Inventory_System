@@ -58,3 +58,17 @@ export const NOTIFICATIONS = [
   { id: 4, title: "Weekly report ready", body: "214 devices tracked this week", time: "Yesterday", unread: false, tone: "muted" },
 ];
  
+
+
+export const DEVICES = [
+  { id: "DV-1042", icon: Laptop2, type: "Laptop", manufacturer: "Lenovo", model: "ThinkPad X1 Carbon", status: "in-use", dept: "Engineering", assignedTo: "Bilal Ahmed", shared: false, updated: "3d ago" },
+  { id: "DV-0887", icon: Printer, type: "Printer", manufacturer: "HP", model: "LaserJet M428", status: "faulty", dept: "Front Office", assignedTo: "Shared", shared: true, updated: "1w ago" },
+  { id: "DV-0231", icon: Server, type: "Server", manufacturer: "Dell", model: "PowerEdge R450", status: "in-use", dept: "IT Infra", assignedTo: "Shared", shared: true, updated: "2d ago" },
+  { id: "DV-1190", icon: Monitor, type: "Monitor", manufacturer: "Dell", model: "UltraSharp U2723", status: "spare", dept: "Design", assignedTo: "—", shared: false, updated: "5d ago" },
+  { id: "DV-0654", icon: Laptop2, type: "Laptop", manufacturer: "Apple", model: 'MacBook Pro 14"', status: "dispatched", dept: "Design", assignedTo: "Sana Tariq", shared: false, updated: "6h ago" },
+  { id: "DV-0399", icon: Printer, type: "Printer", manufacturer: "Canon", model: "imageCLASS MF445", status: "in-use", dept: "Front Office", assignedTo: "Shared", shared: true, updated: "Yesterday" },
+  { id: "DV-0112", icon: Laptop2, type: "Laptop", manufacturer: "Lenovo", model: "ThinkPad T14", status: "retired", dept: "IT Infra", assignedTo: "—", shared: false, updated: "3w ago" },
+  { id: "DV-0788", icon: Server, type: "Server", manufacturer: "HPE", model: "ProLiant DL380", status: "in-use", dept: "IT Infra", assignedTo: "Shared", shared: true, updated: "4d ago" },
+];
+
+export const DEPARTMENTS = ["Engineering", "Design", "IT Infra", "Front Office", "HR"];

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { NavLink } from "react-router-dom";
 import piaLogo from "../../assets/logo.png";
 import {
   LayoutGrid,
@@ -9,7 +10,6 @@ import {
   ScrollText,
   Settings,
   ChevronsLeft,
-  Bell,
   ChevronsRight,
   CircleUser,
 } from "lucide-react";
@@ -18,35 +18,33 @@ import { CREAM, BRAND, BRAND_SOFT, MUTED, SURFACE, MONO } from "../../theme";
 const NAV_GROUPS = [
   {
     label: "Overview",
-    items: [{ key: "dashboard", label: "Dashboard", icon: LayoutGrid }],
+    items: [{ path: "/", label: "Dashboard", icon: LayoutGrid, end: true }],
   },
   {
     label: "Assets",
     items: [
-      { key: "devices", label: "Devices", icon: Laptop2, count: 214 },
-      { key: "shared", label: "Shared Equipment", icon: Printer, count: 18 },
+      { path: "/devices", label: "Devices", icon: Laptop2, count: 214 },
+      { path: "/shared-equipment", label: "Shared Equipment", icon: Printer, count: 18 },
     ],
   },
   {
     label: "People",
     items: [
-      { key: "employees", label: "Employees", icon: Users, count: 86 },
-      { key: "departments", label: "Departments", icon: Building2 },
+      { path: "/employees", label: "Employees", icon: Users, count: 86 },
+      { path: "/departments", label: "Departments", icon: Building2 },
     ],
   },
   {
     label: "System",
     items: [
-      { key: "logs", label: "Activity Logs", icon: ScrollText },
-      { key: "settings", label: "Settings", icon: Settings },
-      { key: "notifications", label:"Notifications", icon: Bell, count:45 },
+      { path: "/logs", label: "Activity Logs", icon: ScrollText },
+      { path: "/settings", label: "Settings", icon: Settings },
     ],
   },
 ];
 
 export default function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
-  const [active, setActive] = useState("dashboard");
 
   return (
     <aside
@@ -88,33 +86,37 @@ export default function Sidebar() {
             <div className="space-y-0.5">
               {group.items.map((item) => {
                 const Icon = item.icon;
-                const isActive = active === item.key;
                 return (
-                  <button
-                    key={item.key}
-                    onClick={() => setActive(item.key)}
+                  <NavLink
+                    key={item.path}
+                    to={item.path}
+                    end={item.end}
                     title={collapsed ? item.label : undefined}
                     className="relative w-full flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors duration-150 group overflow-hidden"
-                    style={{ backgroundColor: isActive ? BRAND : "transparent", color: isActive ? SURFACE : BRAND }}
+                    style={({ isActive }) => ({ backgroundColor: isActive ? BRAND : "transparent", color: isActive ? SURFACE : BRAND })}
                     onMouseEnter={(e) => {
-                      if (!isActive) e.currentTarget.style.backgroundColor = BRAND_SOFT;
+                      if (!e.currentTarget.classList.contains("active")) e.currentTarget.style.backgroundColor = BRAND_SOFT;
                     }}
                     onMouseLeave={(e) => {
-                      if (!isActive) e.currentTarget.style.backgroundColor = "transparent";
+                      if (!e.currentTarget.classList.contains("active")) e.currentTarget.style.backgroundColor = "transparent";
                     }}
                   >
-                    {isActive && <span className="absolute left-0 top-1.5 bottom-1.5 w-[3px] rounded-full" style={{ backgroundColor: CREAM }} />}
-                    <Icon size={18} strokeWidth={2.25} className="shrink-0" />
-                    {!collapsed && <span className="flex-1 text-left font-medium truncate">{item.label}</span>}
-                    {!collapsed && item.count !== undefined && (
-                      <span
-                        className="text-[11px] px-1.5 py-0.5 rounded shrink-0 font-medium"
-                        style={{ fontFamily: MONO, color: isActive ? BRAND : SURFACE, backgroundColor: isActive ? SURFACE : BRAND }}
-                      >
-                        {item.count}
-                      </span>
+                    {({ isActive }) => (
+                      <>
+                        {isActive && <span className="absolute left-0 top-1.5 bottom-1.5 w-[3px] rounded-full" style={{ backgroundColor: CREAM }} />}
+                        <Icon size={18} strokeWidth={2.25} className="shrink-0" />
+                        {!collapsed && <span className="flex-1 text-left font-medium truncate">{item.label}</span>}
+                        {!collapsed && item.count !== undefined && (
+                          <span
+                            className="text-[11px] px-1.5 py-0.5 rounded shrink-0 font-medium"
+                            style={{ fontFamily: MONO, color: isActive ? BRAND : SURFACE, backgroundColor: isActive ? SURFACE : BRAND }}
+                          >
+                            {item.count}
+                          </span>
+                        )}
+                      </>
                     )}
-                  </button>
+                  </NavLink>
                 );
               })}
             </div>
