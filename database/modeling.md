@@ -16,12 +16,11 @@
 ```
 {
     _id: ObjectId,
-    device_type: string (required),
+    device_type: enum{'Laptop','Desktop','Monitor','Printer','Server','Switch','Router'} (required),
     is_shared: bool (required),
     manufacturer: string (required),
     model: string (required),
-    status: 
-        enum{'dispatched', 'in-use', 'spare'} (required),
+    status: enum{'dispatched','in-use','spare','faulty','retired'} (required),
     specs: { ... },
     assignment: { ... },
     created_at: Date (required),
@@ -30,6 +29,7 @@
 ```
 
 ### as personal device(ie computer)
+
 ```
 specs: {
     cpu: string (required),
@@ -50,6 +50,7 @@ assignment: {
     assigned_date: Date (required)
 }
 ```
+
 ### as shared device
 
 ```

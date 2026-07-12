@@ -12,6 +12,7 @@ import {
   ChevronsLeft,
   ChevronsRight,
   CircleUser,
+  Bell,
 } from "lucide-react";
 import { CREAM, BRAND, BRAND_SOFT, MUTED, SURFACE, MONO } from "../../theme";
 
@@ -24,12 +25,6 @@ const NAV_GROUPS = [
     label: "Assets",
     items: [
       { path: "/devices", label: "Devices", icon: Laptop2, count: 214 },
-      { path: "/shared-equipment", label: "Shared Equipment", icon: Printer, count: 18 },
-    ],
-  },
-  {
-    label: "People",
-    items: [
       { path: "/employees", label: "Employees", icon: Users, count: 86 },
       { path: "/departments", label: "Departments", icon: Building2 },
     ],
@@ -39,6 +34,7 @@ const NAV_GROUPS = [
     items: [
       { path: "/logs", label: "Activity Logs", icon: ScrollText },
       { path: "/settings", label: "Settings", icon: Settings },
+      { path: "/notification", label: "Notifications", icon: Bell, count: 31}
     ],
   },
 ];

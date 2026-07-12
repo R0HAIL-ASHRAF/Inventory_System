@@ -1,18 +1,20 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Laptop2, Printer, ArrowLeft } from "lucide-react";
-import { INK, MUTED, BORDER, ACCENT, BRAND, CARD, PAGE_BG, SURFACE, MONO } from "../theme";
+import { INK, MUTED, BORDER, BRAND, CARD, SURFACE } from "../theme";
 import { DEPARTMENTS } from "../data";
+import { CATEGORIES, SPEC_SCHEMAS, defaultSpecsFor } from "../components/deviceScheme";
 
-const DEVICE_TYPES = ["Laptop", "Desktop", "Monitor", "Server", "Printer", "Switch", "Projector"];
-const STATUSES = ["dispatched", "in-use", "spare", "faulty"];
-const DISK_TYPES = ["SSD", "HDD"];
+const STATUSES = ["dispatched", "in-use", "spare", "faulty", "retired"];
 
 const inputStyle = {
   border: `1px solid ${BORDER}`,
   backgroundColor: SURFACE,
   color: INK,
 };
+
+const baseInput =
+  "w-full rounded-lg px-3 h-9 text-sm outline-none transition-shadow duration-150 focus:shadow-[0_0_0_3px_rgba(201,162,39,0.14)]";
 
 function Field({ label, children, optional }) {
   return (
@@ -37,32 +39,56 @@ function Section({ title, subtitle, children }) {
   );
 }
 
-const baseInput =
-  "w-full rounded-lg px-3 h-9 text-sm outline-none transition-shadow duration-150 focus:shadow-[0_0_0_3px_rgba(201,162,39,0.14)]";
+// Renders one input, driven entirely by the schema field's `type`.
+function SpecField({ field, value, onChange }) {
+  if (field.type === "boolean") {
+    return (
+      <label className="flex items-center gap-2 text-[13px] pt-6" style={{ color: INK }}>
+        <input type="checkbox" checked={!!value} onChange={(e) => onChange(e.target.checked)} />
+        {field.label}
+      </label>
+    );
+  }
+  if (field.type === "select") {
+    return (
+      <Field label={field.label}>
+        <select className={baseInput} style={inputStyle} value={value ?? ""} onChange={(e) => onChange(e.target.value)}>
+          <option value="" disabled>Select…</option>
+          {field.options.map((o) => <option key={o} value={o}>{o}</option>)}
+        </select>
+      </Field>
+    );
+  }
+  if (field.type === "number") {
+    return (
+      <Field label={field.label}>
+        <input
+          type="number"
+          className={baseInput}
+          style={inputStyle}
+          value={value ?? ""}
+          onChange={(e) => onChange(e.target.value === "" ? "" : Number(e.target.value))}
+        />
+      </Field>
+    );
+  }
+  return (
+    <Field label={field.label}>
+      <input className={baseInput} style={inputStyle} value={value ?? ""} onChange={(e) => onChange(e.target.value)} />
+    </Field>
+  );
+}
 
 export default function NewDevice() {
   const navigate = useNavigate();
   const [isShared, setIsShared] = useState(false);
+  const [deviceType, setDeviceType] = useState(CATEGORIES[0]);
+
   const [form, setForm] = useState({
-    device_type: "Laptop",
     manufacturer: "",
     model: "",
     status: "spare",
-    // personal specs
-    cpu: "",
-    ram_gb: "",
-    disk_type: "SSD",
-    storage_gb: "",
-    os: "",
-    // shared specs
-    technology: "",
-    color: false,
-    ppm_speed: "",
-    paper_capacity: "",
-    duplex: false,
-    // common
-    ip_address: "",
-    mac_address: "",
+    specs: defaultSpecsFor(CATEGORIES[0]),
     department: DEPARTMENTS[0],
     location: "",
     section: "",
@@ -72,39 +98,36 @@ export default function NewDevice() {
     assigned_date: "",
   });
 
+  const specSchema = SPEC_SCHEMAS[deviceType] || [];
+
+  const handleTypeChange = (newType) => {
+    const fresh = defaultSpecsFor(newType);
+    // Carry over values for keys that exist in both schemas (e.g. ip_address, mac_address).
+    const carried = Object.keys(fresh).reduce((acc, k) => {
+      acc[k] = form.specs[k] !== undefined ? form.specs[k] : fresh[k];
+      return acc;
+    }, {});
+    setDeviceType(newType);
+    setForm((f) => ({ ...f, specs: carried }));
+  };
+
   const set = (key) => (e) => {
     const value = e?.target ? (e.target.type === "checkbox" ? e.target.checked : e.target.value) : e;
     setForm((f) => ({ ...f, [key]: value }));
   };
 
+  const setSpec = (key, value) => setForm((f) => ({ ...f, specs: { ...f.specs, [key]: value } }));
+
   const handleSubmit = (e) => {
     e.preventDefault();
     // Wire this up to your API — this just logs the shape that would be sent.
     const payload = {
-      device_type: form.device_type,
+      device_type: deviceType,
       is_shared: isShared,
       manufacturer: form.manufacturer,
       model: form.model,
       status: form.status,
-      specs: isShared
-        ? {
-            technology: form.technology,
-            color: form.color,
-            ppm_speed: form.ppm_speed,
-            paper_capacity: Number(form.paper_capacity),
-            duplex: form.duplex,
-            ip_address: form.ip_address || undefined,
-            mac_address: form.mac_address || undefined,
-          }
-        : {
-            cpu: form.cpu,
-            ram_gb: Number(form.ram_gb),
-            disk_type: form.disk_type,
-            storage_gb: Number(form.storage_gb),
-            os: form.os,
-            ip_address: form.ip_address || undefined,
-            mac_address: form.mac_address || undefined,
-          },
+      specs: form.specs,
       assignment: isShared
         ? {
             department_id: form.department,
@@ -145,11 +168,11 @@ export default function NewDevice() {
         </div>
       </div>
 
-      {/* Device type toggle */}
+      {/* Assignment mode toggle — governs assignment shape only, not specs */}
       <div className="rounded-2xl p-2 flex gap-2" style={CARD}>
         {[
           { key: false, label: "Personal Device", sub: "Assigned to one person", icon: Laptop2 },
-          { key: true, label: "Shared Equipment", sub: "Printers, switches, shared gear", icon: Printer },
+          { key: true, label: "Shared Equipment", sub: "Multiple users or a room/location", icon: Printer },
         ].map((opt) => {
           const Icon = opt.icon;
           const active = isShared === opt.key;
@@ -174,8 +197,8 @@ export default function NewDevice() {
       {/* Basic info */}
       <Section title="Basic Info">
         <Field label="Device Type">
-          <select className={baseInput} style={inputStyle} value={form.device_type} onChange={set("device_type")}>
-            {DEVICE_TYPES.map((t) => <option key={t}>{t}</option>)}
+          <select className={baseInput} style={inputStyle} value={deviceType} onChange={(e) => handleTypeChange(e.target.value)}>
+            {CATEGORIES.map((t) => <option key={t}>{t}</option>)}
           </select>
         </Field>
         <Field label="Status">
@@ -191,60 +214,12 @@ export default function NewDevice() {
         </Field>
       </Section>
 
-      {/* Specs — conditional on isShared */}
-      {!isShared ? (
-        <Section title="Specifications" subtitle="Personal device — CPU, storage, OS">
-          <Field label="CPU">
-            <input className={baseInput} style={inputStyle} placeholder="e.g. Intel i7-1355U" value={form.cpu} onChange={set("cpu")} required />
-          </Field>
-          <Field label="RAM (GB)">
-            <input type="number" className={baseInput} style={inputStyle} placeholder="16" value={form.ram_gb} onChange={set("ram_gb")} required />
-          </Field>
-          <Field label="Disk Type">
-            <select className={baseInput} style={inputStyle} value={form.disk_type} onChange={set("disk_type")}>
-              {DISK_TYPES.map((d) => <option key={d}>{d}</option>)}
-            </select>
-          </Field>
-          <Field label="Storage (GB)">
-            <input type="number" className={baseInput} style={inputStyle} placeholder="512" value={form.storage_gb} onChange={set("storage_gb")} required />
-          </Field>
-          <Field label="Operating System">
-            <input className={baseInput} style={inputStyle} placeholder="e.g. Windows 11 Pro" value={form.os} onChange={set("os")} required />
-          </Field>
-          <Field label="IP Address" optional>
-            <input className={baseInput} style={inputStyle} placeholder="192.168.1.20" value={form.ip_address} onChange={set("ip_address")} />
-          </Field>
-          <Field label="MAC Address" optional>
-            <input className={baseInput} style={inputStyle} placeholder="00:1B:44:11:3A:B7" value={form.mac_address} onChange={set("mac_address")} />
-          </Field>
-        </Section>
-      ) : (
-        <Section title="Specifications" subtitle="Shared equipment — printer / switch style fields">
-          <Field label="Technology">
-            <input className={baseInput} style={inputStyle} placeholder="e.g. Laser" value={form.technology} onChange={set("technology")} required />
-          </Field>
-          <Field label="PPM Speed" optional>
-            <input className={baseInput} style={inputStyle} placeholder="e.g. 40ppm" value={form.ppm_speed} onChange={set("ppm_speed")} />
-          </Field>
-          <Field label="Paper Capacity">
-            <input type="number" className={baseInput} style={inputStyle} placeholder="250" value={form.paper_capacity} onChange={set("paper_capacity")} required />
-          </Field>
-          <div className="flex items-center gap-6 pt-6">
-            <label className="flex items-center gap-2 text-[13px]" style={{ color: INK }}>
-              <input type="checkbox" checked={form.color} onChange={set("color")} />
-              Color
-            </label>
-            <label className="flex items-center gap-2 text-[13px]" style={{ color: INK }}>
-              <input type="checkbox" checked={form.duplex} onChange={set("duplex")} />
-              Duplex
-            </label>
-          </div>
-          <Field label="IP Address" optional>
-            <input className={baseInput} style={inputStyle} placeholder="192.168.1.50" value={form.ip_address} onChange={set("ip_address")} />
-          </Field>
-          <Field label="MAC Address" optional>
-            <input className={baseInput} style={inputStyle} placeholder="00:1B:44:11:3A:B7" value={form.mac_address} onChange={set("mac_address")} />
-          </Field>
+      {/* Specs — fully driven by SPEC_SCHEMAS[deviceType], no more if/else per category */}
+      {specSchema.length > 0 && (
+        <Section title="Specifications" subtitle={`${deviceType}-specific fields`}>
+          {specSchema.map((f) => (
+            <SpecField key={f.key} field={f} value={form.specs[f.key]} onChange={(v) => setSpec(f.key, v)} />
+          ))}
         </Section>
       )}
 

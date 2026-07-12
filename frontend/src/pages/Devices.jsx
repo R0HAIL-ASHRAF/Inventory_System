@@ -2,28 +2,49 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Search, Plus, MoreHorizontal, ExternalLink } from "lucide-react";
 import { INK, MUTED, BORDER, ACCENT, BRAND, CARD, PAGE_BG, MONO } from "../theme";
-import { DEVICES } from "..//data";
+import { DEVICES, DEPARTMENTS } from "../data";
 import StatusBadge from "../components/devices/StatusBadge";
 import RowActionsMenu from "../components/devices/RowActionMenu";
+import ViewDeviceModal from "../components/devices/ViewDeviceModal";
+import EditDeviceModal from "../components/devices/EditDeviceModal";
+import TransferDepartmentModal from "../components/devices/TransferDepatModal";
+import MarkFaultyModal from "../components/devices/MarkFaultyModal";
+import DeleteDeviceModal from "../components/devices/DeleteDeviceModal";
 
-const FILTERS = ["All", "In-use", "Spare", "Faulty", "Dispatched", "Retired"];
+const STATUS_FILTERS = ["All", "In-use", "Spare", "Faulty", "Dispatched", "Retired"];
 
 export default function Devices() {
+  const [devices, setDevices] = useState(DEVICES);
   const [query, setQuery] = useState("");
-  const [filter, setFilter] = useState("All");
+  const [statusFilter, setStatusFilter] = useState("All");
+  const [categoryFilter, setCategoryFilter] = useState("All");
+  const [deptFilter, setDeptFilter] = useState("All");
   const [openMenuId, setOpenMenuId] = useState(null);
+  const [activeModal, setActiveModal] = useState(null); // { type, device }
 
-  const handleAction = (action, device) => {
-    
-    console.log(action, device.id);
+  const categories = ["All", ...Array.from(new Set(devices.map((d) => d.type)))];
+
+  // Every device supports the same five actions now — no more shared/personal split.
+  const handleAction = (action, device) => setActiveModal({ type: action, device });
+
+  const closeModal = () => setActiveModal(null);
+
+  const updateDevice = (updated) => {
+    setDevices((list) => list.map((d) => (d.id === updated.id ? updated : d)));
   };
 
-  const rows = DEVICES.filter((d) => {
-    const matchesFilter = filter === "All" || d.status === filter.toLowerCase();
+  const removeDevice = (device) => {
+    setDevices((list) => list.filter((d) => d.id !== device.id));
+  };
+
+  const rows = devices.filter((d) => {
+    const matchesStatus = statusFilter === "All" || d.status === statusFilter.toLowerCase();
+    const matchesCategory = categoryFilter === "All" || d.type === categoryFilter;
+    const matchesDept = deptFilter === "All" || d.dept === deptFilter;
     const matchesQuery =
       query.trim() === "" ||
-      `${d.manufacturer} ${d.model} ${d.id} ${d.dept}`.toLowerCase().includes(query.toLowerCase());
-    return matchesFilter && matchesQuery;
+      `${d.manufacturer} ${d.model} ${d.id} ${d.dept} ${d.type}`.toLowerCase().includes(query.toLowerCase());
+    return matchesStatus && matchesCategory && matchesDept && matchesQuery;
   });
 
   return (
@@ -33,7 +54,7 @@ export default function Devices() {
         <div>
           <p className="text-lg font-semibold" style={{ color: INK }}>Devices</p>
           <p className="text-[12.5px]" style={{ color: MUTED }}>
-            {DEVICES.length} assets tracked
+            {devices.length} assets tracked
           </p>
         </div>
         <Link
@@ -61,16 +82,40 @@ export default function Devices() {
             style={{ color: INK }}
           />
         </div>
+
+        <select
+          value={categoryFilter}
+          onChange={(e) => setCategoryFilter(e.target.value)}
+          className="text-[12.5px] font-medium px-3 h-9 rounded-lg outline-none"
+          style={{ backgroundColor: "#FFFFFF", color: INK, border: `1px solid ${BORDER}` }}
+        >
+          {categories.map((c) => (
+            <option key={c} value={c}>{c === "All" ? "All categories" : c}</option>
+          ))}
+        </select>
+
+        <select
+          value={deptFilter}
+          onChange={(e) => setDeptFilter(e.target.value)}
+          className="text-[12.5px] font-medium px-3 h-9 rounded-lg outline-none"
+          style={{ backgroundColor: "#FFFFFF", color: INK, border: `1px solid ${BORDER}` }}
+        >
+          <option value="All">All departments</option>
+          {DEPARTMENTS.map((dep) => (
+            <option key={dep} value={dep}>{dep}</option>
+          ))}
+        </select>
+
         <div className="flex items-center gap-1.5 flex-wrap">
-          {FILTERS.map((f) => (
+          {STATUS_FILTERS.map((f) => (
             <button
               key={f}
-              onClick={() => setFilter(f)}
+              onClick={() => setStatusFilter(f)}
               className="text-[12.5px] font-medium px-3 py-1.5 rounded-full transition-colors duration-150"
               style={{
-                backgroundColor: filter === f ? BRAND : "#FFFFFF",
-                color: filter === f ? "#FFFCDC" : MUTED,
-                border: `1px solid ${filter === f ? BRAND : BORDER}`,
+                backgroundColor: statusFilter === f ? BRAND : "#FFFFFF",
+                color: statusFilter === f ? "#FFFCDC" : MUTED,
+                border: `1px solid ${statusFilter === f ? BRAND : BORDER}`,
               }}
             >
               {f}
@@ -120,7 +165,7 @@ export default function Devices() {
                     </p>
                     <ExternalLink size={12} style={{ color: MUTED }} />
                   </div>
-                  <p className="text-[11.5px]" style={{ color: MUTED, fontFamily: MONO }}>{d.id}</p>
+                  <p className="text-[11.5px]" style={{ color: MUTED, fontFamily: MONO }}>{d.id} · {d.type}</p>
                 </div>
               </div>
 
@@ -152,6 +197,32 @@ export default function Devices() {
           );
         })}
       </div>
+
+      {activeModal?.type === "view" && <ViewDeviceModal device={activeModal.device} onClose={closeModal} />}
+
+      {activeModal?.type === "edit" && (
+        <EditDeviceModal device={activeModal.device} onClose={closeModal} onSave={updateDevice} />
+      )}
+
+      {activeModal?.type === "transfer" && (
+        <TransferDepartmentModal
+          device={activeModal.device}
+          onClose={closeModal}
+          onTransfer={(t) => updateDevice({ ...activeModal.device, dept: t.new_department })}
+        />
+      )}
+
+      {activeModal?.type === "flag-faulty" && (
+        <MarkFaultyModal
+          device={activeModal.device}
+          onClose={closeModal}
+          onConfirm={() => updateDevice({ ...activeModal.device, status: "faulty" })}
+        />
+      )}
+
+      {activeModal?.type === "delete" && (
+        <DeleteDeviceModal device={activeModal.device} onClose={closeModal} onConfirm={removeDevice} />
+      )}
     </div>
   );
 }
