@@ -8,8 +8,8 @@ const findEmployee = (id) => EMPLOYEES.find((e) => e.id === id);
 // Personal device assigned to a specific employee (matched by name, since
 // DEVICES.assignedTo is currently a display string — swap to an id match
 // once devices carry a real employee_id).
-const personalDevicesFor = (employeeName) =>
-  DEVICES.filter((d) => !d.shared && d.assignedTo === employeeName);
+const personalDevicesFor = (employeeId) =>
+  DEVICES.filter((d) => !d.shared && d.assignedTo === employeeId);
 
 export default function DepartmentDiagram({ department, onClose }) {
   const manager = department.manager_id ? findEmployee(department.manager_id) : null;
@@ -31,9 +31,7 @@ export default function DepartmentDiagram({ department, onClose }) {
         </div>
         <Connector />
 
-        {/* Everything below is contained "in the department" — locations, then
-            a separate shared-equipment zone that sits alongside them, not
-            inside any specific room/cabin. */}
+        
         <div className="rounded-2xl p-4" style={{ border: `1px dashed ${BORDER}` }}>
           {/* Locations row */}
           <div className="flex flex-wrap justify-center gap-6 mb-5">
@@ -49,36 +47,35 @@ export default function DepartmentDiagram({ department, onClose }) {
 
                       <div className="flex flex-col gap-2">
                         {sec.rooms.map((r) => (
-                          <MiniBlock key={r.id} icon={DoorOpen} label={r.name}>
-                            {r.person_ids.map((pid) => {
-                              const emp = findEmployee(pid);
-                              if (!emp) return null;
-                              const empName = `${emp.name.first} ${emp.name.last}`;
-                              const devices = personalDevicesFor(empName);
-                              return (
-                                <React.Fragment key={pid}>
-                                  <Tag>{empName}</Tag>
-                                  {devices.map((d) => (
-                                    <Tag key={d.id} icon={Cpu} muted>{d.manufacturer} {d.model}</Tag>
-                                  ))}
-                                </React.Fragment>
-                              );
-                            })}
+                        <MiniBlock key={r.id} icon={DoorOpen} label={r.name}>
+                          {r.person_ids.map((pid) => {
+                            const emp = findEmployee(pid);
+                            if (!emp) return null;
+                            const devices = personalDevicesFor(pid); // was personalDevicesFor(empName)
+                            return (
+                              <React.Fragment key={pid}>
+                                <Tag>{emp.name.first} {emp.name.last}</Tag>
+                                {devices.map((d) => (
+                                  <Tag key={d.id} icon={Cpu} muted>{d.manufacturer} {d.model}</Tag>
+                                ))}
+                              </React.Fragment>
+                            );
+                          })}
+                        </MiniBlock>
+                      ))}
+                      {sec.cabins.map((c) => {
+                        const emp = c.person_id ? findEmployee(c.person_id) : null;
+                        const devices = c.person_id ? personalDevicesFor(c.person_id) : []; // was personalDevicesFor(empName)
+                        return (
+                          <MiniBlock key={c.id} icon={User} label={c.name}>
+                            {emp && <Tag>{emp.name.first} {emp.name.last}</Tag>}
+                            {devices.map((d) => (
+                              <Tag key={d.id} icon={Cpu} muted>{d.manufacturer} {d.model}</Tag>
+                            ))}
                           </MiniBlock>
-                        ))}
-                        {sec.cabins.map((c) => {
-                          const emp = c.person_id ? findEmployee(c.person_id) : null;
-                          const empName = emp ? `${emp.name.first} ${emp.name.last}` : null;
-                          const devices = empName ? personalDevicesFor(empName) : [];
-                          return (
-                            <MiniBlock key={c.id} icon={User} label={c.name}>
-                              {empName && <Tag>{empName}</Tag>}
-                              {devices.map((d) => (
-                                <Tag key={d.id} icon={Cpu} muted>{d.manufacturer} {d.model}</Tag>
-                              ))}
-                            </MiniBlock>
-                          );
-                        })}
+                        );
+                      })}
+                                          
                         {sec.rooms.length === 0 && sec.cabins.length === 0 && (
                           <p className="text-[11px]" style={{ color: MUTED }}>Empty</p>
                         )}

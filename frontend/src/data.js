@@ -65,371 +65,6 @@ export const NOTIFICATIONS = [
   { id: 3, title: "New employee onboarded", body: "Mehak Fatima needs a device assignment", time: "3h ago", unread: false, tone: "success" },
   { id: 4, title: "Weekly report ready", body: "214 devices tracked this week", time: "Yesterday", unread: false, tone: "muted" },
 ];
-
-
-export const DEVICES = [
-  {
-    id: "DV-1001",
-    icon: Laptop2,
-    type: "Laptop",
-    manufacturer: "Lenovo",
-    model: "ThinkPad X1 Carbon Gen 11",
-    status: "in-use",
-    dept: "ICT",
-    assignedTo: "Bilal Ahmed",
-    shared: false,
-    updated: "2d ago",
-    specs: {
-      cpu: "Intel Core i7-1365U",
-      ram_gb: 16,
-      disk_type: "SSD",
-      storage_gb: 512,
-      os: "Windows 11 Pro",
-      ip_address: "192.168.10.21",
-      mac_address: "00:1A:2B:3C:4D:5E",
-    },
-    assignment: {
-      location: "Head Office",
-      section: "ICT",
-      room: "203",
-      cabin: "A-12",
-      shared_users: [],
-      assigned_date: "2025-01-15",
-    },
-  },
-
-  {
-    id: "DV-1002",
-    icon: Laptop2,
-    type: "Laptop",
-    manufacturer: "HP",
-    model: "EliteBook 840 G10",
-    status: "in-use",
-    dept: "Finance",
-    assignedTo: "Ayesha Khan",
-    shared: false,
-    updated: "5h ago",
-    specs: {
-      cpu: "Intel Core i5-1345U",
-      ram_gb: 16,
-      disk_type: "SSD",
-      storage_gb: 512,
-      os: "Windows 11 Pro",
-      ip_address: "192.168.10.24",
-      mac_address: "10:55:6B:2A:89:11",
-    },
-    assignment: {
-      location: "Head Office",
-      section: "Finance",
-      room: "102",
-      cabin: "F-03",
-      shared_users: [],
-      assigned_date: "2025-02-12",
-    },
-  },
-
-  {
-    id: "DV-1003",
-    icon: Computer,
-    type: "Desktop",
-    manufacturer: "Dell",
-    model: "OptiPlex 7010",
-    status: "spare",
-    dept: "ICT",
-    assignedTo: "Unassigned",
-    shared: false,
-    updated: "1w ago",
-    specs: {
-      cpu: "Intel Core i5-12500",
-      ram_gb: 16,
-      disk_type: "SSD",
-      storage_gb: 512,
-      os: "Windows 11 Pro",
-      ip_address: "192.168.10.31",
-      mac_address: "A0:BC:DD:12:90:44",
-    },
-    assignment: {
-      location: "ICT Store",
-      section: "Inventory",
-      room: "Storage",
-      cabin: "",
-      shared_users: [],
-      assigned_date: "",
-    },
-  },
-
-  {
-    id: "DV-1004",
-    icon: Computer,
-    type: "Desktop",
-    manufacturer: "HP",
-    model: "ProDesk 600 G6",
-    status: "in-use",
-    dept: "Reservations",
-    assignedTo: "Ali Hassan",
-    shared: false,
-    updated: "3d ago",
-    specs: {
-      cpu: "Intel Core i7-10700",
-      ram_gb: 32,
-      disk_type: "SSD",
-      storage_gb: 1024,
-      os: "Windows 11 Pro",
-      ip_address: "192.168.10.45",
-      mac_address: "22:45:BC:88:11:CC",
-    },
-    assignment: {
-      location: "Terminal",
-      section: "Reservations",
-      room: "Counter 4",
-      cabin: "",
-      shared_users: [],
-      assigned_date: "2025-01-20",
-    },
-  },
-
-  {
-    id: "DV-1005",
-    icon: Monitor,
-    type: "Monitor",
-    manufacturer: "LG",
-    model: "27QN880",
-    status: "in-use",
-    dept: "HR",
-    assignedTo: "Sara Malik",
-    shared: false,
-    updated: "4d ago",
-    specs: {
-      panel_type: "IPS",
-      size_inches: 27,
-      resolution: "2560×1440",
-    },
-    assignment: {
-      location: "Head Office",
-      section: "HR",
-      room: "301",
-      cabin: "H-02",
-      shared_users: [],
-      assigned_date: "2025-03-01",
-    },
-  },
-
-  {
-    id: "DV-1006",
-    icon: Monitor,
-    type: "Monitor",
-    manufacturer: "Samsung",
-    model: "S24R350",
-    status: "spare",
-    dept: "ICT",
-    assignedTo: "Inventory",
-    shared: false,
-    updated: "2w ago",
-    specs: {
-      panel_type: "IPS",
-      size_inches: 24,
-      resolution: "1920×1080",
-    },
-    assignment: {
-      location: "ICT Store",
-      section: "Inventory",
-      room: "Storage",
-      cabin: "",
-      shared_users: [],
-      assigned_date: "",
-    },
-  },
-
-  {
-    id: "DV-1007",
-    icon: Printer,
-    type: "Printer",
-    manufacturer: "HP",
-    model: "LaserJet M428",
-    status: "faulty",
-    dept: "Reservations",
-    assignedTo: "Shared",
-    shared: true,
-    updated: "1w ago",
-    specs: {
-      technology: "Laser",
-      color: false,
-      ppm_speed: "40",
-      paper_capacity: 250,
-      duplex: true,
-      ip_address: "192.168.10.55",
-      mac_address: "3C:52:82:1A:9F:02",
-    },
-    assignment: {
-      location: "Terminal",
-      section: "Reservations",
-      room: "Reception",
-      cabin: "",
-      shared_users: ["Counter 1", "Counter 2"],
-      assigned_date: "2025-01-09",
-    },
-  },
-
-  {
-    id: "DV-1008",
-    icon: Printer,
-    type: "Printer",
-    manufacturer: "Canon",
-    model: "imageRUNNER 2425",
-    status: "in-use",
-    dept: "Finance",
-    assignedTo: "Finance Team",
-    shared: true,
-    updated: "8h ago",
-    specs: {
-      technology: "Laser",
-      color: false,
-      ppm_speed: "25",
-      paper_capacity: 500,
-      duplex: true,
-      ip_address: "192.168.10.61",
-      mac_address: "00:BB:22:CC:44:55",
-    },
-    assignment: {
-      location: "Head Office",
-      section: "Finance",
-      room: "Accounts",
-      cabin: "",
-      shared_users: ["Finance Team"],
-      assigned_date: "2024-12-15",
-    },
-  },
-
-  {
-    id: "DV-1009",
-    icon: Server,
-    type: "Server",
-    manufacturer: "Dell",
-    model: "PowerEdge R750",
-    status: "in-use",
-    dept: "ICT",
-    assignedTo: "Infrastructure Team",
-    shared: true,
-    updated: "1d ago",
-    specs: {
-      form_factor: "Rackmount 2U",
-      cpu: "Dual Intel Xeon Silver 4314",
-      ram_gb: 128,
-      storage_gb: 4096,
-      ip_address: "10.0.0.5",
-      mac_address: "90:E2:BA:11:22:33",
-    },
-    assignment: {
-      location: "Data Center",
-      section: "Servers",
-      room: "Rack A",
-      cabin: "",
-      shared_users: ["ICT Infrastructure"],
-      assigned_date: "2024-10-20",
-    },
-  },
-
-  {
-    id: "DV-1010",
-    icon: Server,
-    type: "Server",
-    manufacturer: "HPE",
-    model: "ProLiant DL380 Gen10",
-    status: "retired",
-    dept: "ICT",
-    assignedTo: "Retired",
-    shared: false,
-    updated: "5mo ago",
-    specs: {
-      form_factor: "Rackmount 2U",
-      cpu: "Intel Xeon Gold",
-      ram_gb: 64,
-      storage_gb: 2048,
-      ip_address: "",
-      mac_address: "",
-    },
-    assignment: {
-      location: "Warehouse",
-      section: "Retired Assets",
-      room: "Storage",
-      cabin: "",
-      shared_users: [],
-      assigned_date: "2021-08-11",
-    },
-  },
-
-  {
-    id: "DV-1011",
-    icon: Network,
-    type: "Switch",
-    manufacturer: "Cisco",
-    model: "Catalyst 9200",
-    status: "in-use",
-    dept: "ICT",
-    assignedTo: "Network Team",
-    shared: true,
-    updated: "6h ago",
-    specs: {
-      port_count: 48,
-      speed: "1 Gbps",
-      managed: true,
-      ip_address: "10.0.0.20",
-      mac_address: "40:55:39:CC:55:12",
-    },
-    assignment: {
-      location: "Data Center",
-      section: "Networking",
-      room: "Rack B",
-      cabin: "",
-      shared_users: ["ICT Network Team"],
-      assigned_date: "2024-11-08",
-    },
-  },
-
-  {
-    id: "DV-1012",
-    icon: Router,
-    type: "Router",
-    manufacturer: "MikroTik",
-    model: "CCR2004-16G-2S+",
-    status: "dispatched",
-    dept: "Works",
-    assignedTo: "Pending Installation",
-    shared: false,
-    updated: "4h ago",
-    specs: {
-      port_count: 16,
-      speed: "10 Gbps",
-      managed: true,
-      ip_address: "172.16.0.1",
-      mac_address: "68:72:51:AB:CD:EF",
-    },
-    assignment: {
-      location: "Regional Office",
-      section: "Works",
-      room: "Server Room",
-      cabin: "",
-      shared_users: [],
-      assigned_date: "2025-04-01",
-    },
-  },
-];
-// export const DEPARTMENTS = ["Finance", "ICT", "Works", "Reservations", "HR"];
-
-export const DESIGNATIONS = [
-  "General Manager",
-  "Associate General Manager",
-  "HR Manager",
-  "Accountant",
-  "Software Engineer",
-  "IT Manager",
-  "IT Support Engineer",
-  "Network Administrator",
-  "Product Designer",
-  "Front Desk Executive",
-];
-
-
 export const EMPLOYEES = [
   {
     id: "EMP-2201",
@@ -448,9 +83,9 @@ export const EMPLOYEES = [
     },
     department: "ICT",
     location: "Head Office",
-    section: "3rd Floor",
-    room: "Room 301",
-    cabin: "",
+    section: "Development",
+    room: "Room 201",
+    cabin: "A-12",
   },
 
   {
@@ -470,9 +105,9 @@ export const EMPLOYEES = [
     },
     department: "HR",
     location: "Head Office",
-    section: "2nd Floor",
-    room: "",
-    cabin: "Cabin 5",
+    section: "Human Resources",
+    room: "HR Operations",
+    cabin: "HR-05",
   },
 
   {
@@ -492,8 +127,8 @@ export const EMPLOYEES = [
     },
     department: "Reservations",
     location: "Head Office",
-    section: "Ground Floor",
-    room: "Reception",
+    section: "Customer Services",
+    room: "Front Desk",
     cabin: "",
   },
 
@@ -514,9 +149,9 @@ export const EMPLOYEES = [
     },
     department: "ICT",
     location: "Head Office",
-    section: "Data Center",
+    section: "Infrastructure",
     room: "Server Room",
-    cabin: "Cabin 2",
+    cabin: "ICT Manager Cabin",
   },
 
   {
@@ -536,7 +171,7 @@ export const EMPLOYEES = [
     },
     department: "Works",
     location: "Head Office",
-    section: "Management Floor",
+    section: "Operations",
     room: "Executive Room",
     cabin: "GM Cabin",
   },
@@ -559,8 +194,8 @@ export const EMPLOYEES = [
     department: "Finance",
     location: "Head Office",
     section: "Accounts",
-    room: "Room 204",
-    cabin: "Cabin 7",
+    room: "Accounts Room",
+    cabin: "Finance Manager Cabin",
   },
 
   {
@@ -580,9 +215,9 @@ export const EMPLOYEES = [
     },
     department: "HR",
     location: "Head Office",
-    section: "HR Department",
-    room: "Room 110",
-    cabin: "HR Cabin",
+    section: "Human Resources",
+    room: "HR Operations",
+    cabin: "HR Manager Cabin",
   },
 
   {
@@ -603,8 +238,8 @@ export const EMPLOYEES = [
     department: "Finance",
     location: "Head Office",
     section: "Accounts",
-    room: "Room 205",
-    cabin: "",
+    room: "Accounts Room",
+    cabin: "Senior Accountant Cabin",
   },
 
   {
@@ -625,9 +260,353 @@ export const EMPLOYEES = [
     department: "ICT",
     location: "Data Center",
     section: "Networking",
-    room: "Server Room",
+    room: "Network Room",
+    cabin: "Network Admin Cabin",
+  },
+
+  {
+    id: "EMP-2210",
+    name: { first: "Hina", last: "Rashid" },
+    father_name: { first: "Rashid", last: "Ahmed" },
+    designation: "IT Support Engineer",
+    p_number: "P-10243",
+    phones: ["0305-1122334"],
+    emails: ["hina.rashid@company.com"],
+    address: {
+      street: "House 22, St 5",
+      town: "Johar Town",
+      city: "Lahore",
+      province: "Punjab",
+      country: "Pakistan",
+    },
+    department: "ICT",
+    location: "Head Office",
+    section: "Help Desk",
+    room: "Support Room",
     cabin: "",
   },
+
+  {
+    id: "EMP-2211",
+    name: { first: "Zain", last: "Malik" },
+    father_name: { first: "Arif", last: "Malik" },
+    designation: "Accountant",
+    p_number: "P-10244",
+    phones: ["0334-5566778"],
+    emails: ["zain.malik@company.com"],
+    address: {
+      street: "House 15, St 6",
+      town: "Model Town",
+      city: "Lahore",
+      province: "Punjab",
+      country: "Pakistan",
+    },
+    department: "Finance",
+    location: "Head Office",
+    section: "Accounts",
+    room: "Audit Room",
+    cabin: "",
+  },
+
+  {
+    id: "EMP-2212",
+    name: { first: "Omar", last: "Farooq" },
+    father_name: { first: "Farooq", last: "Ahmed" },
+    designation: "Accountant",
+    p_number: "P-10245",
+    phones: ["0311-2233445"],
+    emails: ["omar.farooq@company.com"],
+    address: {
+      street: "House 14, St 7",
+      town: "Gulberg",
+      city: "Lahore",
+      province: "Punjab",
+      country: "Pakistan",
+    },
+    department: "Finance",
+    location: "Head Office",
+    section: "Billing",
+    room: "Billing Room",
+    cabin: "",
+  },
+
+  {
+    id: "EMP-2213",
+    name: { first: "Rabia", last: "Noor" },
+    father_name: { first: "Nadeem", last: "Noor" },
+    designation: "Accountant",
+    p_number: "P-10246",
+    phones: ["0324-9988112"],
+    emails: ["rabia.noor@company.com"],
+    address: {
+      street: "House 20, St 11",
+      town: "DHA Phase 3",
+      city: "Lahore",
+      province: "Punjab",
+      country: "Pakistan",
+    },
+    department: "Finance",
+    location: "Head Office",
+    section: "Billing",
+    room: "Billing Room",
+    cabin: "",
+  },
+
+  {
+    id: "EMP-2214",
+    name: { first: "Saad", last: "Hussain" },
+    father_name: { first: "Imtiaz", last: "Hussain" },
+    designation: "Accountant",
+    p_number: "P-10247",
+    phones: ["0309-4455667"],
+    emails: ["saad.hussain@company.com"],
+    address: {
+      street: "House 33, St 4",
+      town: "Model Town",
+      city: "Lahore",
+      province: "Punjab",
+      country: "Pakistan",
+    },
+    department: "Finance",
+    location: "Regional Office Lahore",
+    section: "Finance Branch",
+    room: "Finance Operations",
+    cabin: "",
+  },
+
+  {
+    id: "EMP-2215",
+    name: { first: "Muneeb", last: "Shah" },
+    father_name: { first: "Kashif", last: "Shah" },
+    designation: "Associate General Manager",
+    p_number: "P-10248",
+    phones: ["0335-6677889"],
+    emails: ["muneeb.shah@company.com"],
+    address: {
+      street: "House 77, St 8",
+      town: "Cantt",
+      city: "Lahore",
+      province: "Punjab",
+      country: "Pakistan",
+    },
+    department: "Finance",
+    location: "Regional Office Lahore",
+    section: "Finance Branch",
+    room: "",
+    cabin: "Branch Finance Head",
+  },
+
+  {
+    id: "EMP-2216",
+    name: { first: "Usama", last: "Khalid" },
+    father_name: { first: "Khalid", last: "Rauf" },
+    designation: "IT Support Engineer",
+    p_number: "P-10249",
+    phones: ["0307-3344556"],
+    emails: ["usama.khalid@company.com"],
+    address: {
+      street: "House 60, St 9",
+      town: "Wapda Town",
+      city: "Lahore",
+      province: "Punjab",
+      country: "Pakistan",
+    },
+    department: "ICT",
+    location: "Head Office",
+    section: "Help Desk",
+    room: "Support Room",
+    cabin: "",
+  },
+
+  {
+    id: "EMP-2217",
+    name: { first: "Maryam", last: "Iqbal" },
+    father_name: { first: "Javed", last: "Iqbal" },
+    designation: "IT Support Engineer",
+    p_number: "P-10250",
+    phones: ["0346-7788990"],
+    emails: ["maryam.iqbal@company.com"],
+    address: {
+      street: "House 41, St 10",
+      town: "Johar Town",
+      city: "Lahore",
+      province: "Punjab",
+      country: "Pakistan",
+    },
+    department: "ICT",
+    location: "Head Office",
+    section: "Help Desk",
+    room: "Support Room",
+    cabin: "",
+  },
+
+  {
+    id: "EMP-2218",
+    name: { first: "Danish", last: "Akram" },
+    father_name: { first: "Akram", last: "Ali" },
+    designation: "Network Administrator",
+    p_number: "P-10251",
+    phones: ["0318-2233445"],
+    emails: ["danish.akram@company.com"],
+    address: {
+      street: "House 12, St 13",
+      town: "DHA Phase 4",
+      city: "Lahore",
+      province: "Punjab",
+      country: "Pakistan",
+    },
+    department: "ICT",
+    location: "Data Center",
+    section: "Server Operations",
+    room: "Rack Area A",
+    cabin: "System Admin Cabin",
+  },
+
+  {
+    id: "EMP-2219",
+    name: { first: "Waqas", last: "Ahmed" },
+    father_name: { first: "Nisar", last: "Ahmed" },
+    designation: "IT Support Engineer",
+    p_number: "P-10252",
+    phones: ["0320-5566778"],
+    emails: ["waqas.ahmed@company.com"],
+    address: {
+      street: "House 90, St 3",
+      town: "Township",
+      city: "Lahore",
+      province: "Punjab",
+      country: "Pakistan",
+    },
+    department: "Works",
+    location: "Workshop",
+    section: "Maintenance",
+    room: "Workshop Floor",
+    cabin: "",
+  },
+
+  {
+    id: "EMP-2220",
+    name: { first: "Fahad", last: "Raza" },
+    father_name: { first: "Raza", last: "Hameed" },
+    designation: "General Manager",
+    p_number: "P-10253",
+    phones: ["0302-8899001"],
+    emails: ["fahad.raza@company.com"],
+    address: {
+      street: "House 51, St 12",
+      town: "Cantt",
+      city: "Lahore",
+      province: "Punjab",
+      country: "Pakistan",
+    },
+    department: "Works",
+    location: "Workshop",
+    section: "Maintenance",
+    room: "",
+    cabin: "Supervisor Cabin",
+  },
+
+  {
+    id: "EMP-2221",
+    name: { first: "Haris", last: "Butt" },
+    father_name: { first: "Naeem", last: "Butt" },
+    designation: "Front Desk Executive",
+    p_number: "P-10254",
+    phones: ["0306-1112233"],
+    emails: ["haris.butt@company.com"],
+    address: {
+      street: "House 17, St 2",
+      town: "Gulberg",
+      city: "Lahore",
+      province: "Punjab",
+      country: "Pakistan",
+    },
+    department: "Reservations",
+    location: "Head Office",
+    section: "Customer Services",
+    room: "Booking Team",
+    cabin: "",
+  },
+
+  {
+    id: "EMP-2222",
+    name: { first: "Laiba", last: "Sheikh" },
+    father_name: { first: "Adeel", last: "Sheikh" },
+    designation: "Front Desk Executive",
+    p_number: "P-10255",
+    phones: ["0331-4455667"],
+    emails: ["laiba.sheikh@company.com"],
+    address: {
+      street: "House 25, St 6",
+      town: "Model Town",
+      city: "Lahore",
+      province: "Punjab",
+      country: "Pakistan",
+    },
+    department: "Reservations",
+    location: "Head Office",
+    section: "Customer Services",
+    room: "Booking Team",
+    cabin: "",
+  },
+
+  {
+    id: "EMP-2223",
+    name: { first: "Kamran", last: "Ali" },
+    father_name: { first: "Rafiq", last: "Ali" },
+    designation: "Associate General Manager",
+    p_number: "P-10256",
+    phones: ["0314-7788990"],
+    emails: ["kamran.ali@company.com"],
+    address: {
+      street: "House 39, St 14",
+      town: "DHA Phase 6",
+      city: "Lahore",
+      province: "Punjab",
+      country: "Pakistan",
+    },
+    department: "Reservations",
+    location: "Head Office",
+    section: "Customer Services",
+    room: "",
+    cabin: "Reservations Manager Cabin",
+  },
+
+  {
+    id: "EMP-2224",
+    name: { first: "Zoya", last: "Ahmed" },
+    father_name: { first: "Bilal", last: "Ahmed" },
+    designation: "Front Desk Executive",
+    p_number: "P-10257",
+    phones: ["0342-9988776"],
+    emails: ["zoya.ahmed@company.com"],
+    address: {
+      street: "House 10, St 1",
+      town: "Cantt",
+      city: "Lahore",
+      province: "Punjab",
+      country: "Pakistan",
+    },
+    department: "Reservations",
+    location: "Airport Branch",
+    section: "Airport Counter",
+    room: "Counter Area",
+    cabin: "",
+  },
+];
+
+
+export const DESIGNATIONS = [
+  "General Manager",
+  "Associate General Manager",
+  "HR Manager",
+  "Accountant",
+  "Software Engineer",
+  "IT Manager",
+  "IT Support Engineer",
+  "Network Administrator",
+  "Product Designer",
+  "Front Desk Executive",
 ];
 
 export const DEPARTMENT_TREE = [
@@ -650,7 +629,7 @@ export const DEPARTMENT_TREE = [
               {
                 id: "RM-01",
                 name: "Accounts Room",
-                person_ids: ["EMP-2208", "EMP-2210"],
+                person_ids: ["EMP-2208"],
               },
               {
                 id: "RM-02",
@@ -742,6 +721,7 @@ export const DEPARTMENT_TREE = [
                 name: "Server Room",
                 person_ids: ["EMP-2204"],
               },
+
               {
                 id: "RM-06",
                 name: "Network Room",
@@ -755,6 +735,7 @@ export const DEPARTMENT_TREE = [
                 name: "ICT Manager Cabin",
                 person_id: "EMP-2204",
               },
+
               {
                 id: "CAB-05",
                 name: "Network Admin Cabin",
@@ -771,7 +752,11 @@ export const DEPARTMENT_TREE = [
               {
                 id: "RM-07",
                 name: "Support Room",
-                person_ids: ["EMP-2216", "EMP-2217"],
+                person_ids: [
+                  "EMP-2210",
+                  "EMP-2216",
+                  "EMP-2217",
+                ],
               },
             ],
 
@@ -794,8 +779,9 @@ export const DEPARTMENT_TREE = [
               {
                 id: "RM-08",
                 name: "Rack Area A",
-                person_ids: [],
+                person_ids: ["EMP-2218"],
               },
+
               {
                 id: "RM-09",
                 name: "Rack Area B",
@@ -867,6 +853,7 @@ export const DEPARTMENT_TREE = [
                 name: "Workshop Floor",
                 person_ids: ["EMP-2219"],
               },
+
               {
                 id: "RM-12",
                 name: "Equipment Store",
@@ -886,8 +873,6 @@ export const DEPARTMENT_TREE = [
       },
     ],
   },
-
-
   {
     id: "DEP-04",
     name: "Reservations",
@@ -909,10 +894,14 @@ export const DEPARTMENT_TREE = [
                 name: "Front Desk",
                 person_ids: ["EMP-2203"],
               },
+
               {
                 id: "RM-14",
                 name: "Booking Team",
-                person_ids: ["EMP-2221", "EMP-2222"],
+                person_ids: [
+                  "EMP-2221",
+                  "EMP-2222",
+                ],
               },
             ],
 
@@ -926,7 +915,6 @@ export const DEPARTMENT_TREE = [
           },
         ],
       },
-
 
       {
         id: "LOC-08",
@@ -972,8 +960,12 @@ export const DEPARTMENT_TREE = [
               {
                 id: "RM-16",
                 name: "HR Operations",
-                person_ids: ["EMP-2207"],
+                person_ids: [
+                  "EMP-2202",
+                  "EMP-2207",
+                ],
               },
+
               {
                 id: "RM-17",
                 name: "Interview Room",
@@ -995,4 +987,410 @@ export const DEPARTMENT_TREE = [
   },
 ];
 
-export const DEPARTMENTS = DEPARTMENT_TREE.map((d) => d.name);
+
+
+export const DEPARTMENTS = [
+  "Finance",
+  "ICT",
+  "Works",
+  "Reservations",
+  "HR",
+];
+
+
+export const DEVICES = [
+  {
+    id: "DV-1001",
+    icon: Laptop2,
+    type: "Laptop",
+    manufacturer: "Lenovo",
+    model: "ThinkPad X1 Carbon Gen 11",
+    status: "in-use",
+    dept: "ICT",
+    assignedTo: "EMP-2201",
+    shared: false,
+    updated: "2d ago",
+
+    specs: {
+      cpu: "Intel Core i7-1365U",
+      ram_gb: 16,
+      disk_type: "SSD",
+      storage_gb: 512,
+      os: "Windows 11 Pro",
+      ip_address: "192.168.10.21",
+      mac_address: "00:1A:2B:3C:4D:5E",
+    },
+
+    assignment: {
+      location: "Head Office",
+      section: "Development",
+      room: "Room 201",
+      cabin: "A-12",
+      shared_users: [],
+      assigned_date: "2025-01-15",
+    },
+  },
+
+
+  {
+    id: "DV-1002",
+    icon: Laptop2,
+    type: "Laptop",
+    manufacturer: "HP",
+    model: "EliteBook 840 G10",
+    status: "in-use",
+    dept: "ICT",
+    assignedTo: "EMP-2204",
+    shared: false,
+    updated: "5h ago",
+
+    specs: {
+      cpu: "Intel Core i5-1345U",
+      ram_gb: 16,
+      disk_type: "SSD",
+      storage_gb: 512,
+      os: "Windows 11 Pro",
+      ip_address: "192.168.10.24",
+      mac_address: "10:55:6B:2A:89:11",
+    },
+
+    assignment: {
+      location: "Head Office",
+      section: "Infrastructure",
+      room: "Server Room",
+      cabin: "ICT Manager Cabin",
+      shared_users: [],
+      assigned_date: "2025-02-12",
+    },
+  },
+
+
+  {
+    id: "DV-1003",
+    icon: Computer,
+    type: "Desktop",
+    manufacturer: "Dell",
+    model: "OptiPlex 7010",
+    status: "spare",
+    dept: "ICT",
+    assignedTo: null,
+    shared: false,
+    updated: "1w ago",
+
+    specs: {
+      cpu: "Intel Core i5-12500",
+      ram_gb: 16,
+      disk_type: "SSD",
+      storage_gb: 512,
+      os: "Windows 11 Pro",
+      ip_address: "192.168.10.31",
+      mac_address: "A0:BC:DD:12:90:44",
+    },
+
+    assignment: {
+      location: "ICT Store",
+      section: "Inventory",
+      room: "Storage",
+      cabin: "",
+      shared_users: [],
+      assigned_date: "",
+    },
+  },
+
+
+  {
+    id: "DV-1004",
+    icon: Computer,
+    type: "Desktop",
+    manufacturer: "HP",
+    model: "ProDesk 600 G6",
+    status: "in-use",
+    dept: "Reservations",
+    assignedTo: "EMP-2203",
+    shared: false,
+    updated: "3d ago",
+
+    specs: {
+      cpu: "Intel Core i7-10700",
+      ram_gb: 32,
+      disk_type: "SSD",
+      storage_gb: 1024,
+      os: "Windows 11 Pro",
+      ip_address: "192.168.10.45",
+      mac_address: "22:45:BC:88:11:CC",
+    },
+
+    assignment: {
+      location: "Head Office",
+      section: "Customer Services",
+      room: "Front Desk",
+      cabin: "",
+      shared_users: [],
+      assigned_date: "2025-01-20",
+    },
+  },
+
+
+  {
+    id: "DV-1005",
+    icon: Monitor,
+    type: "Monitor",
+    manufacturer: "LG",
+    model: "27QN880",
+    status: "in-use",
+    dept: "HR",
+    assignedTo: "EMP-2202",
+    shared: false,
+    updated: "4d ago",
+
+    specs: {
+      panel_type: "IPS",
+      size_inches: 27,
+      resolution: "2560×1440",
+    },
+
+    assignment: {
+      location: "Head Office",
+      section: "Human Resources",
+      room: "HR Operations",
+      cabin: "HR-05",
+      shared_users: [],
+      assigned_date: "2025-03-01",
+    },
+  },
+
+
+  {
+    id: "DV-1006",
+    icon: Monitor,
+    type: "Monitor",
+    manufacturer: "Samsung",
+    model: "S24R350",
+    status: "spare",
+    dept: "ICT",
+    assignedTo: null,
+    shared: false,
+    updated: "2w ago",
+
+    specs: {
+      panel_type: "IPS",
+      size_inches: 24,
+      resolution: "1920×1080",
+    },
+
+    assignment: {
+      location: "ICT Store",
+      section: "Inventory",
+      room: "Storage",
+      cabin: "",
+      shared_users: [],
+      assigned_date: "",
+    },
+  },
+  {
+    id: "DV-1007",
+    icon: Printer,
+    type: "Printer",
+    manufacturer: "HP",
+    model: "LaserJet M428",
+    status: "faulty",
+    dept: "Reservations",
+    assignedTo: "EMP-2203",
+    shared: true,
+    updated: "1w ago",
+
+    specs: {
+      technology: "Laser",
+      color: false,
+      ppm_speed: "40",
+      paper_capacity: 250,
+      duplex: true,
+      ip_address: "192.168.10.55",
+      mac_address: "3C:52:82:1A:9F:02",
+    },
+
+    assignment: {
+      location: "Head Office",
+      section: "Customer Services",
+      room: "Front Desk",
+      cabin: "",
+      shared_users: [
+        "EMP-2203",
+        "EMP-2221",
+        "EMP-2222",
+      ],
+      assigned_date: "2025-01-09",
+    },
+  },
+
+
+  {
+    id: "DV-1008",
+    icon: Printer,
+    type: "Printer",
+    manufacturer: "Canon",
+    model: "imageRUNNER 2425",
+    status: "in-use",
+    dept: "Finance",
+    assignedTo: "EMP-2206",
+    shared: true,
+    updated: "8h ago",
+
+    specs: {
+      technology: "Laser",
+      color: false,
+      ppm_speed: "25",
+      paper_capacity: 500,
+      duplex: true,
+      ip_address: "192.168.10.61",
+      mac_address: "00:BB:22:CC:44:55",
+    },
+
+    assignment: {
+      location: "Head Office",
+      section: "Accounts",
+      room: "Accounts Room",
+      cabin: "",
+      shared_users: [
+        "EMP-2206",
+        "EMP-2208",
+        "EMP-2211",
+      ],
+      assigned_date: "2024-12-15",
+    },
+  },
+
+
+  {
+    id: "DV-1009",
+    icon: Server,
+    type: "Server",
+    manufacturer: "Dell",
+    model: "PowerEdge R750",
+    status: "in-use",
+    dept: "ICT",
+    assignedTo: "EMP-2204",
+    shared: true,
+    updated: "1d ago",
+
+    specs: {
+      form_factor: "Rackmount 2U",
+      cpu: "Dual Intel Xeon Silver 4314",
+      ram_gb: 128,
+      storage_gb: 4096,
+      ip_address: "10.0.0.5",
+      mac_address: "90:E2:BA:11:22:33",
+    },
+
+    assignment: {
+      location: "Data Center",
+      section: "Server Operations",
+      room: "Rack Area A",
+      cabin: "System Admin Cabin",
+      shared_users: [
+        "EMP-2204",
+        "EMP-2209",
+        "EMP-2218",
+      ],
+      assigned_date: "2024-10-20",
+    },
+  },
+
+
+  {
+    id: "DV-1010",
+    icon: Server,
+    type: "Server",
+    manufacturer: "HPE",
+    model: "ProLiant DL380 Gen10",
+    status: "retired",
+    dept: "ICT",
+    assignedTo: null,
+    shared: false,
+    updated: "5mo ago",
+
+    specs: {
+      form_factor: "Rackmount 2U",
+      cpu: "Intel Xeon Gold",
+      ram_gb: 64,
+      storage_gb: 2048,
+      ip_address: "",
+      mac_address: "",
+    },
+
+    assignment: {
+      location: "Warehouse",
+      section: "Retired Assets",
+      room: "Storage",
+      cabin: "",
+      shared_users: [],
+      assigned_date: "2021-08-11",
+    },
+  },
+
+
+  {
+    id: "DV-1011",
+    icon: Network,
+    type: "Switch",
+    manufacturer: "Cisco",
+    model: "Catalyst 9200",
+    status: "in-use",
+    dept: "ICT",
+    assignedTo: "EMP-2209",
+    shared: true,
+    updated: "6h ago",
+
+    specs: {
+      port_count: 48,
+      speed: "1 Gbps",
+      managed: true,
+      ip_address: "10.0.0.20",
+      mac_address: "40:55:39:CC:55:12",
+    },
+
+    assignment: {
+      location: "Data Center",
+      section: "Networking",
+      room: "Network Room",
+      cabin: "Network Admin Cabin",
+      shared_users: [
+        "EMP-2209",
+        "EMP-2218",
+      ],
+      assigned_date: "2024-11-08",
+    },
+  },
+
+
+  {
+    id: "DV-1012",
+    icon: Router,
+    type: "Router",
+    manufacturer: "MikroTik",
+    model: "CCR2004-16G-2S+",
+    status: "dispatched",
+    dept: "Works",
+    assignedTo: null,
+    shared: false,
+    updated: "4h ago",
+
+    specs: {
+      port_count: 16,
+      speed: "10 Gbps",
+      managed: true,
+      ip_address: "172.16.0.1",
+      mac_address: "68:72:51:AB:CD:EF",
+    },
+
+    assignment: {
+      location: "Workshop",
+      section: "Maintenance",
+      room: "Equipment Store",
+      cabin: "",
+      shared_users: [],
+      assigned_date: "2025-04-01",
+    },
+  },
+
+];

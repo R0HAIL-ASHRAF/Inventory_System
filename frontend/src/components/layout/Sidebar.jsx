@@ -33,7 +33,6 @@ const NAV_GROUPS = [
     label: "System",
     items: [
       { path: "/logs", label: "Activity Logs", icon: ScrollText },
-      { path: "/settings", label: "Settings", icon: Settings },
       { path: "/notification", label: "Notifications", icon: Bell, count: 31}
     ],
   },
