@@ -5,7 +5,7 @@
 - **device** — stores all about the devices, ie printers, switches, personal computers etc. All of them can be differentiated by their device_type and specs.
 - **person** — stores all employees as an separate entity.
 - **department** — stores departments as a single module so that a single room can be mapped to specific person.
-- **device_logs** — logs every moment, either the device is attached or deattached.
+- **device_logs** — logs every moment, either the device is attached or deattached, department transfer, fault/repair, status change.
 
 ---
 
@@ -80,7 +80,7 @@ assignment: {
     _id: ObjectId,
     device_id: ObjectId (required),
     timestamp: Date (required),
-    event_type: enum{'attach', 'detach', 'transfer', 'fault'} (required),
+    event_type: enum{'attach', 'detach', 'transfer', 'fault', 'status_change'} (required),
     user_id: ObjectId (optional), 
     detail: { ... }
 }
