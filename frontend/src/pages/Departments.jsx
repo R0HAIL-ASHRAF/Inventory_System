@@ -65,7 +65,7 @@ export default function Departments() {
             onClick={() => handleAction("diagram", dep)}
           >
             <div className="flex items-start justify-between mb-3">
-              <p className="text-sm font-semibold" style={{ color: INK }}>{dep.name}</p>
+              <p className="text-[19px] font-semibold" style={{ color: INK}}>{dep.name}</p>
               <div className="relative">
                 <button
                   onClick={(e) => { e.stopPropagation(); setOpenMenuId(openMenuId === dep.id ? null : dep.id); }}
@@ -120,8 +120,8 @@ export default function Departments() {
 
 function Stat({ icon: Icon, label, value }) {
   return (
-    <div className="flex items-center gap-2 text-[12.5px]" style={{ color: MUTED }}>
-      <Icon size={13} />
+    <div className="flex items-center gap-2 text-[18.5px]" style={{ color: MUTED }}>
+      <Icon size={19} />
       <span>{label}</span>
       <span className="ml-auto font-medium" style={{ color: INK }}>{value}</span>
     </div>

@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./components/layout/Layout";
 import Dashboard from "./pages/Dashboard";
+import './App.css';
 import Devices from "./pages/Devices";
 import NewDevice from "../src/pages/AddNewDevice";
 import Employees from "./pages/Employees";

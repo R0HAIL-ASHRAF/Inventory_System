@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Search, Bell, ChevronDown, Plus, LogOut, Settings, UserCircle } from "lucide-react";
+import { Search, Bell, ChevronDown, Plus, LogOut, Settings, UserCircle, Accessibility } from "lucide-react";
 import { INK, MUTED, BORDER, ACCENT, BRAND, SURFACE, PAGE_BG, MONO } from "../../theme";
 import NotificationPanel from "../dashboard/NotificationPanel"
 import { NOTIFICATIONS } from "../../data";
@@ -14,7 +14,7 @@ export default function Topbar() {
   return (
     <header
       className="sticky top-0 z-30 w-full flex items-center justify-between gap-4 px-6"
-      style={{ height: 64, backgroundColor: SURFACE, borderBottom: `1.5px solid ${BRAND}`, boxShadow: "0 1px 2px rgba(58,71,66,0.05)" }}
+      style={{ height: 103, backgroundColor: SURFACE, borderBottom: `1.5px solid ${BRAND}`, boxShadow: "0 1px 2px rgba(58,71,66,0.05)" }}
     >
       {/* Left: title + search */}
       <div className="flex items-center gap-6 min-w-0 flex-1">
@@ -71,7 +71,7 @@ export default function Topbar() {
           >
             <div
               className="flex items-center justify-center rounded-full text-[12px] font-semibold shrink-0"
-              style={{ width: 30, height: 30, backgroundColor: BRAND, color: SURFACE }}
+              style={{ width: 30, height: 30, backgroundColor: BRAND, color: ACCENT }}
             >
               AR
             </div>
@@ -114,7 +114,7 @@ function MenuItem({ icon: Icon, label, tone }) {
     <button
       className="w-full flex items-center gap-2.5 px-3.5 py-2 text-[13px] font-medium text-left transition-colors duration-150"
       style={{ color }}
-      onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = PAGE_BG)}
+      onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = ACCENT)}
       onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "transparent")}
     >
       <Icon size={16} />

@@ -1,5 +1,4 @@
 import React from "react";
-
 export default function Sparkline({ points = [4, 8, 5, 9, 7, 10] }) {
   const w = 260;
   const h = 46;
@@ -11,7 +10,7 @@ export default function Sparkline({ points = [4, 8, 5, 9, 7, 10] }) {
 
   return (
     <svg viewBox={`0 0 ${w} ${h}`} className="w-full h-11">
-      <path d={path} fill="none" stroke="rgba(255,252,220,0.85)" strokeWidth="2" strokeLinecap="round" />
+      <path d={path} fill="none" stroke="rgba(219, 202, 12, 0.85)" strokeWidth="2" strokeLinecap="round" />
     </svg>
   );
 }

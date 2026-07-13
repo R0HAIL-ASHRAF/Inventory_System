@@ -1,7 +1,7 @@
 import React from "react";
 import { MoreHorizontal, ArrowRightLeft } from "lucide-react";
 import { ResponsiveContainer, ComposedChart, Bar, Line, XAxis, Cell } from "recharts";
-import { INK, MUTED, BORDER, ACCENT, ACCENT_SOFT, CARD, MONO, DANGER } from "../../theme";
+import { INK, MUTED, BORDER, ACCENT, ACCENT_SOFT, CARD, MONO, FONT_DISPLAY, DANGER } from "../../theme";
 import { WEEKLY_ACTIVITY } from "../../data";
 
 export default function ActivityChartCard() {
@@ -9,8 +9,8 @@ export default function ActivityChartCard() {
     <div className="rounded-2xl p-6" style={CARD}>
       <div className="flex items-start justify-between mb-4">
         <div>
-          <p className="text-sm font-medium" style={{ color: INK }}>Weekly Activity</p>
-          <p className="text-[12px]" style={{ color: MUTED }}>Attach / detach / transfer events</p>
+          <p className="text-[13px] font-semibold uppercase tracking-[0.03em]" style={{ color: INK, fontFamily: FONT_DISPLAY }}>Weekly Activity</p>
+          <p className="text-[12px] mt-0.5" style={{ color: MUTED }}>Attach / detach / transfer events</p>
         </div>
         <button style={{ color: MUTED }}>
           <MoreHorizontal size={18} />
@@ -20,7 +20,7 @@ export default function ActivityChartCard() {
       <div style={{ height: 140 }}>
         <ResponsiveContainer width="100%" height="100%">
           <ComposedChart data={WEEKLY_ACTIVITY} barGap={6}>
-            <XAxis dataKey="day" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: MUTED }} />
+            <XAxis dataKey="day" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: MUTED, fontFamily: MONO }} />
             <Bar dataKey="events" radius={[5, 5, 5, 5]} barSize={18}>
               {WEEKLY_ACTIVITY.map((d, i) => (
                 <Cell key={i} fill={i === 3 ? ACCENT_SOFT : "#EFEAD8"} />
@@ -38,7 +38,7 @@ export default function ActivityChartCard() {
         <div className="flex-1">
           <p className="text-[12px]" style={{ color: MUTED }}>Resolved this week</p>
         </div>
-        <p className="text-base font-semibold" style={{ fontFamily: MONO, color: INK }}>58</p>
+        <p className="text-base font-semibold" style={{ fontFamily: MONO, color: INK, fontFeatureSettings: "'tnum'" }}>58</p>
       </div>
     </div>
   );

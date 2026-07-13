@@ -16,7 +16,12 @@ export default function StatCard({
       </div>
       <div className="flex-1 min-w-0">
         <div className="flex items-baseline justify-between mb-1.5">
-          <p className="text-lg font-semibold" style={{ fontFamily: MONO, color: INK }}>{value}</p>
+          <p
+            className="text-lg font-semibold"
+            style={{ fontFamily: MONO, color: INK, fontFeatureSettings: "'tnum'" }}
+          >
+            {value}
+          </p>
           <p className="text-[12px] font-medium truncate ml-2" style={{ color: MUTED }}>{label}</p>
         </div>
         <div className="h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: "#EFEAD8" }}>

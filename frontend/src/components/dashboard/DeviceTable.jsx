@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { MoreHorizontal, ArrowUpRight, ArrowDownRight, ExternalLink } from "lucide-react";
-import { INK, MUTED, BORDER, ACCENT, BRAND, CARD, MONO, DANGER, SUCCESS, PAGE_BG } from "../../theme";
+import { INK, MUTED, BORDER, ACCENT, BRAND, CARD, MONO, FONT_DISPLAY, DANGER, SUCCESS, PAGE_BG } from "../../theme";
 import { RECENT_DEVICES, RECENT_PEOPLE } from "../../data";
 
 export default function DeviceTable() {
@@ -17,8 +17,8 @@ export default function DeviceTable() {
           <button
             key={t.key}
             onClick={() => setTab(t.key)}
-            className="pb-3 text-sm font-medium relative"
-            style={{ color: tab === t.key ? INK : MUTED }}
+            className="pb-3 text-[12.5px] font-semibold uppercase tracking-[0.03em] relative"
+            style={{ color: tab === t.key ? INK : MUTED, fontFamily: FONT_DISPLAY }}
           >
             {t.label}
             {tab === t.key && <span className="absolute left-0 right-0 -bottom-[1px] h-[2px] rounded-full" style={{ backgroundColor: ACCENT }} />}
@@ -38,27 +38,32 @@ export default function DeviceTable() {
               onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "transparent")}
             >
               <div className="flex items-center justify-center rounded-lg shrink-0" style={{ width: 36, height: 36, backgroundColor: BRAND }}>
-                <Icon size={16} color="#ffffff" />
+                <Icon size={16} color="#1d522a" />
               </div>
 
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-1.5">
-                  <p className="text-sm font-medium truncate" style={{ color: INK }}>{r.name}</p>
+                  <p className="text-[13.5px] font-semibold tracking-[-0.01em] truncate" style={{ color: INK }}>{r.name}</p>
                   <ExternalLink size={12} style={{ color: MUTED }} />
                 </div>
-                <p className="text-[11.5px] truncate" style={{ color: MUTED }}>{r.sub}</p>
+                <p className="text-[11.5px] truncate" style={{ color: MUTED, letterSpacing: "0.005em" }}>{r.sub}</p>
               </div>
 
-              <p className="text-[12.5px] w-28 shrink-0 hidden sm:block" style={{ color: MUTED }}>{r.dept}</p>
+              <p className="text-[12.5px] w-28 shrink-0 hidden sm:block" style={{ color: MUTED, letterSpacing: "0.005em" }}>{r.dept}</p>
 
               <div className="flex items-center gap-1.5 w-20 shrink-0 justify-end">
-                <span className="text-[13px] font-medium" style={{ color: INK, fontFamily: MONO }}>{r.stat}</span>
+                <span
+                  className="text-[13px] font-medium"
+                  style={{ color: INK, fontFamily: MONO, fontFeatureSettings: "'tnum'" }}
+                >
+                  {r.stat}
+                </span>
               </div>
 
               {r.change !== 0 && (
                 <div
                   className="flex items-center gap-0.5 text-[11.5px] font-medium px-1.5 py-0.5 rounded shrink-0"
-                  style={{ color: up ? SUCCESS : DANGER, backgroundColor: up ? "rgba(92,130,100,0.12)" : "rgba(184,80,58,0.12)" }}
+                  style={{ color: up ? SUCCESS : DANGER, backgroundColor: up ? "rgba(92,130,100,0.12)" : "rgba(184,80,58,0.12)", fontFamily: MONO, fontFeatureSettings: "'tnum'" }}
                 >
                   {up ? <ArrowUpRight size={12} /> : <ArrowDownRight size={12} />}
                   {Math.abs(r.change)}%

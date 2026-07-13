@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Search, Plus, MoreHorizontal, ExternalLink } from "lucide-react";
-import { INK, MUTED, BORDER, ACCENT, BRAND, CARD, PAGE_BG, MONO } from "../theme";
+import { INK, MUTED, BORDER, ACCENT, BRAND, CARD, PAGE_BG, MONO, SURFACE } from "../theme";
 import { DEVICES, DEPARTMENTS } from "../data";
 import StatusBadge from "../components/devices/StatusBadge";
 import RowActionsMenu from "../components/devices/RowActionMenu";
@@ -24,7 +24,6 @@ export default function Devices() {
 
   const categories = ["All", ...Array.from(new Set(devices.map((d) => d.type)))];
 
-  // Every device supports the same five actions now — no more shared/personal split.
   const handleAction = (action, device) => setActiveModal({ type: action, device });
 
   const closeModal = () => setActiveModal(null);
@@ -52,15 +51,15 @@ export default function Devices() {
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <p className="text-lg font-semibold" style={{ color: INK }}>Devices</p>
-          <p className="text-[12.5px]" style={{ color: MUTED }}>
+          <p className="text-lg font-semibold" style={{ color: SURFACE }}>Devices</p>
+          <p className="text-[12.5px]" style={{ color: SURFACE }}>
             {devices.length} assets tracked
           </p>
         </div>
         <Link
           to="/devices/new"
           className="flex items-center gap-1.5 rounded-lg px-3.5 h-9 text-sm font-medium transition-opacity duration-150 hover:opacity-90"
-          style={{ backgroundColor: BRAND, color: "#FFFCDC" }}
+          style={{ backgroundColor: ACCENT, color: "#FFFCDC" }}
         >
           <Plus size={15} strokeWidth={2.5} />
           New Device
@@ -130,7 +129,7 @@ export default function Devices() {
       {/* Table */}
       <div className="rounded-2xl" style={CARD}>
         <div
-          className="grid px-5 py-3 text-[11px] font-semibold uppercase tracking-wide"
+          className="grid px-5 py-3 text-[17px] font-semibold uppercase tracking-wide"
           style={{ gridTemplateColumns: "2.2fr 1fr 1fr 1.2fr 1fr 40px", color: MUTED, borderBottom: `1px solid ${BORDER}` }}
         >
           <span>Device</span>
@@ -176,9 +175,9 @@ export default function Devices() {
                 <StatusBadge status={d.status} />
               </div>
 
-              <p className="text-[13px] truncate" style={{ color: INK }}>{d.dept}</p>
+              <p className="text-[15px] truncate" style={{ color: INK }}>{d.dept}</p>
 
-              <p className="text-[13px] truncate" style={{ color: d.shared ? ACCENT : INK, fontWeight: d.shared ? 500 : 400 }}>
+              <p className="text-[15px] truncate" style={{ color: d.shared ? ACCENT : INK, fontWeight: d.shared ? 500 : 400 }}>
                 {d.assignedTo}
               </p>
 

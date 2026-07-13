@@ -1,10 +1,10 @@
 import React from "react";
 import { PlugZap, Unplug, ArrowRightLeft, AlertTriangle, RefreshCcw, MoreHorizontal } from "lucide-react";
-import { INK, MUTED, BORDER, ACCENT, BRAND, DANGER, CARD, MONO } from "../../theme";
+import { INK, MUTED, BORDER, CREAM, ACCENT, BRAND, DANGER, CARD, MONO, FONT_DISPLAY } from "../../theme";
 import { ACTIVITY_LOG } from "../../data";
 
 const EVENT_META = {
-  attach: { icon: PlugZap, tone: BRAND },
+  attach: { icon: PlugZap, tone: CREAM },
   detach: { icon: Unplug, tone: MUTED },
   transfer: { icon: ArrowRightLeft, tone: ACCENT },
   fault: { icon: AlertTriangle, tone: DANGER },
@@ -16,8 +16,8 @@ export default function ActivityFeedCard() {
     <div className="rounded-2xl p-6" style={CARD}>
       <div className="flex items-start justify-between mb-4">
         <div>
-          <p className="text-sm font-medium" style={{ color: INK }}>Activity Log</p>
-          <p className="text-[12px]" style={{ color: MUTED }}>Latest device_logs events, most recent first</p>
+          <p className="text-[13px] font-semibold uppercase tracking-[0.03em]" style={{ color: INK, fontFamily: FONT_DISPLAY }}>Activity Log</p>
+          <p className="text-[12px] mt-0.5" style={{ color: MUTED }}>Latest device_logs events, most recent first</p>
         </div>
         <button style={{ color: MUTED }}>
           <MoreHorizontal size={18} />
@@ -47,7 +47,10 @@ export default function ActivityFeedCard() {
                   <p className="text-[13.5px] font-medium leading-snug" style={{ color: INK }}>
                     {entry.title}
                   </p>
-                  <span className="text-[11px] shrink-0 whitespace-nowrap" style={{ color: MUTED, fontFamily: MONO }}>
+                  <span
+                    className="text-[11px] shrink-0 whitespace-nowrap"
+                    style={{ color: MUTED, fontFamily: MONO, fontFeatureSettings: "'tnum'" }}
+                  >
                     {entry.time}
                   </span>
                 </div>
