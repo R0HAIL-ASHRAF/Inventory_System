@@ -44,13 +44,13 @@ export default function Sidebar() {
   return (
     <aside
       className="h-screen flex flex-col  transition-all duration-300 ease-in-out relative z-20"
-      style={{ width: collapsed ? 76 : 300, backgroundColor: CREAM ,
+      style={{ width: collapsed ? 76 : 256, backgroundColor: CREAM ,
       }}
     >
       {/* Floating Border Toggle Button */}
       <button
         onClick={() => setCollapsed(!collapsed)}
-        className="absolute -right-3 top-28 flex items-center justify-center rounded-full transition-transform hover:scale-110 z-30"
+        className="absolute -right-3 top-22 flex items-center justify-center rounded-full transition-transform hover:scale-110 z-30"
         style={{ width: 24, height: 24, backgroundColor: CREAM, color: BRAND, border: `1px solid ${BRAND}` }}
         title={collapsed ? "Expand Sidebar" : "Collapse Sidebar"}
       >
@@ -62,9 +62,9 @@ export default function Sidebar() {
         className="shrink-0 w-full"
         style={{
           backgroundColor: "#FFFFFF",
-          height: collapsed ? "0px" : "103px",
+          height: collapsed ? "0px" : "80px",
           transition: "height 0.3s ease",
-          paddingTop: collapsed ? 0 : "10px",
+          paddingTop: collapsed ? 80 : "10px",
         }}
       >
         <img src={piaLogo} alt="PIA Logo" className="w-full h-full " style={{ objectPosition: "top center" }} />

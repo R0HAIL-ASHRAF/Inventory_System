@@ -11,7 +11,7 @@ export default function HeroCard() {
       style={{ background: `linear-gradient(135deg, ${BRAND}, #f5e834)`, color: CREAM, minHeight: 220 }}
     >
       <div className="flex items-start justify-between">
-        <p className="text-[13px] font-semibold uppercase tracking-[0.03em]" style={{ color: "#000000", fontFamily: FONT_DISPLAY }}>
+        <p className="text-[33px] font-semibold uppercase tracking-[0.03em]" style={{ color: CREAM, fontFamily: FONT_DISPLAY }}>
           Total Devices
           </p>
         <button className="opacity-70 hover:opacity-100">

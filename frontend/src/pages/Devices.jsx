@@ -21,11 +21,12 @@ export default function Devices() {
   const [deptFilter, setDeptFilter] = useState("All");
   const [openMenuId, setOpenMenuId] = useState(null);
   const [activeModal, setActiveModal] = useState(null); // { type, device }
+  const [focusedSearch, setFocusedSearch] = useState(false);
+  const [hoveredRowId, setHoveredRowId] = useState(null);
 
   const categories = ["All", ...Array.from(new Set(devices.map((d) => d.type)))];
 
   const handleAction = (action, device) => setActiveModal({ type: action, device });
-
   const closeModal = () => setActiveModal(null);
 
   const updateDevice = (updated) => {
@@ -47,165 +48,234 @@ export default function Devices() {
   });
 
   return (
-    <div className="space-y-5">
-      {/* Header */}
-      <div className="flex items-center justify-between flex-wrap gap-3">
+    <div className="space-y-6">
+      <style>{`
+        @keyframes pageItemUp {
+          from { opacity: 0; transform: translateY(8px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-table-row { 
+          animation: pageItemUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
+        }
+      `}</style>
+
+      {/* Header Block */}
+      <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
-          <p className="text-lg font-semibold" style={{ color: SURFACE }}>Devices</p>
-          <p className="text-[12.5px]" style={{ color: SURFACE }}>
-            {devices.length} assets tracked
-          </p>
+          <p className="text-[33px] font-bold tracking-tight" style={{ color: "#FFFFFF" }}>Devices</p>
+          
+          {/* Enhanced Premium Asset Counter */}
+          <div className="flex items-center gap-2 mt-1 select-none">
+            <span 
+              className="inline-flex items-center justify-center px-2 py-0.5 rounded-md text-[23px] font-bold tracking-wide" 
+              style={{ backgroundColor: `${BRAND}18`, color: ACCENT, fontFamily: MONO, fontFeatureSettings: "'tnum'" }}
+            >
+              {devices.length}
+            </span>
+            <span className="text-[17px] font-semibold tracking-tight" style={{ color: ACCENT }}>
+              active corporate assets cataloged
+            </span>
+          </div>
         </div>
+
         <Link
           to="/devices/new"
-          className="flex items-center gap-1.5 rounded-lg px-3.5 h-9 text-sm font-medium transition-opacity duration-150 hover:opacity-90"
+          className="flex items-center gap-1.5 rounded-xl px-4 h-10 text-sm font-semibold transition-all duration-200 hover:shadow-md hover:opacity-95 active:scale-95"
           style={{ backgroundColor: ACCENT, color: "#FFFCDC" }}
         >
-          <Plus size={15} strokeWidth={2.5} />
+          <Plus size={16} strokeWidth={2.5} />
           New Device
         </Link>
       </div>
 
-      {/* Search + filters */}
-      <div className="flex items-center gap-3 flex-wrap">
+      {/* Search & Filtration Dashboard Controls */}
+      <div className="flex items-center gap-3 flex-wrap bg-black/[0.01] p-3 rounded-2xl border" style={{ borderColor: BORDER }}>
+        
+        {/* Animated Search Bar Component */}
         <div
-          className="flex items-center gap-2 rounded-lg px-3 h-9 w-full max-w-xs"
-          style={{ backgroundColor: PAGE_BG, border: `1px solid ${BORDER}` }}
+          className="flex items-center gap-2 rounded-xl px-3.5 h-10 w-full max-w-xs transition-all duration-200"
+          style={{ 
+            backgroundColor: PAGE_BG, 
+            border: `1.5px solid ${focusedSearch ? ACCENT : BORDER}`,
+            boxShadow: focusedSearch ? `0 0 0 4px rgba(201,162,39,0.12)` : "none"
+          }}
         >
-          <Search size={15} style={{ color: MUTED }} />
+          <Search size={15} style={{ color: focusedSearch ? ACCENT : MUTED }} className="transition-colors duration-150" />
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search devices…"
-            className="bg-transparent border-none outline-none text-sm w-full"
-            style={{ color: INK,
-              outline:"none",
-              boxShadow: "none"
-             }}
+            onFocus={() => setFocusedSearch(true)}
+            onBlur={() => setFocusedSearch(false)}
+            placeholder="Search assets…"
+            className="bg-transparent border-none outline-none text-sm w-full font-medium"
+            style={{ color: INK, outline: "none", boxShadow: "none" }}
           />
         </div>
 
+        {/* Categories Dropdown List */}
         <select
           value={categoryFilter}
           onChange={(e) => setCategoryFilter(e.target.value)}
-          className="text-[12.5px] font-medium px-3 h-9 rounded-lg outline-none"
-          style={{ backgroundColor: "#FFFFFF", color: INK, border: `1px solid ${BORDER}` }}
+          className="text-[12.5px] font-semibold px-3 h-10 rounded-xl outline-none cursor-pointer border transition-all hover:bg-slate-50/50"
+          style={{ backgroundColor: SURFACE, color: INK, borderColor: BORDER }}
         >
           {categories.map((c) => (
-            <option key={c} value={c}>{c === "All" ? "All categories" : c}</option>
+            <option key={c} value={c}>{c === "All" ? "All Categories" : c}</option>
           ))}
         </select>
 
+        {/* Departments Dropdown List */}
         <select
           value={deptFilter}
           onChange={(e) => setDeptFilter(e.target.value)}
-          className="text-[12.5px] font-medium px-3 h-9 rounded-lg outline-none"
-          style={{ backgroundColor: "#FFFFFF", color: INK, border: `1px solid ${BORDER}` }}
+          className="text-[12.5px] font-semibold px-3 h-10 rounded-xl outline-none cursor-pointer border transition-all hover:bg-slate-50/50"
+          style={{ backgroundColor: SURFACE, color: INK, borderColor: BORDER }}
         >
-          <option value="All">All departments</option>
+          <option value="All">All Departments</option>
           {DEPARTMENTS.map((dep) => (
             <option key={dep} value={dep}>{dep}</option>
           ))}
         </select>
 
-        <div className="flex items-center gap-1.5 flex-wrap">
+        {/* Unified Status Dropdown List */}
+        <select
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+          className="text-[12.5px] font-semibold px-3 h-10 rounded-xl outline-none cursor-pointer border transition-all hover:bg-slate-50/50"
+          style={{ backgroundColor: SURFACE, color: INK, borderColor: BORDER }}
+        >
           {STATUS_FILTERS.map((f) => (
-            <button
-              key={f}
-              onClick={() => setStatusFilter(f)}
-              className="text-[12.5px] font-medium px-3 py-1.5 rounded-full transition-colors duration-150"
-              style={{
-                backgroundColor: statusFilter === f ? BRAND : "#FFFFFF",
-                color: statusFilter === f ? "#FFFCDC" : MUTED,
-                border: `1px solid ${statusFilter === f ? BRAND : BORDER}`,
-              }}
-            >
-              {f}
-            </button>
+            <option key={f} value={f}>{f === "All" ? "All Statuses" : f}</option>
           ))}
-        </div>
+        </select>
       </div>
 
-      {/* Table */}
-      <div className="rounded-2xl" style={CARD}>
+      {/* Main Assets Grid Table Container */}
+      <div className="rounded-2xl border overflow-hidden transition-shadow duration-300 shadow-sm" style={{ ...CARD, borderColor: BORDER }}>
+        {/* Table Column Headers */}
         <div
-          className="grid px-5 py-3 text-[17px] font-semibold uppercase tracking-wide"
-          style={{ gridTemplateColumns: "2.2fr 1fr 1fr 1.2fr 1fr 40px", color: MUTED, borderBottom: `1px solid ${BORDER}` }}
+          className="grid px-6 py-3.5 text-[11px] font-bold uppercase tracking-wider select-none bg-black/[0.01]"
+          style={{ 
+            gridTemplateColumns: "2.4fr 1.1fr 1.2fr 1.3fr 1.1fr 40px", 
+            color: MUTED, 
+            borderBottom: `1.5px solid ${BORDER}` 
+          }}
         >
-          <span>Device</span>
+          <span>Device Details</span>
           <span>Status</span>
           <span>Department</span>
-          <span>Assigned To</span>
-          <span>Updated</span>
+          <span>Assigned Account</span>
+          <span>Last Updated</span>
           <span />
         </div>
 
+        {/* Empty States Handling Layer */}
         {rows.length === 0 && (
-          <div className="px-5 py-10 text-center text-sm" style={{ color: MUTED }}>
-            No devices match this search or filter.
+          <div className="px-6 py-14 text-center text-sm font-medium animate-table-row" style={{ color: MUTED }}>
+            No registered assets match your chosen filters.
           </div>
         )}
 
-        {rows.map((d) => {
-          const Icon = d.icon;
-          return (
-            <div
-              key={d.id}
-              className="grid items-center px-5 py-3 transition-colors duration-150"
-              style={{ gridTemplateColumns: "2.2fr 1fr 1fr 1.2fr 1fr 40px", borderBottom: `1px solid ${BORDER}` }}
-              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = PAGE_BG)}
-              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "transparent")}
-            >
-              <div className="flex items-center gap-3 min-w-0">
-                <div className="flex items-center justify-center rounded-lg shrink-0" style={{ width: 36, height: 36, backgroundColor: BRAND }}>
-                  <Icon size={16} color="#FFFCDC" />
-                </div>
-                <div className="min-w-0">
-                  <div className="flex items-center gap-1.5">
-                    <p className="text-sm font-medium truncate" style={{ color: INK }}>
-                      {d.manufacturer} {d.model}
-                    </p>
-                    <ExternalLink size={12} style={{ color: MUTED }} />
+        {/* Data Rows Iterator */}
+        <div className="divide-y" style={{ borderColor: BORDER }}>
+          {rows.map((d, idx) => {
+            const Icon = d.icon;
+            const isHovered = hoveredRowId === d.id;
+            const isMenuOpen = openMenuId === d.id;
+
+            return (
+              <div
+                key={d.id}
+                className="grid items-center px-6 py-3.5 transition-all duration-200 ease-out animate-table-row opacity-0"
+                onMouseEnter={() => setHoveredRowId(d.id)}
+                onMouseLeave={() => setHoveredRowId(null)}
+                style={{
+                  gridTemplateColumns: "2.4fr 1.1fr 1.2fr 1.3fr 1.1fr 40px",
+                  backgroundColor: isHovered || isMenuOpen ? PAGE_BG : "transparent",
+                  transform: isHovered ? "translateX(4px)" : "translateX(0px)",
+                  animationDelay: `${idx * 25}ms`,
+                  position: "relative",
+                  zIndex: isMenuOpen ? 40 : isHovered ? 10 : 1
+                }}
+              >
+                {/* Identification Frame */}
+                <div className="flex items-center gap-3 min-w-0">
+                  <div 
+                    className="flex items-center justify-center rounded-xl shrink-0 transition-all duration-300" 
+                    style={{ 
+                      width: 38, 
+                      height: 38, 
+                      backgroundColor: BRAND,
+                      transform: isHovered ? "scale(1.06)" : "scale(1)"
+                    }}
+                  >
+                    <Icon size={16} color="#1d522a" />
                   </div>
-                  <p className="text-[11.5px]" style={{ color: MUTED, fontFamily: MONO }}>{d.id} · {d.type}</p>
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-1.5">
+                      <p className="text-[13.5px] font-bold truncate transition-colors duration-150" style={{ color: isHovered ? ACCENT : INK }}>
+                        {d.manufacturer} {d.model}
+                      </p>
+                      <ExternalLink 
+                        size={12} 
+                        className="transition-all duration-200"
+                        style={{ 
+                          color: MUTED,
+                          opacity: isHovered ? 1 : 0.3,
+                          transform: isHovered ? "translate(1px, -1px)" : "none"
+                        }} 
+                      />
+                    </div>
+                    <p className="text-[11px] font-medium tracking-wide" style={{ color: MUTED, fontFamily: MONO }}>
+                      {d.id} <span className="opacity-40">·</span> {d.type}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Status Indicator Cell */}
+                <div className="flex flex-col items-start">
+                  <StatusBadge status={d.status} />
+                </div>
+
+                {/* Department String Cell */}
+                <p className="text-[13px] font-semibold truncate" style={{ color: INK }}>{d.dept}</p>
+
+                {/* Assignment Target Field */}
+                <p className="text-[13px] font-medium truncate transition-all" style={{ color: d.shared ? ACCENT : INK, fontWeight: d.shared ? 600 : 500 }}>
+                  {d.assignedTo}
+                </p>
+
+                {/* Chronology / Metric Time Field */}
+                <p className="text-[12px] font-semibold" style={{ color: MUTED, fontFamily: MONO }}>{d.updated}</p>
+
+                {/* Context Menu Dropdown Anchor Row Layer */}
+                <div className="relative justify-self-end">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setOpenMenuId(isMenuOpen ? null : d.id);
+                    }}
+                    style={{ color: isMenuOpen ? ACCENT : MUTED }}
+                    className="p-1.5 rounded-lg transition-all duration-200 hover:bg-black/5 active:scale-90"
+                  >
+                    <MoreHorizontal size={16} className={`transition-transform duration-200 ${isMenuOpen ? 'rotate-90' : ''}`} />
+                  </button>
+                  
+                  {isMenuOpen && (
+                    <div className="absolute right-0 top-full mt-1 z-50">
+                      <RowActionsMenu device={d} onClose={() => setOpenMenuId(null)} onAction={handleAction} />
+                    </div>
+                  )}
                 </div>
               </div>
-
-              <div className="flex flex-col items-start">
-                <StatusBadge status={d.status} />
-              </div>
-
-              <p className="text-[15px] truncate" style={{ color: INK }}>{d.dept}</p>
-
-              <p className="text-[15px] truncate" style={{ color: d.shared ? ACCENT : INK, fontWeight: d.shared ? 500 : 400 }}>
-                {d.assignedTo}
-              </p>
-
-              <p className="text-[12.5px]" style={{ color: MUTED, fontFamily: MONO }}>{d.updated}</p>
-
-              <div className="relative justify-self-end">
-                <button
-                  onClick={() => setOpenMenuId(openMenuId === d.id ? null : d.id)}
-                  style={{ color: MUTED }}
-                  className="p-1 rounded"
-                >
-                  <MoreHorizontal size={16} />
-                </button>
-                {openMenuId === d.id && (
-                  <RowActionsMenu device={d} onClose={() => setOpenMenuId(null)} onAction={handleAction} />
-                )}
-              </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
 
+      {/* Modals Injections Core Mounts System */}
       {activeModal?.type === "view" && <ViewDeviceModal device={activeModal.device} onClose={closeModal} />}
-
-      {activeModal?.type === "edit" && (
-        <EditDeviceModal device={activeModal.device} onClose={closeModal} onSave={updateDevice} />
-      )}
-
+      {activeModal?.type === "edit" && <EditDeviceModal device={activeModal.device} onClose={closeModal} onSave={updateDevice} />}
       {activeModal?.type === "transfer" && (
         <TransferDepartmentModal
           device={activeModal.device}
@@ -213,7 +283,6 @@ export default function Devices() {
           onTransfer={(t) => updateDevice({ ...activeModal.device, dept: t.new_department })}
         />
       )}
-
       {activeModal?.type === "flag-faulty" && (
         <MarkFaultyModal
           device={activeModal.device}
@@ -221,10 +290,7 @@ export default function Devices() {
           onConfirm={() => updateDevice({ ...activeModal.device, status: "faulty" })}
         />
       )}
-
-      {activeModal?.type === "delete" && (
-        <DeleteDeviceModal device={activeModal.device} onClose={closeModal} onConfirm={removeDevice} />
-      )}
+      {activeModal?.type === "delete" && <DeleteDeviceModal device={activeModal.device} onClose={closeModal} onConfirm={removeDevice} />}
     </div>
   );
 }
