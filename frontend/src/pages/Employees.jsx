@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Search, Plus, MoreHorizontal } from "lucide-react";
-import { INK, MUTED, BORDER, ACCENT, BRAND, CARD, PAGE_BG, MONO } from "../theme";
+import { INK, MUTED, BORDER, ACCENT, BRAND, CARD, PAGE_BG, MONO, SURFACE, CREAMt } from "../theme";
 import { EMPLOYEES, DEPARTMENTS } from "../data";
 import RowActionsMenu from "../components/employees/RowActionsMenu";
 import ViewEmployeeModal from "../components/employees/ViewEmployeeModal";
@@ -17,6 +17,8 @@ export default function Employees() {
   const [deptFilter, setDeptFilter] = useState("All");
   const [openMenuId, setOpenMenuId] = useState(null);
   const [activeModal, setActiveModal] = useState(null); // { type, employee }
+  const [focusedSearch, setFocusedSearch] = useState(false);
+  const [hoveredRowId, setHoveredRowId] = useState(null);
 
   const handleAction = (action, employee) => setActiveModal({ type: action, employee });
   const closeModal = () => setActiveModal(null);
@@ -40,58 +42,95 @@ export default function Employees() {
   });
 
   return (
-    <div className="space-y-5">
-      {/* Header */}
-      <div className="flex items-center justify-between flex-wrap gap-3">
+    <div className="space-y-6">
+      {/* High-Fidelity Interaction CSS Keyframes */}
+      <style>{`
+        @keyframes pageItemUp {
+          from { opacity: 0; transform: translateY(8px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-table-row { 
+          animation: pageItemUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
+        }
+      `}</style>
+
+      {/* Header Block */}
+      <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
-          <p className="text-lg font-semibold" style={{ color: INK }}>Employees</p>
-          <p className="text-[12.5px]" style={{ color: MUTED }}>{employees.length} people on record</p>
+          <p className="text-[33px] font-bold tracking-tight" style={{ color: "#FFFFFF" }}>Employees</p>
+          
+          {/* Enhanced Premium Employee Counter */}
+          <div className="flex items-center gap-2 mt-1 select-none">
+            <span 
+              className="inline-flex items-center justify-center px-2 py-0.5 rounded-md text-[23px] font-bold tracking-wide" 
+              style={{ backgroundColor: `${BRAND}18`, color: ACCENT, fontFamily: MONO, fontFeatureSettings: "'tnum'" }}
+            >
+              {employees.length}
+            </span>
+            <span className="text-[17px] font-semibold tracking-tight" style={{ color: ACCENT }}>
+              people on record
+            </span>
+          </div>
         </div>
+
         <Link
           to="/employees/new"
-          className="flex items-center gap-1.5 rounded-lg px-3.5 h-9 text-sm font-medium transition-opacity duration-150 hover:opacity-90"
-          style={{ backgroundColor: BRAND, color: "#FFFCDC" }}
+          className="flex items-center gap-1.5 rounded-xl px-4 h-10 text-sm font-semibold transition-all duration-200 hover:shadow-md hover:opacity-95 active:scale-95"
+          style={{ backgroundColor: ACCENT, color: "#FFFCDC" }}
         >
-          <Plus size={15} strokeWidth={2.5} />
+          <Plus size={16} strokeWidth={2.5} />
           New Employee
         </Link>
       </div>
 
-      {/* Search + filters */}
-      <div className="flex items-center gap-3 flex-wrap">
+      {/* Search & Filtration Dashboard Controls */}
+      <div className="flex items-center gap-3 flex-wrap bg-black/[0.01] p-3 rounded-2xl border" style={{ borderColor: BORDER }}>
+        
+        {/* Animated Search Bar Component */}
         <div
-          className="flex items-center gap-2 rounded-lg px-3 h-9 w-full max-w-xs"
-          style={{ backgroundColor: PAGE_BG, border: `1px solid ${BORDER}` }}
+          className="flex items-center gap-2 rounded-xl px-3.5 h-10 w-full max-w-xs transition-all duration-200"
+          style={{ 
+            backgroundColor: PAGE_BG, 
+            border: `1.5px solid ${focusedSearch ? ACCENT : BORDER}`,
+            boxShadow: focusedSearch ? `0 0 0 4px rgba(201,162,39,0.12)` : "none"
+          }}
         >
-          <Search size={15} style={{ color: MUTED }} />
+          <Search size={15} style={{ color: focusedSearch ? ACCENT : MUTED }} className="transition-colors duration-150" />
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
+            onFocus={() => setFocusedSearch(true)}
+            onBlur={() => setFocusedSearch(false)}
             placeholder="Search employees…"
-            className="bg-transparent border-none outline-none text-sm w-full"
-            style={{ color: INK,
-              outline:"none",
-              boxShadow:"none"
-             }}
+            className="bg-transparent border-none outline-none text-sm w-full font-medium"
+            style={{ color: INK, outline: "none", boxShadow: "none" }}
           />
         </div>
 
+        {/* Departments Dropdown List */}
         <select
           value={deptFilter}
           onChange={(e) => setDeptFilter(e.target.value)}
-          className="text-[12.5px] font-medium px-3 h-9 rounded-lg outline-none"
-          style={{ backgroundColor: "#FFFFFF", color: INK, border: `1px solid ${BORDER}` }}
+          className="text-[12.5px] font-semibold px-3 h-10 rounded-xl outline-none cursor-pointer border transition-all hover:bg-slate-50/50"
+          style={{ backgroundColor: CREAMt, color: INK, borderColor: BORDER }}
         >
-          <option value="All">All departments</option>
-          {DEPARTMENTS.map((d) => <option key={d} value={d}>{d}</option>)}
+          <option value="All">All Departments</option>
+          {DEPARTMENTS.map((d) => (
+            <option key={d} value={d}>{d}</option>
+          ))}
         </select>
       </div>
 
-      {/* Table */}
-      <div className="rounded-2xl" style={CARD}>
+      {/* Main Employees Grid Table Container */}
+      <div className="rounded-2xl border overflow-hidden transition-shadow duration-300 shadow-sm" style={{ ...CARD, borderColor: BORDER }}>
+        {/* Table Column Headers */}
         <div
-          className="grid px-5 py-3 text-[11px] font-semibold uppercase tracking-wide"
-          style={{ gridTemplateColumns: "2.2fr 1.3fr 1fr 1.3fr 40px", color: MUTED, borderBottom: `1px solid ${BORDER}` }}
+          className="grid px-6 py-3.5 text-[11px] font-bold uppercase tracking-wider select-none bg-black/[0.01]"
+          style={{ 
+            gridTemplateColumns: "2.2fr 1.3fr 1fr 1.3fr 40px", 
+            color: MUTED, 
+            borderBottom: `1.5px solid ${BORDER}` 
+          }}
         >
           <span>Employee</span>
           <span>Designation</span>
@@ -100,57 +139,95 @@ export default function Employees() {
           <span />
         </div>
 
+        {/* Empty States Handling Layer */}
         {rows.length === 0 && (
-          <div className="px-5 py-10 text-center text-sm" style={{ color: MUTED }}>
-            No employees match this search or filter.
+          <div className="px-6 py-14 text-center text-sm font-medium animate-table-row" style={{ color: MUTED }}>
+            No registered employees match your chosen filters.
           </div>
         )}
 
-        {rows.map((e) => (
-          <div
-            key={e.id}
-            className="grid items-center px-5 py-3 transition-colors duration-150"
-            style={{ gridTemplateColumns: "2.2fr 1.3fr 1fr 1.3fr 40px", borderBottom: `1px solid ${BORDER}` }}
-            onMouseEnter={(ev) => (ev.currentTarget.style.backgroundColor = PAGE_BG)}
-            onMouseLeave={(ev) => (ev.currentTarget.style.backgroundColor = "transparent")}
-          >
-            <div className="flex items-center gap-3 min-w-0">
+        {/* Data Rows Iterator */}
+        <div className="divide-y" style={{ borderColor: BORDER }}>
+          {rows.map((e, idx) => {
+            const isHovered = hoveredRowId === e.id;
+            const isMenuOpen = openMenuId === e.id;
+
+            return (
               <div
-                className="flex items-center justify-center rounded-full shrink-0 text-[12px] font-semibold"
-                style={{ width: 34, height: 34, backgroundColor: BRAND, color: "#FFFCDC" }}
+                key={e.id}
+                className="grid items-center px-6 py-3.5 transition-all duration-200 ease-out animate-table-row opacity-0"
+                onMouseEnter={() => setHoveredRowId(e.id)}
+                onMouseLeave={() => setHoveredRowId(null)}
+                style={{
+                  gridTemplateColumns: "2.2fr 1.3fr 1fr 1.3fr 40px",
+                  backgroundColor: isHovered || isMenuOpen ? CREAMt : "transparent",
+                  transform: isHovered ? "translateX(4px)" : "translateX(0px)",
+                  animationDelay: `${idx * 25}ms`,
+                  position: "relative",
+                  zIndex: isMenuOpen ? 40 : isHovered ? 10 : 1
+                }}
               >
-                {initials(e)}
-              </div>
-              <div className="min-w-0">
-                <p className="text-sm font-medium truncate" style={{ color: INK }}>
-                  {e.name.first} {e.name.last}
+                {/* Identification Frame */}
+                <div className="flex items-center gap-3 min-w-0">
+                  <div 
+                    className="flex items-center justify-center rounded-full shrink-0 text-[12px] font-semibold transition-all duration-300" 
+                    style={{ 
+                      width: 34, 
+                      height: 34, 
+                      backgroundColor: ACCENT,
+                      color: "#FFFCDC",
+                      transform: isHovered ? "scale(1.06)" : "scale(1)"
+                    }}
+                  >
+                    {initials(e)}
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-[13.5px] font-bold truncate transition-colors duration-150" style={{ color: isHovered ? ACCENT : INK }}>
+                      {e.name.first} {e.name.last}
+                    </p>
+                    <p className="text-[11px] font-medium tracking-wide" style={{ color: MUTED, fontFamily: MONO }}>
+                      {e.id}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Designation Cell */}
+                <p className="text-[13px] font-semibold truncate" style={{ color: INK }}>{e.designation}</p>
+
+                {/* Department Cell */}
+                <p className="text-[13px] font-semibold truncate" style={{ color: INK }}>{e.department}</p>
+
+                {/* Placement Field */}
+                <p className="text-[12.5px] font-semibold truncate" style={{ color: MUTED }}>
+                  {[e.section, e.room || e.cabin].filter(Boolean).join(" · ") || "—"}
                 </p>
-                <p className="text-[11.5px]" style={{ color: MUTED, fontFamily: MONO }}>{e.id}</p>
+
+                {/* Context Menu Dropdown Anchor Row Layer */}
+                <div className="relative justify-self-end">
+                  <button
+                    onClick={(eEvent) => {
+                      eEvent.stopPropagation();
+                      setOpenMenuId(isMenuOpen ? null : e.id);
+                    }}
+                    style={{ color: isMenuOpen ? ACCENT : MUTED }}
+                    className="p-1.5 rounded-lg transition-all duration-200 hover:bg-black/5 active:scale-90"
+                  >
+                    <MoreHorizontal size={16} className={`transition-transform duration-200 ${isMenuOpen ? 'rotate-90' : ''}`} />
+                  </button>
+                  
+                  {isMenuOpen && (
+                    <div className="absolute right-0 top-full mt-1 z-50">
+                      <RowActionsMenu employee={e} onClose={() => setOpenMenuId(null)} onAction={handleAction} />
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
-
-            <p className="text-[13px] truncate" style={{ color: INK }}>{e.designation}</p>
-            <p className="text-[13px] truncate" style={{ color: INK }}>{e.department}</p>
-            <p className="text-[12.5px] truncate" style={{ color: MUTED }}>
-              {[e.section, e.room || e.cabin].filter(Boolean).join(" · ") || "—"}
-            </p>
-
-            <div className="relative justify-self-end">
-              <button
-                onClick={() => setOpenMenuId(openMenuId === e.id ? null : e.id)}
-                style={{ color: MUTED }}
-                className="p-1 rounded"
-              >
-                <MoreHorizontal size={16} />
-              </button>
-              {openMenuId === e.id && (
-                <RowActionsMenu employee={e} onClose={() => setOpenMenuId(null)} onAction={handleAction} />
-              )}
-            </div>
-          </div>
-        ))}
+            );
+          })}
+        </div>
       </div>
 
+      {/* Modals Injections Core Mounts System */}
       {activeModal?.type === "view" && (
         <ViewEmployeeModal employee={activeModal.employee} onClose={closeModal} />
       )}

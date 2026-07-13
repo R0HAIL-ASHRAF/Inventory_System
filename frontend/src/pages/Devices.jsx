@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Search, Plus, MoreHorizontal, ExternalLink } from "lucide-react";
-import { INK, MUTED, BORDER, ACCENT, BRAND, CARD, PAGE_BG, MONO, SURFACE } from "../theme";
+import { INK, MUTED, BORDER, ACCENT, BRAND, CARD, PAGE_BG, MONO, SURFACE, CREAMt } from "../theme";
 import { DEVICES, DEPARTMENTS } from "../data";
 import StatusBadge from "../components/devices/StatusBadge";
 import RowActionsMenu from "../components/devices/RowActionMenu";
@@ -117,7 +117,7 @@ export default function Devices() {
           value={categoryFilter}
           onChange={(e) => setCategoryFilter(e.target.value)}
           className="text-[12.5px] font-semibold px-3 h-10 rounded-xl outline-none cursor-pointer border transition-all hover:bg-slate-50/50"
-          style={{ backgroundColor: SURFACE, color: INK, borderColor: BORDER }}
+          style={{ backgroundColor: CREAMt, color: INK, borderColor: BORDER }}
         >
           {categories.map((c) => (
             <option key={c} value={c}>{c === "All" ? "All Categories" : c}</option>
@@ -129,7 +129,7 @@ export default function Devices() {
           value={deptFilter}
           onChange={(e) => setDeptFilter(e.target.value)}
           className="text-[12.5px] font-semibold px-3 h-10 rounded-xl outline-none cursor-pointer border transition-all hover:bg-slate-50/50"
-          style={{ backgroundColor: SURFACE, color: INK, borderColor: BORDER }}
+          style={{ backgroundColor: CREAMt, color: INK, borderColor: BORDER }}
         >
           <option value="All">All Departments</option>
           {DEPARTMENTS.map((dep) => (
@@ -142,7 +142,7 @@ export default function Devices() {
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
           className="text-[12.5px] font-semibold px-3 h-10 rounded-xl outline-none cursor-pointer border transition-all hover:bg-slate-50/50"
-          style={{ backgroundColor: SURFACE, color: INK, borderColor: BORDER }}
+          style={{ backgroundColor: CREAMt, color: INK, borderColor: BORDER }}
         >
           {STATUS_FILTERS.map((f) => (
             <option key={f} value={f}>{f === "All" ? "All Statuses" : f}</option>

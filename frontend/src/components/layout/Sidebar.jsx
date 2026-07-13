@@ -14,7 +14,7 @@ import {
   CircleUser,
   Bell,
 } from "lucide-react";
-import { CREAM, BRAND, BRAND_SOFT, MUTED, SURFACE, MONO, ACCENT } from "../../theme";
+import { CREAM, BRAND, BRAND_SOFT, MUTED, SURFACE, MONO, ACCENT, CREAMt } from "../../theme";
 
 const NAV_GROUPS = [
   {
@@ -90,7 +90,7 @@ export default function Sidebar() {
                     end={item.end}
                     title={collapsed ? item.label : undefined}
                     className="relative w-full flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors duration-150 group overflow-hidden"
-                    style={({ isActive }) => ({ backgroundColor: isActive ? BRAND : "transparent", color: isActive ? ACCENT: SURFACE })}
+                    style={({ isActive }) => ({ backgroundColor: isActive ? CREAMt : "transparent", color: isActive ? ACCENT: SURFACE })}
                     onMouseEnter={(e) => {
                       if (!e.currentTarget.classList.contains("active")) e.currentTarget.style.backgroundColor = BRAND_SOFT;
                     }}

@@ -1,7 +1,7 @@
 
 export const INK = "#000000"; // primary text
 export const MUTED = "#030303"; // secondary / muted text
-export const BORDER = "#E7E2CE"; // card borders, dividers
+export const BORDER = "#C9A227"; // card borders, dividers
 
 export const CREAM = "#1d522a"; // sidebar surface
 export const CREAMt = "#FFFCDC"; // sidebar surface
