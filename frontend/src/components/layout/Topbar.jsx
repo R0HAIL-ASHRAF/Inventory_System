@@ -95,7 +95,6 @@ export default function Topbar() {
                 </div>
                 <div className="py-1.5">
                   <MenuItem icon={UserCircle} label="My profile" />
-                  <MenuItem icon={Settings} label="Preferences" />
                 </div>
                 <div className="py-1.5" style={{ borderTop: `1px solid ${BORDER}` }}>
                   <MenuItem icon={LogOut} label="Sign out" tone="danger" />

@@ -79,7 +79,10 @@ export default function Devices() {
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search devices…"
             className="bg-transparent border-none outline-none text-sm w-full"
-            style={{ color: INK }}
+            style={{ color: INK,
+              outline:"none",
+              boxShadow: "none"
+             }}
           />
         </div>
 

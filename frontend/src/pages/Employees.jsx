@@ -69,7 +69,10 @@ export default function Employees() {
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search employees…"
             className="bg-transparent border-none outline-none text-sm w-full"
-            style={{ color: INK }}
+            style={{ color: INK,
+              outline:"none",
+              boxShadow:"none"
+             }}
           />
         </div>
 
