@@ -120,19 +120,6 @@ export default function Sidebar() {
           </div>
         ))}
       </nav>
-
-      {/* Footer Profile */}
-      <div className="px-3 py-3" style={{ borderTop: `1px solid rgba(58, 71, 66, 0.15)` }}>
-        <div className="flex items-center gap-3 rounded-lg px-3 py-2.5 overflow-hidden transition-colors" style={{ backgroundColor: BRAND_SOFT }}>
-          <CircleUser size={22} style={{ color: BRAND }} className="shrink-0" />
-          {!collapsed && (
-            <div className="min-w-0">
-              <p className="text-xs font-bold truncate" style={{ color: BRAND }}>Aisha Raza</p>
-              <p className="text-[11px] truncate font-medium" style={{ color: MUTED }}>IT Asset Manager</p>
-            </div>
-          )}
-        </div>
-      </div>
     </aside>
   );
 }

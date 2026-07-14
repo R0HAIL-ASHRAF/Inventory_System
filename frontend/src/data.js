@@ -9,18 +9,20 @@ import {
   Network,
 } from "lucide-react";
 
+import { DANGER, CREAM, ACCENT, } from "./theme"
+
 export const STATUS_BREAKDOWN = [
-  { label: "In-use", pct: 68 },
-  { label: "Spare", pct: 22 },
-  { label: "Faulty", pct: 10 },
+  { label: "In-use", pct: 68, color: ACCENT  },
+  { label: "Spare", pct: 22, color: CREAM },
+  { label: "Faulty", pct: 10, color: DANGER },
 ];
 
 export const TREND = [40, 55, 47, 62, 58, 70, 66, 74];
 
 export const HEALTH_DATA = [
-  { name: "In-use", value: 145, color: "#C9A227" }, // ACCENT
-  { name: "Spare", value: 47, color: "#E7CB7A" }, // ACCENT_SOFT
-  { name: "Faulty", value: 22, color: "#B8503A" }, // DANGER
+  { name: "In-use", value: 145, color: "#C9A227" },
+  { name: "Spare", value: 47, color: "#E7CB7A" },
+  { name: "Faulty", value: 22, color: "#B8503A" },
 ];
 
 // device_logs event counts per day

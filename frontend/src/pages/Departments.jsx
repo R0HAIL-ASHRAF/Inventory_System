@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Plus, MoreHorizontal, MapPin, Layers, DoorOpen } from "lucide-react";
-import { INK, MUTED, BORDER, BRAND, CARD, PAGE_BG } from "../theme";
+import { INK, MUTED, BORDER, BRAND, CARD, PAGE_BG, ACCENT, BRAND_SOFT, CREAM } from "../theme";
 import { DEPARTMENT_TREE } from "../data";
 import RowActionsMenu from "../components/departments/RowActionsMenu";
 import ViewDepartmentModal from "../components/departments/ViewDepartmentModal";
@@ -40,13 +40,13 @@ export default function Departments() {
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <p className="text-lg font-semibold" style={{ color: INK }}>Departments</p>
-          <p className="text-[12.5px]" style={{ color: MUTED }}>{departments.length} departments configured</p>
+          <p className="text-[33px] font-semibold" style={{ color: "#FFFFFF" }}>Departments</p>
+          <p className="text-[17px]" style={{ color: ACCENT }}>{departments.length} departments configured</p>
         </div>
         <button
           onClick={() => setActiveModal({ type: "new", department: null })}
           className="flex items-center gap-1.5 rounded-lg px-3.5 h-9 text-sm font-medium transition-opacity duration-150 hover:opacity-90"
-          style={{ backgroundColor: BRAND, color: "#FFFCDC" }}
+          style={{ backgroundColor: ACCENT, color: "#FFFFFF" }}
         >
           <Plus size={15} strokeWidth={2.5} />
           New Department
@@ -120,10 +120,10 @@ export default function Departments() {
 
 function Stat({ icon: Icon, label, value }) {
   return (
-    <div className="flex items-center gap-2 text-[18.5px]" style={{ color: MUTED }}>
+    <div className="flex items-center gap-2 text-[18.5px]" style={{ color: ACCENT }}>
       <Icon size={19} />
       <span>{label}</span>
-      <span className="ml-auto font-medium" style={{ color: INK }}>{value}</span>
+      <span className="ml-auto font-medium" style={{ color: ACCENT }}>{value}</span>
     </div>
   );
 }

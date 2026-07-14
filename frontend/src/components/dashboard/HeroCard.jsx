@@ -1,6 +1,5 @@
 import React from "react";
 import { MoreHorizontal } from "lucide-react";
-import Sparkline from "./Sparkline";
 import { BRAND, CREAM, MONO, FONT_DISPLAY } from "../../theme";
 import { STATUS_BREAKDOWN, TREND } from "../../data";
 
@@ -26,14 +25,14 @@ export default function HeroCard() {
         >
           214
         </p>
-        <Sparkline points={TREND} />
+        
       </div>
 
       <div className="flex items-center gap-5 pt-4" style={{ borderTop: "1px solid rgba(0, 0, 0, 0.16)" }}>
         {STATUS_BREAKDOWN.map((s) => (
           <div key={s.label}>
-            <p className="text-[11px] tracking-[0.01em]" style={{ color: "#000000" }}>{s.label}</p>
-            <p className="text-sm font-semibold" style={{ fontFamily: MONO, fontFeatureSettings: "'tnum'" }}>{s.pct}%</p>
+            <p className="text-[17px] tracking-[0.01em]" style={{ color: "#000000" }}>{s.label}</p>
+            <p className="text-[33px] font-semibold" style={{ fontFamily: MONO, fontFeatureSettings: "'tnum'", color:s.color }}>{s.pct}%</p>
           </div>
         ))}
       </div>

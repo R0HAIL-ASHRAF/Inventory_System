@@ -1,13 +1,10 @@
 import React from "react";
 import { X, User, DoorOpen, Cpu, Share2 } from "lucide-react";
-import { INK, MUTED, BORDER, ACCENT, BRAND, CARD, PAGE_BG } from "../../theme";
+import { INK, MUTED, BORDER, ACCENT, BRAND, CARD, PAGE_BG, CREAM } from "../../theme";
 import { EMPLOYEES, DEVICES } from "../../data";
 
 const findEmployee = (id) => EMPLOYEES.find((e) => e.id === id);
 
-// Personal device assigned to a specific employee (matched by name, since
-// DEVICES.assignedTo is currently a display string — swap to an id match
-// once devices carry a real employee_id).
 const personalDevicesFor = (employeeId) =>
   DEVICES.filter((d) => !d.shared && d.assignedTo === employeeId);
 
@@ -21,13 +18,14 @@ export default function DepartmentDiagram({ department, onClose }) {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 p-4" onClick={onClose}>
       <div className="w-full max-w-4xl rounded-2xl p-6 max-h-[90vh] overflow-y-auto" style={CARD} onClick={(e) => e.stopPropagation()}>
         <div className="flex items-start justify-between mb-5">
-          <p className="text-sm font-semibold" style={{ color: INK }}>{department.name} — Structure Diagram</p>
-          <button onClick={onClose} style={{ color: MUTED }}><X size={16} /></button>
+          <p className="text-sm font-semibold" style={{ color: INK }}>{department.name} - Structure Diagram</p>
+          <button onClick={onClose} style={{ color: CREAM }}><X size={16} /></button>
         </div>
 
         {/* Root: department + manager */}
-        <div className="flex justify-center mb-4">
-          <Block accent title={department.name} subtitle={manager ? `Manager: ${manager.name.first} ${manager.name.last}` : "No manager assigned"} icon={User} />
+        <div className="flex justify-center mb-4" style={{color: CREAM}}>
+          <Block CREAM title={department.name} 
+          subtitle={manager ? `Manager: ${manager.name.first} ${manager.name.last}` : "No manager assigned"} icon={User} />
         </div>
         <Connector />
 
