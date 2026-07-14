@@ -101,8 +101,8 @@ export default function Sidebar() {
                     {({ isActive }) => (
                       <>
                         {isActive && <span className="absolute left-0 top-1.5 bottom-1.5 w-[3px] rounded-full" style={{ backgroundColor: CREAM }} />}
-                        <Icon size={18} strokeWidth={2.25} className="shrink-0" style={{color: ACCENT}}/>
-                        {!collapsed && <span className="flex-1 text-left font-medium truncate">{item.label}</span>}
+                        <Icon size={27} className="shrink-0" style={{color: ACCENT}}/>
+                        {!collapsed && <span className="flex-1 text-left font-medium truncate text-[15px]">{item.label}</span>}
                         {!collapsed && item.count !== undefined && (
                           <span
                             className="text-[11px] px-1.5 py-0.5 rounded shrink-0 font-medium"

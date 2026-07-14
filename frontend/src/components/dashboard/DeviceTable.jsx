@@ -1,20 +1,17 @@
 import React, { useState } from "react";
 import { MoreHorizontal, ArrowUpRight, ArrowDownRight, ExternalLink } from "lucide-react";
-import { INK, MUTED, BORDER, ACCENT, BRAND, CARD, MONO, FONT_DISPLAY, DANGER, SUCCESS, PAGE_BG } from "../../theme";
+import { INK, MUTED, BORDER, ACCENT, BRAND, CARD, MONO, FONT_DISPLAY, DANGER, SUCCESS, PAGE_BG , CREAM, CREAMt} from "../../theme";
 import { RECENT_DEVICES, RECENT_PEOPLE } from "../../data";
 
-// Component-specific context menu dropdown imports
 import DeviceRowActionsMenu from "../devices/RowActionMenu";
 import EmployeeRowActionsMenu from "../employees/RowActionsMenu";
 
-// Device Modal System Imports
 import ViewDeviceModal from "../devices/ViewDeviceModal";
 import EditDeviceModal from "../devices/EditDeviceModal";
 import TransferDepartmentModal from "../devices/TransferDepatModal";
 import MarkFaultyModal from "../devices/MarkFaultyModal";
 import DeleteDeviceModal from "../devices/DeleteDeviceModal";
 
-// Employee Modal System Imports
 import ViewEmployeeModal from "../employees/ViewEmployeeModal";
 import EditEmployeeModal from "../employees/EditEmployeeModal";
 import TransferPlacementModal from "../employees/TransferPlacementModal";
@@ -24,7 +21,6 @@ export default function DeviceTable() {
   const [tab, setTab] = useState("devices");
   const [hoveredRow, setHoveredRow] = useState(null);
   
-  // Action state management mirroring your core page modules
   const [openMenuId, setOpenMenuId] = useState(null);
   const [activeModal, setActiveModal] = useState(null); // { type, item }
 
@@ -44,7 +40,7 @@ export default function DeviceTable() {
       `}</style>
 
       {/* Tabs */}
-      <div className="flex items-center gap-6 mb-5" style={{ borderBottom: `1px solid ${BORDER}` }}>
+      <div className="flex items-center gap-6 mb-5" style={{ borderBottom: `1px solid ${ACCENT}` }}>
         {[
           { key: "devices", label: "Recent Devices" },
           { key: "people", label: "Recent People" },
@@ -57,11 +53,11 @@ export default function DeviceTable() {
                 setTab(t.key);
                 setOpenMenuId(null);
               }}
-              className="pb-3 text-[12.5px] font-semibold uppercase tracking-[0.03em] relative transition-all duration-200 ease-out"
+              className="pb-3 text-[13.5px] font-semibold uppercase tracking-[0.03em] relative transition-all duration-200 ease-out"
               style={{ 
-                color: isActive ? INK : MUTED, 
+                color: isActive ? ACCENT : CREAM, 
                 fontFamily: FONT_DISPLAY,
-                transform: isActive ? "scale(1.02)" : "scale(1)"
+                transform: isActive ? "scale(1.08)" : "scale(1)"
               }}
             >
               {t.label}
@@ -95,11 +91,9 @@ export default function DeviceTable() {
               onMouseLeave={() => setHoveredRow(null)}
               style={{
                 position: "relative",
-                backgroundColor: isHovered || isMenuOpen ? PAGE_BG : "transparent",
                 transform: isHovered ? "translateX(4px)" : "translateX(0px)",
                 transition: "background-color 0.2s ease, transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)",
                 animationDelay: `${idx * 40}ms`,
-                // FORCE ACTIVE DROPDOWN ROWS TO FLOATING TOP LEVEL LAYER
                 zIndex: isMenuOpen ? 50 : isHovered ? 20 : 1,
               }}
             >
@@ -113,7 +107,7 @@ export default function DeviceTable() {
                   transform: isHovered ? "scale(1.08)" : "scale(1)"
                 }}
               >
-                {Icon ? <Icon size={16} color="#1d522a" /> : (
+                {Icon ? <Icon size={16} color="#025216" backgroundColor="#C9A227"/> : (
                   <span className="text-[11px] font-bold text-[#1d522a]">
                     {r.name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2)}
                   </span>
@@ -152,22 +146,7 @@ export default function DeviceTable() {
                 </span>
               </div>
 
-              {/* Metric Delta Tag */}
-              {r.change !== 0 && (
-                <div
-                  className="flex items-center gap-0.5 text-[11.5px] font-medium px-1.5 py-0.5 rounded shrink-0 transition-transform duration-300"
-                  style={{ 
-                    color: up ? SUCCESS : DANGER, 
-                    backgroundColor: up ? "rgba(92,130,100,0.12)" : "rgba(184,80,58,0.12)", 
-                    fontFamily: MONO, 
-                    fontFeatureSettings: "'tnum'",
-                    transform: isHovered ? "scale(1.05)" : "scale(1)"
-                  }}
-                >
-                  {up ? <ArrowUpRight size={12} /> : <ArrowDownRight size={12} />}
-                  {Math.abs(r.change)}%
-                </div>
-              )}
+              
 
               {/* Context Action Menu Dropdown Anchor */}
               <div className="relative shrink-0" style={{ zIndex: 60 }}>

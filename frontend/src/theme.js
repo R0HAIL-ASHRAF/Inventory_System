@@ -20,7 +20,7 @@ export const SUCCESS = "#12ad34"; // resolved / positive
 
 
 export const CARD = {
-  backgroundColor: SURFACE,
+  backgroundColor: "#fcfae9",
   border: `1px solid ${BORDER}`,
   boxShadow: "0 1px 3px rgba(58,71,66,0.06)",
 };

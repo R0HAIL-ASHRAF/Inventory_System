@@ -191,7 +191,6 @@ export default function Devices() {
                 onMouseLeave={() => setHoveredRowId(null)}
                 style={{
                   gridTemplateColumns: "2.4fr 1.1fr 1.2fr 1.3fr 1.1fr 40px",
-                  backgroundColor: isHovered || isMenuOpen ? PAGE_BG : "transparent",
                   transform: isHovered ? "translateX(4px)" : "translateX(0px)",
                   animationDelay: `${idx * 25}ms`,
                   position: "relative",
