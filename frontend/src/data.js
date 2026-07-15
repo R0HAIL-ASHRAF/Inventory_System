@@ -45,22 +45,6 @@ export const RECENT_DEVICES = [
 
 
 
-const LOGS = [
-  { id: 1, type: "assigned", title: "ThinkPad X1 Carbon assigned", subtitle: "to Bilal Ahmed", dept: "Engineering", actor: "Aisha Raza", time: mins(6) },
-  { id: 2, type: "faulty", title: "HP LaserJet M428 flagged faulty", subtitle: "Paper jam sensor error", dept: "Front Office", actor: "System", time: mins(42) },
-  { id: 3, type: "transfer", title: "Dell UltraSharp U2723 transferred", subtitle: "Design → Marketing", dept: "Marketing", actor: "Aisha Raza", time: hrs(3) },
-  { id: 4, type: "provisioned", title: "Dell PowerEdge R450 provisioned", subtitle: "IT Infra · Rack 4B", dept: "IT Infra", actor: "Hamid Raza", time: hrs(5) },
-  { id: 5, type: "repaired", title: "Canon imageRUNNER repaired", subtitle: "Fuser unit replaced under warranty", dept: "Front Office", actor: "Vendor · Canon SLA", time: hrs(9) },
-  { id: 6, type: "assigned", title: "iPhone 14 assigned", subtitle: "to Sana Khan", dept: "Front Office", actor: "Aisha Raza", time: days(1) },
-  { id: 7, type: "removed", title: "MacBook Pro 2018 retired", subtitle: "End of lifecycle · 5yr threshold", dept: "Design", actor: "Aisha Raza", time: days(1) },
-  { id: 8, type: "faulty", title: "UPS Unit #4 flagged faulty", subtitle: "Battery health below 20%", dept: "IT Infra", actor: "System", time: days(2) },
-  { id: 9, type: "transfer", title: "Cisco Switch 24P transferred", subtitle: "IT Infra → New Karachi office", dept: "IT Infra", actor: "Hamid Raza", time: days(2) },
-  { id: 10, type: "provisioned", title: "5x ThinkPad E14 provisioned", subtitle: "New hire batch · Engineering", dept: "Engineering", actor: "Aisha Raza", time: days(4) },
-  { id: 11, type: "repaired", title: "ThinkPad X1 Carbon repaired", subtitle: "Keyboard replacement", dept: "Engineering", actor: "Vendor · Lenovo SLA", time: days(6) },
-  { id: 12, type: "removed", title: "HP LaserJet P1102 disposed", subtitle: "Beyond economical repair", dept: "Front Office", actor: "Aisha Raza", time: days(9) },
-];
-
-
 const MOCK_NOTIFICATIONS_RESPONSE = [
   {
     id: "ntf-101",
@@ -657,6 +641,57 @@ export const EMPLOYEES = [
     room: "Counter Area",
     cabin: "",
   },
+    {
+    id: "u1",
+    username: "araza.admin",
+    password: "admin123",
+    role: "admin",
+ 
+    name: { first: "Aisha", last: "Raza" },
+    father_name: { first: "Iqbal", last: "Raza" },
+    designation: "System Administrator",
+    p_number: "P-10001",
+    phones: ["0300-1112223"],
+    emails: ["aisha.raza@pia.com"],
+    address: {
+      street: "House 5, St 1",
+      town: "Gulberg",
+      city: "Lahore",
+      province: "Punjab",
+      country: "Pakistan",
+    },
+    department: "ICT",
+    location: "Head Office",
+    section: "Systems",
+    room: "Server Room",
+    cabin: "Admin Cabin",
+  },
+  {
+    id: "u2",
+    username: "bahmed.itmgr",
+    password: "itmgr123",
+    role: "it_manager",
+ 
+    name: { first: "Bilal", last: "Ahmed" },
+    father_name: { first: "Tariq", last: "Ahmed" },
+    designation: "IT Asset Manager",
+    p_number: "P-10002",
+    phones: ["0300-1234567"],
+    emails: ["bilal.ahmed@pia.com"],
+    address: {
+      street: "House 12, St 4",
+      town: "Model Town",
+      city: "Lahore",
+      province: "Punjab",
+      country: "Pakistan",
+    },
+    department: "ICT",
+    location: "Head Office",
+    section: "Asset Management",
+    room: "Room 201",
+    cabin: "A-12",
+  },
+
 ];
 
 
@@ -672,6 +707,18 @@ export const DESIGNATIONS = [
   "Product Designer",
   "Front Desk Executive",
 ];
+
+
+export const LOGIN_ENABLED_EMPLOYEES = EMPLOYEES.filter((e) => e.password && e.role);
+ 
+
+export const ROLE_LABELS = {
+  admin: "Administrator",
+  it_manager: "IT Asset Manager",
+};
+ 
+
+
 
 export const DEPARTMENT_TREE = [
   {

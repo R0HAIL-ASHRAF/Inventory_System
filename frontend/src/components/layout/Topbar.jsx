@@ -1,15 +1,36 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Search, Bell, ChevronDown, LogOut, UserCircle } from "lucide-react";
 import { INK, MUTED, BORDER, ACCENT, BRAND, SURFACE, PAGE_BG, MONO } from "../../theme";
 import NotificationPanel from "../dashboard/NotificationPanel";
 import { NOTIFICATIONS } from "../../data";
+import { useAuth } from "../authContexts/AuthContext";
+import { ROLE_LABELS } from "../../data";
 
 export default function Topbar() {
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
   const [focused, setFocused] = useState(false);
   const unreadCount = NOTIFICATIONS.filter((n) => n.unread).length;
+
+  if (!user) return null;
+
+  const fullName = `${user.name.first} ${user.name.last}`;
+  const initials = `${user.name.first[0]}${user.name.last[0]}`.toUpperCase();
+  const primaryEmail = (user.emails && user.emails[0]) || "—";
+
+  function goToProfile() {
+    setMenuOpen(false);
+    navigate("/profile");
+  }
+
+  function handleSignOut() {
+    setMenuOpen(false);
+    logout();
+    navigate("/login", { replace: true });
+  }
 
   return (
     <header
@@ -144,11 +165,11 @@ export default function Topbar() {
                 transform: menuOpen ? "scale(1.05)" : "scale(1)"
               }}
             >
-              AR
+              {initials}
             </div>
             <div className="hidden md:block text-left leading-tight">
-              <p className="text-[13px] font-bold tracking-[-0.01em]" style={{ color: INK }}>Aisha Raza</p>
-              <p className="text-[10.5px] font-medium" style={{ color: MUTED }}>IT Asset Manager</p>
+              <p className="text-[13px] font-bold tracking-[-0.01em]" style={{ color: INK }}>{fullName}</p>
+              <p className="text-[10.5px] font-medium" style={{ color: MUTED }}>{ROLE_LABELS[user.role]}</p>
             </div>
             <ChevronDown 
               size={14} 
@@ -173,15 +194,15 @@ export default function Topbar() {
               >
                 {/* Profile Brief header section */}
                 <div className="px-4 py-3.5 bg-gradient-to-b from-transparent to-black/[0.01]" style={{ borderBottom: `1px solid ${BORDER}` }}>
-                  <p className="text-[13px] font-bold" style={{ color: INK }}>Aisha Raza</p>
-                  <p className="text-[11px] font-medium mt-0.5" style={{ color: MUTED }}>aisha.raza@company.com</p>
+                  <p className="text-[13px] font-bold" style={{ color: INK }}>{fullName}</p>
+                  <p className="text-[11px] font-medium mt-0.5" style={{ color: MUTED }}>{primaryEmail}</p>
                 </div>
                 
                 {/* Menu Action Links Container */}
                 <div className="p-1.5 space-y-0.5">
-                  <MenuItem icon={UserCircle} label="My profile" />
+                  <MenuItem icon={UserCircle} label="My profile" onClick={goToProfile} />
                   <div style={{ borderTop: `1px solid ${BORDER}`, margin: "4px 0" }} />
-                  <MenuItem icon={LogOut} label="Sign out" tone="danger" />
+                  <MenuItem icon={LogOut} label="Sign out" tone="danger" onClick={handleSignOut} />
                 </div>
               </div>
             </>
@@ -194,7 +215,7 @@ export default function Topbar() {
 }
 
 // Re-engineered List Menu Options with crisp background matching overrides
-function MenuItem({ icon: Icon, label, tone }) {
+function MenuItem({ icon: Icon, label, tone, onClick }) {
   const [hovered, setHovered] = useState(false);
   const isDanger = tone === "danger";
   
@@ -205,6 +226,7 @@ function MenuItem({ icon: Icon, label, tone }) {
 
   return (
     <button
+      onClick={onClick}
       className="w-full flex items-center gap-2.5 px-3 py-2 text-[12.5px] font-semibold text-left rounded-lg transition-all duration-150"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}

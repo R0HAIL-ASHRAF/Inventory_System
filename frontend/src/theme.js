@@ -18,6 +18,8 @@ export const ACCENT_SOFT = "#020202"; // lighter gold — chart highlights, subt
 export const DANGER = "#fa3108"; //  faulty / negative
 export const SUCCESS = "#12ad34"; // resolved / positive
 
+export const ICON_TONES = ["#2F6F4F", "#B8823A", "#3B6EA5", "#8A5A8C"];
+
 
 export const CARD = {
   backgroundColor: "#fcfae9",

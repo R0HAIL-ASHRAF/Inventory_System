@@ -4,48 +4,59 @@ import piaLogo from "../../assets/12logo.png";
 import {
   LayoutGrid,
   Laptop2,
-  Printer,
   Users,
   Building2,
   ScrollText,
-  Settings,
   ChevronsLeft,
   ChevronsRight,
-  CircleUser,
   Bell,
+  FolderOpen
 } from "lucide-react";
-import { CREAM, BRAND, BRAND_SOFT, MUTED, SURFACE, MONO, ACCENT, CREAMt } from "../../theme";
+import { CREAM, BRAND, BRAND_SOFT, SURFACE, MONO, ACCENT, CREAMt } from "../../theme";
+import { useAuth } from "../authContexts/AuthContext";
 
 const NAV_GROUPS = [
   {
     label: "Overview",
-    items: [{ path: "/", label: "Dashboard", icon: LayoutGrid, end: true }],
+    items: [
+      { path: "/", label: "Dashboard", icon: LayoutGrid, end: true, roles: ["admin", "it_manager"] },
+    ],
   },
   {
     label: "Assets",
     items: [
-      { path: "/devices", label: "Devices", icon: Laptop2, count: 214 },
-      { path: "/employees", label: "Employees", icon: Users, count: 86 },
-      { path: "/departments", label: "Departments", icon: Building2 },
+      { path: "/devices", label: "Devices", icon: Laptop2, count: 214, roles: ["admin", "it_manager"] },
+      { path: "/categories", label: "Categories", icon: FolderOpen, roles: ["admin", "it_manager"]},
+      { path: "/employees", label: "Employees", icon: Users, count: 86, roles: ["admin"] },
+      { path: "/departments", label: "Departments", icon: Building2, roles: ["admin"] },
     ],
   },
   {
     label: "System",
     items: [
-      { path: "/logs", label: "Activity Logs", icon: ScrollText },
-      { path: "/notification", label: "Notifications", icon: Bell, count: 31}
+      { path: "/logs", label: "Activity Logs", icon: ScrollText, roles: ["admin", "it_manager"] },
+      { path: "/notification", label: "Notifications", icon: Bell, count: 31, roles: ["admin", "it_manager"] },
     ],
   },
 ];
 
 export default function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
+  const { user } = useAuth(); // hook now called inside the component body, where it belongs
+
+  // Sidebar only ever mounts inside ProtectedRoute (see the nesting note below),
+  // but this guard keeps it from crashing on a null user during that first tick.
+  if (!user) return null;
+
+  const visibleGroups = NAV_GROUPS.map((group) => ({
+    ...group,
+    items: group.items.filter((item) => item.roles.includes(user.role)),
+  })).filter((group) => group.items.length > 0);
 
   return (
     <aside
       className="h-screen flex flex-col  transition-all duration-300 ease-in-out relative z-20"
-      style={{ width: collapsed ? 76 : 256, backgroundColor: CREAM ,
-      }}
+      style={{ width: collapsed ? 76 : 256, backgroundColor: CREAM }}
     >
       {/* Floating Border Toggle Button */}
       <button
@@ -72,8 +83,7 @@ export default function Sidebar() {
 
       {/* Nav Menu */}
       <nav className="flex-1 overflow-y-auto py-4 px-3 space-y-6 mt-2">
-
-        {NAV_GROUPS.map((group) => (
+        {visibleGroups.map((group) => (
           <div key={group.label}>
             {!collapsed && (
               <p className="px-3 mb-2 text-[10.5px] font-semibold uppercase tracking-wider whitespace-nowrap" style={{ color: ACCENT }}>
@@ -90,7 +100,7 @@ export default function Sidebar() {
                     end={item.end}
                     title={collapsed ? item.label : undefined}
                     className="relative w-full flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors duration-150 group overflow-hidden"
-                    style={({ isActive }) => ({ backgroundColor: isActive ? CREAMt : "transparent", color: isActive ? ACCENT: SURFACE })}
+                    style={({ isActive }) => ({ backgroundColor: isActive ? CREAMt : "transparent", color: isActive ? ACCENT : SURFACE })}
                     onMouseEnter={(e) => {
                       if (!e.currentTarget.classList.contains("active")) e.currentTarget.style.backgroundColor = BRAND_SOFT;
                     }}
@@ -101,7 +111,7 @@ export default function Sidebar() {
                     {({ isActive }) => (
                       <>
                         {isActive && <span className="absolute left-0 top-1.5 bottom-1.5 w-[3px] rounded-full" style={{ backgroundColor: CREAM }} />}
-                        <Icon size={27} className="shrink-0" style={{color: ACCENT}}/>
+                        <Icon size={27} className="shrink-0" style={{ color: ACCENT }} />
                         {!collapsed && <span className="flex-1 text-left font-medium truncate text-[15px]">{item.label}</span>}
                         {!collapsed && item.count !== undefined && (
                           <span
@@ -122,4 +132,4 @@ export default function Sidebar() {
       </nav>
     </aside>
   );
-}
+} 
