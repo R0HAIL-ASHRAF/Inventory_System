@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Search, Plus, MoreHorizontal, ExternalLink, HelpCircle } from "lucide-react";
-import { INK, MUTED, BORDER, ACCENT, BRAND, CARD, PAGE_BG, MONO, SURFACE, CREAMt } from "../theme";
+import { Search, Plus, MoreHorizontal, ExternalLink, HelpCircle, Download} from "lucide-react";
+import { INK, MUTED, BORDER, ACCENT, BRAND, CARD, PAGE_BG, FONT_DISPLAY, SURFACE, CREAMt, MONO } from "../theme";
 import { DEVICES, DEPARTMENTS } from "../data";
 import StatusBadge from "../components/devices/StatusBadge";
 import RowActionsMenu from "../components/devices/RowActionMenu";
@@ -77,7 +77,7 @@ export default function Devices() {
           <div className="flex items-center gap-2 mt-1 select-none" data-tour="devices-count">
             <span
               className="inline-flex items-center justify-center px-2 py-0.5 rounded-md text-[23px] font-bold tracking-wide"
-              style={{ backgroundColor: `${BRAND}18`, color: ACCENT, fontFamily: MONO, fontFeatureSettings: "'tnum'" }}
+              style={{ backgroundColor: `${BRAND}18`, color: ACCENT, fontFamily: FONT_DISPLAY, fontFeatureSettings: "'tnum'" }}
             >
               {devices.length}
             </span>
@@ -104,6 +104,15 @@ export default function Devices() {
           >
             <Plus size={16} strokeWidth={2.5} />
             New Device
+          </Link>
+          <Link
+            to=""
+            data-tour="devices-new"
+            className="flex items-center gap-1.5 rounded-xl px-4 h-10 text-sm font-semibold transition-all duration-200 hover:shadow-md hover:opacity-95 active:scale-95"
+            style={{ backgroundColor: ACCENT, color: "#FFFCDC" }}
+          >
+            <Download size={16} strokeWidth={2.5} />
+            Import CSV
           </Link>
         </div>
       </div>

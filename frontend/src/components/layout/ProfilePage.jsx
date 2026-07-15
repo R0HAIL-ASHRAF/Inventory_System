@@ -1,206 +1,432 @@
 import React, { useState } from "react";
-import { Lock, Eye, EyeOff, CheckCircle2, Mail, Phone, Briefcase, MapPin, Building2, Hash, User } from "lucide-react";
+import {
+  Lock,
+  Eye,
+  EyeOff,
+  CheckCircle2,
+  Mail,
+  Phone,
+  Briefcase,
+  MapPin,
+  Building2,
+  Hash,
+  User,
+} from "lucide-react";
+
 import { useAuth } from "../authContexts/AuthContext";
 import { ROLE_LABELS } from "../../data";
-import { INK, MUTED, BORDER, SURFACE, ACCENT, CREAM, DANGER, SUCCESS, CARD, FONT_DISPLAY, MONO } from "../../theme";
+import {
+  INK,
+  MUTED,
+  BORDER,
+  SURFACE,
+  ACCENT,
+  CREAM,
+  DANGER,
+  SUCCESS,
+  CARD,
+  FONT_DISPLAY,
+  MONO,
+} from "../../theme";
 
 export default function Profile() {
   const { user, changePassword } = useAuth();
- 
+
   const [current, setCurrent] = useState("");
   const [next, setNext] = useState("");
   const [confirm, setConfirm] = useState("");
+
   const [showCurrent, setShowCurrent] = useState(false);
   const [showNext, setShowNext] = useState(false);
+
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [submitting, setSubmitting] = useState(false);
- 
+
   if (!user) return null;
- 
+
   const fullName = `${user.name.first} ${user.name.last}`;
-  const fatherName = user.father_name ? `${user.father_name.first} ${user.father_name.last}` : "—";
+
+  const fatherName = user.father_name
+    ? `${user.father_name.first} ${user.father_name.last}`
+    : "—";
+
   const initials = `${user.name.first[0]}${user.name.last[0]}`.toUpperCase();
+
   const primaryEmail = (user.emails && user.emails[0]) || "—";
+
   const address = user.address
-    ? [user.address.street, user.address.town, user.address.city, user.address.province, user.address.country]
+    ? [
+        user.address.street,
+        user.address.town,
+        user.address.city,
+        user.address.province,
+        user.address.country,
+      ]
         .filter(Boolean)
         .join(", ")
     : "—";
- 
+
   function handleSubmit(e) {
     e.preventDefault();
+
     setError("");
     setSuccess(false);
- 
+
     if (next !== confirm) {
       setError("New password and confirmation don't match.");
       return;
     }
- 
+
     setSubmitting(true);
+
     setTimeout(() => {
       const result = changePassword(current, next);
+
       setSubmitting(false);
+
       if (!result.ok) {
         setError(result.error);
         return;
       }
+
       setSuccess(true);
       setCurrent("");
       setNext("");
       setConfirm("");
     }, 400);
   }
- 
+
   return (
-    <div className="max-w-4xl space-y-5">
-      {/* Identity header */}
-      <div className="rounded-2xl p-6 flex items-center gap-4" style={CARD}>
+    <div className="max-w-7xl space-y-6">
+
+      {/* Header */}
+      <div
+        className="rounded-2xl p-6 flex items-center gap-4"
+        style={CARD}
+      >
         <div
-          className="w-16 h-16 rounded-full flex items-center justify-center shrink-0 text-[18px] font-semibold"
-          style={{ backgroundColor: "rgba(201,162,39,0.16)", color: ACCENT, fontFamily: FONT_DISPLAY }}
+          className="w-16 h-16 rounded-full flex items-center justify-center text-lg font-semibold shrink-0"
+          style={{
+            background: "rgba(201,162,39,.16)",
+            color: ACCENT,
+            fontFamily: FONT_DISPLAY,
+          }}
         >
           {initials}
         </div>
-        <div className="min-w-0 flex-1">
-          <p className="text-[19px] font-semibold" style={{ color: INK, fontFamily: FONT_DISPLAY }}>{fullName}</p>
-          <p className="text-[13px] mt-0.5" style={{ color: MUTED }}>{user.designation || "—"}</p>
-          <div className="flex items-center gap-2 mt-2">
+
+        <div className="flex-1 min-w-0">
+          <h2
+            className="text-xl font-semibold"
+            style={{
+              color: INK,
+              fontFamily: FONT_DISPLAY,
+            }}
+          >
+            {fullName}
+          </h2>
+
+          <p
+            className="text-sm mt-1"
+            style={{ color: MUTED }}
+          >
+            {user.designation || "—"}
+          </p>
+
+          <div className="flex flex-wrap items-center gap-2 mt-3">
             <span
-              className="text-[10.5px] font-semibold uppercase tracking-[0.02em] px-2 py-0.5 rounded-full"
-              style={{ color: ACCENT, backgroundColor: "rgba(201,162,39,0.14)" }}
+              className="px-3 py-1 rounded-full text-[11px] font-semibold uppercase"
+              style={{
+                background: "rgba(201,162,39,.15)",
+                color: ACCENT,
+              }}
             >
               {ROLE_LABELS[user.role]}
             </span>
-            <span className="text-[11.5px]" style={{ color: MUTED, fontFamily: MONO }}>{primaryEmail}</span>
+
+            <span
+              className="text-xs"
+              style={{
+                color: MUTED,
+                fontFamily: MONO,
+              }}
+            >
+              {primaryEmail}
+            </span>
           </div>
         </div>
       </div>
- 
-      {/* Personal & work details + Contact — side by side, each still a vertical list internally */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 items-start">
-        <div className="rounded-2xl p-6" style={CARD}>
-          <p className="text-[13px] font-semibold uppercase tracking-[0.03em] mb-1" style={{ color: INK, fontFamily: FONT_DISPLAY }}>
-            Personal &amp; work details
+
+      {/* Details */}
+      <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
+
+        {/* Personal */}
+        <div
+          className="xl:col-span-7 rounded-2xl p-6"
+          style={CARD}
+        >
+          <p
+            className="text-sm font-semibold uppercase tracking-wide mb-5"
+            style={{
+              color: INK,
+              fontFamily: FONT_DISPLAY,
+            }}
+          >
+            Personal & Work Details
           </p>
-          <div>
-            <InfoRow icon={User} label="Father's name" value={fatherName} />
-            <InfoRow icon={Hash} label="Personnel number" value={user.p_number || "—"} mono />
-            <InfoRow icon={Briefcase} label="Designation" value={user.designation || "—"} />
-            <InfoRow icon={Building2} label="Department" value={user.department || "—"} />
-            <InfoRow icon={Building2} label="Section" value={user.section || "—"} />
-            <InfoRow icon={MapPin} label="Location" value={user.location || "—"} />
-            <InfoRow icon={MapPin} label="Room" value={user.room || "—"} />
-            <InfoRow icon={MapPin} label="Cabin" value={user.cabin || "—"} last />
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <InfoCard
+              icon={User}
+              label="Father's Name"
+              value={fatherName}
+            />
+
+            <InfoCard
+              icon={Hash}
+              label="Personnel Number"
+              value={user.p_number || "—"}
+              mono
+            />
+
+            <InfoCard
+              icon={Briefcase}
+              label="Designation"
+              value={user.designation || "—"}
+            />
+
+            <InfoCard
+              icon={Building2}
+              label="Department"
+              value={user.department || "—"}
+            />
+
+            <InfoCard
+              icon={Building2}
+              label="Section"
+              value={user.section || "—"}
+            />
+
+            <InfoCard
+              icon={MapPin}
+              label="Location"
+              value={user.location || "—"}
+            />
+
+            <InfoCard
+              icon={MapPin}
+              label="Room"
+              value={user.room || "—"}
+            />
+
+            <InfoCard
+              icon={MapPin}
+              label="Cabin"
+              value={user.cabin || "—"}
+            />
           </div>
         </div>
- 
-        <div className="rounded-2xl p-6" style={CARD}>
-          <p className="text-[13px] font-semibold uppercase tracking-[0.03em] mb-1" style={{ color: INK, fontFamily: FONT_DISPLAY }}>
+
+        {/* Contact */}
+        <div
+          className="xl:col-span-5 rounded-2xl p-6"
+          style={CARD}
+        >
+          <p
+            className="text-sm font-semibold uppercase tracking-wide mb-5"
+            style={{
+              color: INK,
+              fontFamily: FONT_DISPLAY,
+            }}
+          >
             Contact
           </p>
-          <div>
-            <InfoRow icon={Mail} label="Email" value={(user.emails || []).join(", ") || "—"} mono />
-            <InfoRow icon={Phone} label="Phone" value={(user.phones || []).join(", ") || "—"} mono />
-            <InfoRow icon={MapPin} label="Address" value={address} last />
+
+          <div className="space-y-4">
+            <InfoCard
+              icon={Mail}
+              label="Email"
+              value={(user.emails || []).join(", ") || "—"}
+              mono
+            />
+
+            <InfoCard
+              icon={Phone}
+              label="Phone"
+              value={(user.phones || []).join(", ") || "—"}
+              mono
+            />
+
+            <InfoCard
+              icon={MapPin}
+              label="Address"
+              value={address}
+            />
           </div>
         </div>
       </div>
- 
-      {/* Change password */}
-      <div className="rounded-2xl p-6" style={CARD}>
-        <p className="text-[13px] font-semibold uppercase tracking-[0.03em] mb-1" style={{ color: INK, fontFamily: FONT_DISPLAY }}>
-          Change password
+
+      {/* Password */}
+      <div
+        className="rounded-2xl p-6"
+        style={CARD}
+      >
+        <p
+          className="text-sm font-semibold uppercase tracking-wide"
+          style={{
+            color: INK,
+            fontFamily: FONT_DISPLAY,
+          }}
+        >
+          Change Password
         </p>
-        <p className="text-[12.5px] mb-5" style={{ color: MUTED }}>
+
+        <p
+          className="text-sm mt-1 mb-6"
+          style={{ color: MUTED }}
+        >
           You'll stay signed in after updating your password.
         </p>
- 
-        <form onSubmit={handleSubmit} className="space-y-4 max-w-sm">
+
+        <form
+          onSubmit={handleSubmit}
+          className="max-w-md space-y-4"
+        >
           <PasswordField
-            label="Current password"
+            label="Current Password"
             value={current}
             onChange={setCurrent}
             show={showCurrent}
-            onToggleShow={() => setShowCurrent((v) => !v)}
+            onToggleShow={() =>
+              setShowCurrent((v) => !v)
+            }
           />
+
           <PasswordField
-            label="New password"
+            label="New Password"
             value={next}
             onChange={setNext}
             show={showNext}
-            onToggleShow={() => setShowNext((v) => !v)}
+            onToggleShow={() =>
+              setShowNext((v) => !v)
+            }
             hint="At least 6 characters."
           />
+
           <PasswordField
-            label="Confirm new password"
+            label="Confirm Password"
             value={confirm}
             onChange={setConfirm}
             show={showNext}
           />
- 
+
           {error && (
-            <div className="text-[12.5px] font-medium rounded-lg px-3 py-2" style={{ color: DANGER, backgroundColor: "rgba(214,67,31,0.08)" }}>
+            <div
+              className="rounded-lg px-3 py-2 text-sm"
+              style={{
+                color: DANGER,
+                background: "rgba(214,67,31,.08)",
+              }}
+            >
               {error}
             </div>
           )}
- 
+
           {success && (
             <div
-              className="flex items-center gap-2 text-[12.5px] font-medium rounded-lg px-3 py-2"
-              style={{ color: SUCCESS, backgroundColor: "rgba(30,158,69,0.08)" }}
+              className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm"
+              style={{
+                color: SUCCESS,
+                background: "rgba(30,158,69,.08)",
+              }}
             >
-              <CheckCircle2 size={15} />
-              Password updated.
+              <CheckCircle2 size={16} />
+              Password updated successfully.
             </div>
           )}
- 
+
           <button
             type="submit"
             disabled={submitting}
-            className="rounded-xl px-5 py-2.5 text-[13px] font-semibold transition-opacity duration-150 disabled:opacity-60"
-            style={{ backgroundColor: CREAM, color: "#FFFDF3", fontFamily: FONT_DISPLAY }}
+            className="rounded-xl px-5 py-2.5 font-semibold disabled:opacity-60"
+            style={{
+              background: CREAM,
+              color: "#FFFDF3",
+              fontFamily: FONT_DISPLAY,
+            }}
           >
-            {submitting ? "Updating…" : "Update password"}
+            {submitting ? "Updating..." : "Update Password"}
           </button>
         </form>
       </div>
     </div>
   );
 }
- 
-// A single row in a vertical spec-sheet list: icon, label, value — with a
-// hairline divider under every row except the last, instead of a grid.
-function InfoRow({ icon: Icon, label, value, mono, last }) {
+
+function InfoCard({ icon: Icon, label, value, mono }) {
   return (
     <div
-      className="flex items-start gap-3 py-3"
-      style={{ borderBottom: last ? "none" : `1px solid ${BORDER}` }}
+      className="rounded-xl p-4 h-full transition-all duration-200 hover:shadow-sm"
+      style={{
+        backgroundColor: SURFACE,
+        border: `1px solid ${BORDER}`,
+      }}
     >
-      <Icon size={15} className="shrink-0 mt-0.5" style={{ color: MUTED }} />
-      <p className="text-[12.5px] w-36 shrink-0" style={{ color: MUTED }}>{label}</p>
-      <p
-        className="text-[13.5px] font-medium break-words flex-1"
-        style={{ color: INK, fontFamily: mono ? MONO : undefined }}
+      <div className="flex items-center gap-2 mb-3">
+        <Icon
+          size={15}
+          className="shrink-0"
+          style={{ color: MUTED }}
+        />
+
+        <span
+          className="text-[11px] font-semibold uppercase tracking-[0.08em]"
+          style={{ color: MUTED }}
+        >
+          {label}
+        </span>
+      </div>
+
+      <div
+        className="text-[14px] font-medium leading-6 break-words"
+        style={{
+          color: INK,
+          fontFamily: mono ? MONO : undefined,
+        }}
       >
-        {value}
-      </p>
+        {value || "—"}
+      </div>
     </div>
   );
 }
- 
-function PasswordField({ label, value, onChange, show, onToggleShow, hint }) {
+
+function PasswordField({
+  label,
+  value,
+  onChange,
+  show,
+  onToggleShow,
+  hint,
+}) {
   return (
     <div>
-      <label className="text-[12.5px] font-medium block mb-1.5" style={{ color: INK }}>
+      <label
+        className="block mb-1.5 text-[12.5px] font-medium"
+        style={{ color: INK }}
+      >
         {label}
       </label>
+
       <div
         className="flex items-center gap-2.5 rounded-xl px-3.5 py-2.5"
-        style={{ backgroundColor: SURFACE, border: `1px solid ${BORDER}` }}
+        style={{
+          backgroundColor: SURFACE,
+          border: `1px solid ${BORDER}`,
+        }}
       >
         <Lock size={16} style={{ color: MUTED }} />
+
         <input
           type={show ? "text" : "password"}
           required
@@ -208,16 +434,29 @@ function PasswordField({ label, value, onChange, show, onToggleShow, hint }) {
           onChange={(e) => onChange(e.target.value)}
           placeholder="••••••••"
           className="flex-1 bg-transparent outline-none text-[13.5px]"
-          style={{ color: INK }}
+          style={{ color: INK, outline:"none" }}
         />
+
         {onToggleShow && (
-          <button type="button" onClick={onToggleShow} style={{ color: MUTED }}>
+          <button
+            type="button"
+            onClick={onToggleShow}
+            className="hover:opacity-80"
+            style={{ color: MUTED }}
+          >
             {show ? <EyeOff size={16} /> : <Eye size={16} />}
           </button>
         )}
       </div>
-      {hint && <p className="text-[11px] mt-1" style={{ color: MUTED }}>{hint}</p>}
+
+      {hint && (
+        <p
+          className="mt-1 text-[11px]"
+          style={{ color: MUTED }}
+        >
+          {hint}
+        </p>
+      )}
     </div>
   );
 }
- 
