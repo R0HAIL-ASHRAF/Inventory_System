@@ -10,6 +10,7 @@ import { MUTED } from "./theme";
 import Departments from "./pages/Departments";
 import NotificationPanel from "./components/dashboard/NotificationPanel";
 import NotificationsPage from "./pages/NotificationsPage";
+import ActivityLogs from "./pages/Logs"
 
 function Placeholder({ name }) {
   return (
@@ -34,9 +35,7 @@ export default function App() {
           <Route path="/employees" element={<Employees />} />
           <Route path="/devices/new" element={<NewDevice />} />
           <Route path="/shared-equipment" element={<Placeholder name="Shared Equipment" />} />
-          <Route path="/employees" element={<Placeholder name="Employees" />} />
-          <Route path="/departments" element={<Placeholder name="Departments" />} />
-          <Route path="/logs" element={<Placeholder name="Activity Logs" />} />
+          <Route path="/logs" element={< ActivityLogs />} />
           <Route path="/settings" element={<Placeholder name="Settings" />} />
           <Route path="*" element={<Placeholder name="Not found" />} />
         </Routes>

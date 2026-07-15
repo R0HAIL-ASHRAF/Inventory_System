@@ -43,6 +43,68 @@ export const RECENT_DEVICES = [
   { icon: Monitor, name: "Dell UltraSharp U2723", sub: "Asset #DV-1190", dept: "Design", stat: "5d ago", change: 8 },
 ];
 
+
+
+const LOGS = [
+  { id: 1, type: "assigned", title: "ThinkPad X1 Carbon assigned", subtitle: "to Bilal Ahmed", dept: "Engineering", actor: "Aisha Raza", time: mins(6) },
+  { id: 2, type: "faulty", title: "HP LaserJet M428 flagged faulty", subtitle: "Paper jam sensor error", dept: "Front Office", actor: "System", time: mins(42) },
+  { id: 3, type: "transfer", title: "Dell UltraSharp U2723 transferred", subtitle: "Design → Marketing", dept: "Marketing", actor: "Aisha Raza", time: hrs(3) },
+  { id: 4, type: "provisioned", title: "Dell PowerEdge R450 provisioned", subtitle: "IT Infra · Rack 4B", dept: "IT Infra", actor: "Hamid Raza", time: hrs(5) },
+  { id: 5, type: "repaired", title: "Canon imageRUNNER repaired", subtitle: "Fuser unit replaced under warranty", dept: "Front Office", actor: "Vendor · Canon SLA", time: hrs(9) },
+  { id: 6, type: "assigned", title: "iPhone 14 assigned", subtitle: "to Sana Khan", dept: "Front Office", actor: "Aisha Raza", time: days(1) },
+  { id: 7, type: "removed", title: "MacBook Pro 2018 retired", subtitle: "End of lifecycle · 5yr threshold", dept: "Design", actor: "Aisha Raza", time: days(1) },
+  { id: 8, type: "faulty", title: "UPS Unit #4 flagged faulty", subtitle: "Battery health below 20%", dept: "IT Infra", actor: "System", time: days(2) },
+  { id: 9, type: "transfer", title: "Cisco Switch 24P transferred", subtitle: "IT Infra → New Karachi office", dept: "IT Infra", actor: "Hamid Raza", time: days(2) },
+  { id: 10, type: "provisioned", title: "5x ThinkPad E14 provisioned", subtitle: "New hire batch · Engineering", dept: "Engineering", actor: "Aisha Raza", time: days(4) },
+  { id: 11, type: "repaired", title: "ThinkPad X1 Carbon repaired", subtitle: "Keyboard replacement", dept: "Engineering", actor: "Vendor · Lenovo SLA", time: days(6) },
+  { id: 12, type: "removed", title: "HP LaserJet P1102 disposed", subtitle: "Beyond economical repair", dept: "Front Office", actor: "Aisha Raza", time: days(9) },
+];
+
+
+const MOCK_NOTIFICATIONS_RESPONSE = [
+  {
+    id: "ntf-101",
+    unread: true,
+    tone: "danger",
+    title: "Device flagged as faulty",
+    body: "HP LaserJet M428 (DV-0887) was marked faulty by Ayesha Khan.",
+    time: "10m ago",
+  },
+  {
+    id: "ntf-102",
+    unread: true,
+    tone: "accent",
+    title: "Department transfer completed",
+    body: "Dell PowerEdge R450 (DV-0231) moved from IT Infra to Data Center Ops.",
+    time: "1h ago",
+  },
+  {
+    id: "ntf-103",
+    unread: true,
+    tone: "success",
+    title: "New device registered",
+    body: "MacBook Pro 14\" (DV-0654) added and assigned to Sana Tariq.",
+    time: "3h ago",
+  },
+  {
+    id: "ntf-104",
+    unread: false,
+    tone: "muted",
+    title: "Device retired",
+    body: "ThinkPad T14 (DV-0112) was marked retired and removed from active inventory.",
+    time: "Yesterday",
+  },
+  {
+    id: "ntf-105",
+    unread: false,
+    tone: "accent",
+    title: "Assignment updated",
+    body: "UltraSharp U2723 (DV-1190) unassigned and returned to spare pool.",
+    time: "2d ago",
+  },
+];
+
+
 export const RECENT_PEOPLE = [
   { icon: Laptop2, name: "Bilal Ahmed", sub: "Software Engineer", dept: "Engineering", stat: "2 devices", change: 0 },
   { icon: Laptop2, name: "Sana Tariq", sub: "UI Designer", dept: "Design", stat: "1 device", change: 0 },

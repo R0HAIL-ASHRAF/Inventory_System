@@ -13,7 +13,7 @@ export const BRAND = "#f3f3f3"; // forest green — hero bg, primary buttons, ic
 export const BRAND_SOFT = "rgba(58, 71, 66, 0.08)"; // hover states on cream/white
 
 export const ACCENT = "#C9A227"; // gold — primary accent, highlights
-export const ACCENT_SOFT = "#E7CB7A"; // lighter gold — chart highlights, subtle fills
+export const ACCENT_SOFT = "#020202"; // lighter gold — chart highlights, subtle fills
 
 export const DANGER = "#fa3108"; //  faulty / negative
 export const SUCCESS = "#12ad34"; // resolved / positive

@@ -5,8 +5,6 @@ import { INK, MUTED, BORDER, ACCENT, SURFACE, PAGE_BG, DANGER, SUCCESS, CARD } f
 const TONE_COLOR = { danger: DANGER, accent: ACCENT, success: SUCCESS, muted: MUTED };
 const FILTERS = ["All", "Unread", "Alerts", "Updates"];
 
-// Mock "API response" — replace this with a real fetch/query later.
-// Shape mirrors what NotificationPanel already expects: id, unread, tone, title, body, time.
 const MOCK_NOTIFICATIONS_RESPONSE = [
   {
     id: "ntf-101",
@@ -85,8 +83,8 @@ export default function NotificationsPage() {
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <p className="text-lg font-semibold" style={{ color: INK }}>Notifications</p>
-          <p className="text-[12.5px]" style={{ color: MUTED }}>
+          <p className="text-[33px] font-semibold" style={{ color: ACCENT }}>Notifications</p>
+          <p className="text-[17px]" style={{ color: SURFACE }}>
             {unreadCount > 0 ? `${unreadCount} unread` : "You're all caught up"}
           </p>
         </div>
@@ -94,7 +92,7 @@ export default function NotificationsPage() {
           <button
             onClick={markAllAsRead}
             className="flex items-center gap-1.5 text-[12.5px] font-medium px-3 h-8 rounded-lg"
-            style={{ color: ACCENT, border: `1px solid ${BORDER}` }}
+            style={{ color: SURFACE, border: `1px solid ${BORDER}`, backgroundColor: ACCENT }}
           >
             <Check size={13} />
             Mark all as read
