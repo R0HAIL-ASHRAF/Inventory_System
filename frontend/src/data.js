@@ -643,16 +643,15 @@ export const EMPLOYEES = [
   },
     {
     id: "u1",
-    username: "araza.admin",
     password: "admin123",
     role: "admin",
  
-    name: { first: "Aisha", last: "Raza" },
+    name: { first: "Iman", last: "Fatima" },
     father_name: { first: "Iqbal", last: "Raza" },
     designation: "System Administrator",
     p_number: "P-10001",
     phones: ["0300-1112223"],
-    emails: ["aisha.raza@pia.com"],
+    emails: ["iman.fatima@pia.com"],
     address: {
       street: "House 5, St 1",
       town: "Gulberg",

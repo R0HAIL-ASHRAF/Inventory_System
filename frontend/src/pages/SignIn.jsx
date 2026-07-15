@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Mail, Lock, Eye, EyeOff, ArrowRight, ShieldCheck } from "lucide-react";
 import { useAuth } from "../components/authContexts/AuthContext";
 import { LOGIN_ENABLED_EMPLOYEES, ROLE_LABELS } from "../data";
+import piaLogo from "../assets/12logo.png";
 import {
   INK,
   MUTED,
@@ -123,18 +124,22 @@ export default function SignIn() {
       </div>
 
       {/* Right panel — sign-in form */}
-      <div className="flex-1 flex items-center justify-center p-6 sm:p-10">
+      <div className="flex-1 flex  justify-center p-6 sm:p-10">
         <div className="w-full max-w-[380px]">
+          <img
+            src={piaLogo}
+            alt="Pakistan International Airlines"
+            className="h-63 w-auto mb-3 object-contain"
+          />
+
+
           <div className="mb-9">
-            <p className="text-[13px] font-semibold uppercase tracking-[0.03em] mb-2" style={{ color: ACCENT, fontFamily: FONT_DISPLAY }}>
+            <p className="text-[23px] font-semibold uppercase tracking-[0.03em] mb-2" style={{ color: ACCENT, fontFamily: FONT_DISPLAY }}>
               Welcome back
             </p>
             <h1 className="text-[26px] font-semibold tracking-tight" style={{ color: INK, fontFamily: FONT_DISPLAY }}>
               Sign in to your account
             </h1>
-            <p className="text-[13.5px] mt-1.5" style={{ color: MUTED }}>
-              Enter the credentials assigned to your role.
-            </p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
