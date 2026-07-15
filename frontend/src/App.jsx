@@ -14,7 +14,9 @@ import ActivityLogs from "./pages/Logs";
 import SignIn from "./pages/SignIn";
 import Profile from "./components/layout/ProfilePage";
 import { AuthProvider } from "./components/authContexts/AuthContext";
-import ProtectedRoute from "./components/authContexts/ProtectedRoute"; // was missing — this alone breaks the render
+import ProtectedRoute from "./components/authContexts/ProtectedRoute"; 
+import NewEmployee from "./pages/AddNewEmployee";
+import NewCategory from "./components/category/AddCategory";
 
 function Placeholder({ name }) {
   return (
@@ -32,10 +34,8 @@ export default function App() {
     <BrowserRouter>
       <AuthProvider>
         <Routes>
-          {/* Login renders standalone — no sidebar/header chrome around it */}
           <Route path="/login" element={<SignIn />} />
 
-          {/* Everything else sits inside Layout, and each page is gated individually */}
           <Route
             path="/"
             element={
@@ -87,6 +87,16 @@ export default function App() {
             }
           />
           <Route
+            path="/employees/new"
+            element={
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <Layout>
+                  <NewEmployee />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/departments"
             element={
               <ProtectedRoute allowedRoles={["admin"]}>
@@ -107,6 +117,16 @@ export default function App() {
             }
           />
           <Route
+            path="/categories"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <NewCategory />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/notification"
             element={
               <ProtectedRoute>
@@ -116,6 +136,7 @@ export default function App() {
               </ProtectedRoute>
             }
           />
+          
           <Route
             path="/logs"
             element={
