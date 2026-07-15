@@ -34,7 +34,7 @@ const NAV_GROUPS = [
   {
     label: "System",
     items: [
-      { path: "/logs", label: "Activity Logs", icon: ScrollText, roles: ["admin", "it_manager"] },
+      { path: "/logs", label: "Activity Logs", icon: ScrollText, roles: ["admin"] },
       { path: "/notification", label: "Notifications", icon: Bell, count: 31, roles: ["admin", "it_manager"] },
     ],
   },
@@ -42,10 +42,8 @@ const NAV_GROUPS = [
 
 export default function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
-  const { user } = useAuth(); // hook now called inside the component body, where it belongs
-
-  // Sidebar only ever mounts inside ProtectedRoute (see the nesting note below),
-  // but this guard keeps it from crashing on a null user during that first tick.
+  const { user } = useAuth();
+  
   if (!user) return null;
 
   const visibleGroups = NAV_GROUPS.map((group) => ({

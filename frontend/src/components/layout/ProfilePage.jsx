@@ -6,7 +6,7 @@ import { INK, MUTED, BORDER, SURFACE, ACCENT, CREAM, DANGER, SUCCESS, CARD, FONT
 
 export default function Profile() {
   const { user, changePassword } = useAuth();
-
+ 
   const [current, setCurrent] = useState("");
   const [next, setNext] = useState("");
   const [confirm, setConfirm] = useState("");
@@ -15,28 +15,29 @@ export default function Profile() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-
+ 
   if (!user) return null;
-
+ 
   const fullName = `${user.name.first} ${user.name.last}`;
   const fatherName = user.father_name ? `${user.father_name.first} ${user.father_name.last}` : "—";
   const initials = `${user.name.first[0]}${user.name.last[0]}`.toUpperCase();
+  const primaryEmail = (user.emails && user.emails[0]) || "—";
   const address = user.address
     ? [user.address.street, user.address.town, user.address.city, user.address.province, user.address.country]
         .filter(Boolean)
         .join(", ")
     : "—";
-
+ 
   function handleSubmit(e) {
     e.preventDefault();
     setError("");
     setSuccess(false);
-
+ 
     if (next !== confirm) {
       setError("New password and confirmation don't match.");
       return;
     }
-
+ 
     setSubmitting(true);
     setTimeout(() => {
       const result = changePassword(current, next);
@@ -51,9 +52,9 @@ export default function Profile() {
       setConfirm("");
     }, 400);
   }
-
+ 
   return (
-    <div className="max-w-3xl space-y-5">
+    <div className="max-w-4xl space-y-5">
       {/* Identity header */}
       <div className="rounded-2xl p-6 flex items-center gap-4" style={CARD}>
         <div
@@ -64,7 +65,7 @@ export default function Profile() {
         </div>
         <div className="min-w-0 flex-1">
           <p className="text-[19px] font-semibold" style={{ color: INK, fontFamily: FONT_DISPLAY }}>{fullName}</p>
-          <p className="text-[13px] mt-0.5" style={{ color: MUTED }}>{user.designation}</p>
+          <p className="text-[13px] mt-0.5" style={{ color: MUTED }}>{user.designation || "—"}</p>
           <div className="flex items-center gap-2 mt-2">
             <span
               className="text-[10.5px] font-semibold uppercase tracking-[0.02em] px-2 py-0.5 rounded-full"
@@ -72,42 +73,41 @@ export default function Profile() {
             >
               {ROLE_LABELS[user.role]}
             </span>
-            <span className="text-[11.5px]" style={{ color: MUTED, fontFamily: MONO }}>@{user.username}</span>
+            <span className="text-[11.5px]" style={{ color: MUTED, fontFamily: MONO }}>{primaryEmail}</span>
           </div>
         </div>
       </div>
-
-      {/* Personal & work details */}
-      <div className="rounded-2xl p-6" style={CARD}>
-        <p className="text-[13px] font-semibold uppercase tracking-[0.03em] mb-4" style={{ color: INK, fontFamily: FONT_DISPLAY }}>
-          Personal &amp; work details
-        </p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
-          <InfoRow icon={User} label="Father's name" value={fatherName} />
-          <InfoRow icon={Hash} label="Personnel number" value={user.p_number || "—"} mono />
-          <InfoRow icon={Briefcase} label="Designation" value={user.designation || "—"} />
-          <InfoRow icon={Building2} label="Department" value={user.department || "—"} />
-          <InfoRow icon={Building2} label="Section" value={user.section || "—"} />
-          <InfoRow icon={MapPin} label="Location" value={user.location || "—"} />
-          <InfoRow icon={MapPin} label="Room" value={user.room || "—"} />
-          <InfoRow icon={MapPin} label="Cabin" value={user.cabin || "—"} />
+ 
+      {/* Personal & work details + Contact — side by side, each still a vertical list internally */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 items-start">
+        <div className="rounded-2xl p-6" style={CARD}>
+          <p className="text-[13px] font-semibold uppercase tracking-[0.03em] mb-1" style={{ color: INK, fontFamily: FONT_DISPLAY }}>
+            Personal &amp; work details
+          </p>
+          <div>
+            <InfoRow icon={User} label="Father's name" value={fatherName} />
+            <InfoRow icon={Hash} label="Personnel number" value={user.p_number || "—"} mono />
+            <InfoRow icon={Briefcase} label="Designation" value={user.designation || "—"} />
+            <InfoRow icon={Building2} label="Department" value={user.department || "—"} />
+            <InfoRow icon={Building2} label="Section" value={user.section || "—"} />
+            <InfoRow icon={MapPin} label="Location" value={user.location || "—"} />
+            <InfoRow icon={MapPin} label="Room" value={user.room || "—"} />
+            <InfoRow icon={MapPin} label="Cabin" value={user.cabin || "—"} last />
+          </div>
         </div>
-      </div>
-
-      {/* Contact */}
-      <div className="rounded-2xl p-6" style={CARD}>
-        <p className="text-[13px] font-semibold uppercase tracking-[0.03em] mb-4" style={{ color: INK, fontFamily: FONT_DISPLAY }}>
-          Contact
-        </p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
-          <InfoRow icon={Mail} label="Email" value={(user.emails || []).join(", ") || "—"} mono />
-          <InfoRow icon={Phone} label="Phone" value={(user.phones || []).join(", ") || "—"} mono />
-          <div className="sm:col-span-2">
-            <InfoRow icon={MapPin} label="Address" value={address} />
+ 
+        <div className="rounded-2xl p-6" style={CARD}>
+          <p className="text-[13px] font-semibold uppercase tracking-[0.03em] mb-1" style={{ color: INK, fontFamily: FONT_DISPLAY }}>
+            Contact
+          </p>
+          <div>
+            <InfoRow icon={Mail} label="Email" value={(user.emails || []).join(", ") || "—"} mono />
+            <InfoRow icon={Phone} label="Phone" value={(user.phones || []).join(", ") || "—"} mono />
+            <InfoRow icon={MapPin} label="Address" value={address} last />
           </div>
         </div>
       </div>
-
+ 
       {/* Change password */}
       <div className="rounded-2xl p-6" style={CARD}>
         <p className="text-[13px] font-semibold uppercase tracking-[0.03em] mb-1" style={{ color: INK, fontFamily: FONT_DISPLAY }}>
@@ -116,7 +116,7 @@ export default function Profile() {
         <p className="text-[12.5px] mb-5" style={{ color: MUTED }}>
           You'll stay signed in after updating your password.
         </p>
-
+ 
         <form onSubmit={handleSubmit} className="space-y-4 max-w-sm">
           <PasswordField
             label="Current password"
@@ -139,13 +139,13 @@ export default function Profile() {
             onChange={setConfirm}
             show={showNext}
           />
-
+ 
           {error && (
             <div className="text-[12.5px] font-medium rounded-lg px-3 py-2" style={{ color: DANGER, backgroundColor: "rgba(214,67,31,0.08)" }}>
               {error}
             </div>
           )}
-
+ 
           {success && (
             <div
               className="flex items-center gap-2 text-[12.5px] font-medium rounded-lg px-3 py-2"
@@ -155,7 +155,7 @@ export default function Profile() {
               Password updated.
             </div>
           )}
-
+ 
           <button
             type="submit"
             disabled={submitting}
@@ -169,21 +169,27 @@ export default function Profile() {
     </div>
   );
 }
-
-function InfoRow({ icon: Icon, label, value, mono }) {
+ 
+// A single row in a vertical spec-sheet list: icon, label, value — with a
+// hairline divider under every row except the last, instead of a grid.
+function InfoRow({ icon: Icon, label, value, mono, last }) {
   return (
-    <div className="flex items-start gap-2.5">
+    <div
+      className="flex items-start gap-3 py-3"
+      style={{ borderBottom: last ? "none" : `1px solid ${BORDER}` }}
+    >
       <Icon size={15} className="shrink-0 mt-0.5" style={{ color: MUTED }} />
-      <div className="min-w-0">
-        <p className="text-[11px]" style={{ color: MUTED }}>{label}</p>
-        <p className="text-[13.5px] font-medium break-words" style={{ color: INK, fontFamily: mono ? MONO : undefined }}>
-          {value}
-        </p>
-      </div>
+      <p className="text-[12.5px] w-36 shrink-0" style={{ color: MUTED }}>{label}</p>
+      <p
+        className="text-[13.5px] font-medium break-words flex-1"
+        style={{ color: INK, fontFamily: mono ? MONO : undefined }}
+      >
+        {value}
+      </p>
     </div>
   );
 }
-
+ 
 function PasswordField({ label, value, onChange, show, onToggleShow, hint }) {
   return (
     <div>
@@ -214,3 +220,4 @@ function PasswordField({ label, value, onChange, show, onToggleShow, hint }) {
     </div>
   );
 }
+ 
