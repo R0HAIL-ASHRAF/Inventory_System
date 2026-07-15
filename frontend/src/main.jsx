@@ -2,9 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import './index.css';
+import { TourProvider } from './components/tour/Tour';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <App />
+    <TourProvider>
+      <App/>.
+    </TourProvider>
+    {/* <App /> */}
   </React.StrictMode>
 );

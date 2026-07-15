@@ -9,6 +9,7 @@ import { ACCENT, DANGER, FONT_SANS } from "../theme";
 import { AlertTriangle, ArrowRightLeft } from "lucide-react";
 
 export default function Dashboard() {
+  
   return (
     <div className="space-y-5" style={{ fontFamily: FONT_SANS }}>
       {/* Row 1*/}

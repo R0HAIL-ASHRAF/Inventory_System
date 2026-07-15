@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Search, Plus, MoreHorizontal, ExternalLink } from "lucide-react";
+import { Search, Plus, MoreHorizontal, ExternalLink, HelpCircle } from "lucide-react";
 import { INK, MUTED, BORDER, ACCENT, BRAND, CARD, PAGE_BG, MONO, SURFACE, CREAMt } from "../theme";
 import { DEVICES, DEPARTMENTS } from "../data";
 import StatusBadge from "../components/devices/StatusBadge";
@@ -10,6 +10,8 @@ import EditDeviceModal from "../components/devices/EditDeviceModal";
 import TransferDepartmentModal from "../components/devices/TransferDepatModal";
 import MarkFaultyModal from "../components/devices/MarkFaultyModal";
 import DeleteDeviceModal from "../components/devices/DeleteDeviceModal";
+import { useTour } from "../components/tour/Tour";
+import { devicesTourSteps } from "../components/tour/TourSteps";
 
 const STATUS_FILTERS = ["All", "In-use", "Spare", "Faulty", "Dispatched", "Retired"];
 
@@ -23,6 +25,7 @@ export default function Devices() {
   const [activeModal, setActiveModal] = useState(null); // { type, device }
   const [focusedSearch, setFocusedSearch] = useState(false);
   const [hoveredRowId, setHoveredRowId] = useState(null);
+  const { startTour, hasSeenTour } = useTour();
 
   const categories = ["All", ...Array.from(new Set(devices.map((d) => d.type)))];
 
@@ -47,6 +50,13 @@ export default function Devices() {
     return matchesStatus && matchesCategory && matchesDept && matchesQuery;
   });
 
+  useEffect(() => {
+    if (!hasSeenTour("devices")) {
+      const t = setTimeout(() => startTour("devices", devicesTourSteps), 600);
+      return () => clearTimeout(t);
+    }
+  }, []);
+
   return (
     <div className="space-y-6">
       <style>{`
@@ -63,11 +73,10 @@ export default function Devices() {
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
           <p className="text-[33px] font-bold tracking-tight" style={{ color: "#FFFFFF" }}>Devices</p>
-          
-          {/* Enhanced Premium Asset Counter */}
-          <div className="flex items-center gap-2 mt-1 select-none">
-            <span 
-              className="inline-flex items-center justify-center px-2 py-0.5 rounded-md text-[23px] font-bold tracking-wide" 
+
+          <div className="flex items-center gap-2 mt-1 select-none" data-tour="devices-count">
+            <span
+              className="inline-flex items-center justify-center px-2 py-0.5 rounded-md text-[23px] font-bold tracking-wide"
               style={{ backgroundColor: `${BRAND}18`, color: ACCENT, fontFamily: MONO, fontFeatureSettings: "'tnum'" }}
             >
               {devices.length}
@@ -78,24 +87,34 @@ export default function Devices() {
           </div>
         </div>
 
-        <Link
-          to="/devices/new"
-          className="flex items-center gap-1.5 rounded-xl px-4 h-10 text-sm font-semibold transition-all duration-200 hover:shadow-md hover:opacity-95 active:scale-95"
-          style={{ backgroundColor: ACCENT, color: "#FFFCDC" }}
-        >
-          <Plus size={16} strokeWidth={2.5} />
-          New Device
-        </Link>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => startTour("devices", devicesTourSteps)}
+            className="p-2 rounded-lg hover:bg-black/5"
+            title="Take a tour"
+          >
+            <HelpCircle size={33} style={{ color: ACCENT }} />
+          </button>
+
+          <Link
+            to="/devices/new"
+            data-tour="devices-new"
+            className="flex items-center gap-1.5 rounded-xl px-4 h-10 text-sm font-semibold transition-all duration-200 hover:shadow-md hover:opacity-95 active:scale-95"
+            style={{ backgroundColor: ACCENT, color: "#FFFCDC" }}
+          >
+            <Plus size={16} strokeWidth={2.5} />
+            New Device
+          </Link>
+        </div>
       </div>
 
-      {/* Search & Filtration Dashboard Controls */}
       <div className="flex items-center gap-3 flex-wrap bg-black/[0.01] p-3 rounded-2xl border" style={{ borderColor: BORDER }}>
-        
-        {/* Animated Search Bar Component */}
+
         <div
+          data-tour="devices-search"
           className="flex items-center gap-2 rounded-xl px-3.5 h-10 w-full max-w-xs transition-all duration-200"
-          style={{ 
-            backgroundColor: PAGE_BG, 
+          style={{
+            backgroundColor: PAGE_BG,
             border: `1.5px solid ${focusedSearch ? ACCENT : BORDER}`,
             boxShadow: focusedSearch ? `0 0 0 4px rgba(201,162,39,0.12)` : "none"
           }}
@@ -112,42 +131,45 @@ export default function Devices() {
           />
         </div>
 
-        {/* Categories Dropdown List */}
-        <select
-          value={categoryFilter}
-          onChange={(e) => setCategoryFilter(e.target.value)}
-          className="text-[12.5px] font-semibold px-3 h-10 rounded-xl outline-none cursor-pointer border transition-all hover:bg-slate-50/50"
-          style={{ backgroundColor: CREAMt, color: INK, borderColor: BORDER }}
-        >
-          {categories.map((c) => (
-            <option key={c} value={c}>{c === "All" ? "All Categories" : c}</option>
-          ))}
-        </select>
+        {/* Filters group — wrapped so the tour can target all three as one step */}
+        <div className="flex items-center gap-3" data-tour="devices-filters">
+          {/* Categories Dropdown List */}
+          <select
+            value={categoryFilter}
+            onChange={(e) => setCategoryFilter(e.target.value)}
+            className="text-[12.5px] font-semibold px-3 h-10 rounded-xl outline-none cursor-pointer border transition-all hover:bg-slate-50/50"
+            style={{ backgroundColor: CREAMt, color: INK, borderColor: BORDER }}
+          >
+            {categories.map((c) => (
+              <option key={c} value={c}>{c === "All" ? "All Categories" : c}</option>
+            ))}
+          </select>
 
-        {/* Departments Dropdown List */}
-        <select
-          value={deptFilter}
-          onChange={(e) => setDeptFilter(e.target.value)}
-          className="text-[12.5px] font-semibold px-3 h-10 rounded-xl outline-none cursor-pointer border transition-all hover:bg-slate-50/50"
-          style={{ backgroundColor: CREAMt, color: INK, borderColor: BORDER }}
-        >
-          <option value="All">All Departments</option>
-          {DEPARTMENTS.map((dep) => (
-            <option key={dep} value={dep}>{dep}</option>
-          ))}
-        </select>
+          {/* Departments Dropdown List */}
+          <select
+            value={deptFilter}
+            onChange={(e) => setDeptFilter(e.target.value)}
+            className="text-[12.5px] font-semibold px-3 h-10 rounded-xl outline-none cursor-pointer border transition-all hover:bg-slate-50/50"
+            style={{ backgroundColor: CREAMt, color: INK, borderColor: BORDER }}
+          >
+            <option value="All">All Departments</option>
+            {DEPARTMENTS.map((dep) => (
+              <option key={dep} value={dep}>{dep}</option>
+            ))}
+          </select>
 
-        {/* Unified Status Dropdown List */}
-        <select
-          value={statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value)}
-          className="text-[12.5px] font-semibold px-3 h-10 rounded-xl outline-none cursor-pointer border transition-all hover:bg-slate-50/50"
-          style={{ backgroundColor: CREAMt, color: INK, borderColor: BORDER }}
-        >
-          {STATUS_FILTERS.map((f) => (
-            <option key={f} value={f}>{f === "All" ? "All Statuses" : f}</option>
-          ))}
-        </select>
+          {/* Unified Status Dropdown List */}
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            className="text-[12.5px] font-semibold px-3 h-10 rounded-xl outline-none cursor-pointer border transition-all hover:bg-slate-50/50"
+            style={{ backgroundColor: CREAMt, color: INK, borderColor: BORDER }}
+          >
+            {STATUS_FILTERS.map((f) => (
+              <option key={f} value={f}>{f === "All" ? "All Statuses" : f}</option>
+            ))}
+          </select>
+        </div>
       </div>
 
       {/* Main Assets Grid Table Container */}
@@ -155,10 +177,10 @@ export default function Devices() {
         {/* Table Column Headers */}
         <div
           className="grid px-6 py-3.5 text-[11px] font-bold uppercase tracking-wider select-none bg-black/[0.01]"
-          style={{ 
-            gridTemplateColumns: "2.4fr 1.1fr 1.2fr 1.3fr 1.1fr 40px", 
-            color: MUTED, 
-            borderBottom: `1.5px solid ${BORDER}` 
+          style={{
+            gridTemplateColumns: "2.4fr 1.1fr 1.2fr 1.3fr 1.1fr 40px",
+            color: MUTED,
+            borderBottom: `1.5px solid ${BORDER}`
           }}
         >
           <span>Device Details</span>
@@ -199,11 +221,11 @@ export default function Devices() {
               >
                 {/* Identification Frame */}
                 <div className="flex items-center gap-3 min-w-0">
-                  <div 
-                    className="flex items-center justify-center rounded-xl shrink-0 transition-all duration-300" 
-                    style={{ 
-                      width: 38, 
-                      height: 38, 
+                  <div
+                    className="flex items-center justify-center rounded-xl shrink-0 transition-all duration-300"
+                    style={{
+                      width: 38,
+                      height: 38,
                       backgroundColor: BRAND,
                       transform: isHovered ? "scale(1.06)" : "scale(1)"
                     }}
@@ -215,14 +237,14 @@ export default function Devices() {
                       <p className="text-[13.5px] font-bold truncate transition-colors duration-150" style={{ color: isHovered ? ACCENT : INK }}>
                         {d.manufacturer} {d.model}
                       </p>
-                      <ExternalLink 
-                        size={12} 
+                      <ExternalLink
+                        size={12}
                         className="transition-all duration-200"
-                        style={{ 
+                        style={{
                           color: MUTED,
                           opacity: isHovered ? 1 : 0.3,
                           transform: isHovered ? "translate(1px, -1px)" : "none"
-                        }} 
+                        }}
                       />
                     </div>
                     <p className="text-[11px] font-medium tracking-wide" style={{ color: MUTED, fontFamily: MONO }}>
@@ -250,6 +272,7 @@ export default function Devices() {
                 {/* Context Menu Dropdown Anchor Row Layer */}
                 <div className="relative justify-self-end">
                   <button
+                    {...(idx === 0 ? { "data-tour": "devices-row-menu" } : {})}
                     onClick={(e) => {
                       e.stopPropagation();
                       setOpenMenuId(isMenuOpen ? null : d.id);
@@ -259,7 +282,7 @@ export default function Devices() {
                   >
                     <MoreHorizontal size={16} className={`transition-transform duration-200 ${isMenuOpen ? 'rotate-90' : ''}`} />
                   </button>
-                  
+
                   {isMenuOpen && (
                     <div className="absolute right-0 top-full mt-1 z-50">
                       <RowActionsMenu device={d} onClose={() => setOpenMenuId(null)} onAction={handleAction} />

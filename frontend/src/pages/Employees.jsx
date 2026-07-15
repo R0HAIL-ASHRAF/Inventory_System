@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Search, Plus, MoreHorizontal } from "lucide-react";
+import { Search, Plus, MoreHorizontal, HelpCircle } from "lucide-react";
 import { INK, MUTED, BORDER, ACCENT, BRAND, CARD, PAGE_BG, MONO, SURFACE, CREAMt } from "../theme";
 import { EMPLOYEES, DEPARTMENTS } from "../data";
 import RowActionsMenu from "../components/employees/RowActionsMenu";
@@ -8,6 +8,8 @@ import ViewEmployeeModal from "../components/employees/ViewEmployeeModal";
 import EditEmployeeModal from "../components/employees/EditEmployeeModal";
 import TransferPlacementModal from "../components/employees/TransferPlacementModal";
 import DeleteEmployeeModal from "../components/employees/DeleteEmployeeModal";
+import { useTour } from "../components/tour/Tour";
+import { employeeTourSteps } from "../components/tour/TourSteps";
 
 const initials = (e) => `${e.name.first[0]}${e.name.last[0]}`.toUpperCase();
 
@@ -19,6 +21,7 @@ export default function Employees() {
   const [activeModal, setActiveModal] = useState(null); // { type, employee }
   const [focusedSearch, setFocusedSearch] = useState(false);
   const [hoveredRowId, setHoveredRowId] = useState(null);
+  const { startTour, hasSeenTour } = useTour();
 
   const handleAction = (action, employee) => setActiveModal({ type: action, employee });
   const closeModal = () => setActiveModal(null);
@@ -41,9 +44,15 @@ export default function Employees() {
     return matchesDept && matchesQuery;
   });
 
+  useEffect(() => {
+    if (!hasSeenTour("employees")) {
+      const t = setTimeout(() => startTour("employees", employeeTourSteps), 600);
+      return () => clearTimeout(t);
+    }
+  }, []);
+
   return (
     <div className="space-y-6">
-      {/* High-Fidelity Interaction CSS Keyframes */}
       <style>{`
         @keyframes pageItemUp {
           from { opacity: 0; transform: translateY(8px); }
@@ -58,11 +67,10 @@ export default function Employees() {
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
           <p className="text-[33px] font-bold tracking-tight" style={{ color: "#FFFFFF" }}>Employees</p>
-          
-          {/* Enhanced Premium Employee Counter */}
-          <div className="flex items-center gap-2 mt-1 select-none">
-            <span 
-              className="inline-flex items-center justify-center px-2 py-0.5 rounded-md text-[23px] font-bold tracking-wide" 
+
+          <div className="flex items-center gap-2 mt-1 select-none" data-tour="employees-count">
+            <span
+              className="inline-flex items-center justify-center px-2 py-0.5 rounded-md text-[23px] font-bold tracking-wide"
               style={{ backgroundColor: `${BRAND}18`, color: ACCENT, fontFamily: MONO, fontFeatureSettings: "'tnum'" }}
             >
               {employees.length}
@@ -72,25 +80,34 @@ export default function Employees() {
             </span>
           </div>
         </div>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => startTour("employees", employeeTourSteps)}
+            className="p-2 rounded-lg hover:bg-black/5"
+            title="Take a tour"
+          >
+            <HelpCircle size={33} style={{ color: ACCENT }} />
+          </button>
 
-        <Link
-          to="/employees/new"
-          className="flex items-center gap-1.5 rounded-xl px-4 h-10 text-sm font-semibold transition-all duration-200 hover:shadow-md hover:opacity-95 active:scale-95"
-          style={{ backgroundColor: ACCENT, color: "#FFFCDC" }}
-        >
-          <Plus size={16} strokeWidth={2.5} />
-          New Employee
-        </Link>
+          <Link
+            to="/employees/new"
+            data-tour="employees-new"
+            className="flex items-center gap-1.5 rounded-xl px-4 h-10 text-sm font-semibold transition-all duration-200 hover:shadow-md hover:opacity-95 active:scale-95"
+            style={{ backgroundColor: ACCENT, color: "#FFFCDC" }}
+          >
+            <Plus size={16} strokeWidth={2.5} />
+            New Employee
+          </Link>
+        </div>
       </div>
 
-      {/* Search & Filtration Dashboard Controls */}
       <div className="flex items-center gap-3 flex-wrap bg-black/[0.01] p-3 rounded-2xl border" style={{ borderColor: BORDER }}>
-        
-        {/* Animated Search Bar Component */}
+
         <div
+          data-tour="employees-search"
           className="flex items-center gap-2 rounded-xl px-3.5 h-10 w-full max-w-xs transition-all duration-200"
-          style={{ 
-            backgroundColor: PAGE_BG, 
+          style={{
+            backgroundColor: PAGE_BG,
             border: `1.5px solid ${focusedSearch ? ACCENT : BORDER}`,
             boxShadow: focusedSearch ? `0 0 0 4px rgba(201,162,39,0.12)` : "none"
           }}
@@ -107,10 +124,10 @@ export default function Employees() {
           />
         </div>
 
-        {/* Departments Dropdown List */}
         <select
           value={deptFilter}
           onChange={(e) => setDeptFilter(e.target.value)}
+          data-tour="employees-filter"
           className="text-[12.5px] font-semibold px-3 h-10 rounded-xl outline-none cursor-pointer border transition-all hover:bg-slate-50/50"
           style={{ backgroundColor: CREAMt, color: INK, borderColor: BORDER }}
         >
@@ -121,15 +138,13 @@ export default function Employees() {
         </select>
       </div>
 
-      {/* Main Employees Grid Table Container */}
       <div className="rounded-2xl border overflow-hidden transition-shadow duration-300 shadow-sm" style={{ ...CARD, borderColor: BORDER }}>
-        {/* Table Column Headers */}
         <div
           className="grid px-6 py-3.5 text-[11px] font-bold uppercase tracking-wider select-none bg-black/[0.01]"
-          style={{ 
-            gridTemplateColumns: "2.2fr 1.3fr 1fr 1.3fr 40px", 
-            color: MUTED, 
-            borderBottom: `1.5px solid ${BORDER}` 
+          style={{
+            gridTemplateColumns: "2.2fr 1.3fr 1fr 1.3fr 40px",
+            color: MUTED,
+            borderBottom: `1.5px solid ${BORDER}`
           }}
         >
           <span>Employee</span>
@@ -139,14 +154,12 @@ export default function Employees() {
           <span />
         </div>
 
-        {/* Empty States Handling Layer */}
         {rows.length === 0 && (
           <div className="px-6 py-14 text-center text-sm font-medium animate-table-row" style={{ color: MUTED }}>
             No registered employees match your chosen filters.
           </div>
         )}
 
-        {/* Data Rows Iterator */}
         <div className="divide-y" style={{ borderColor: BORDER }}>
           {rows.map((e, idx) => {
             const isHovered = hoveredRowId === e.id;
@@ -167,13 +180,12 @@ export default function Employees() {
                   zIndex: isMenuOpen ? 40 : isHovered ? 10 : 1
                 }}
               >
-                {/* Identification Frame */}
                 <div className="flex items-center gap-3 min-w-0">
-                  <div 
-                    className="flex items-center justify-center rounded-full shrink-0 text-[12px] font-semibold transition-all duration-300" 
-                    style={{ 
-                      width: 34, 
-                      height: 34, 
+                  <div
+                    className="flex items-center justify-center rounded-full shrink-0 text-[12px] font-semibold transition-all duration-300"
+                    style={{
+                      width: 34,
+                      height: 34,
                       backgroundColor: ACCENT,
                       color: "#FFFCDC",
                       transform: isHovered ? "scale(1.06)" : "scale(1)"
@@ -191,20 +203,17 @@ export default function Employees() {
                   </div>
                 </div>
 
-                {/* Designation Cell */}
                 <p className="text-[13px] font-semibold truncate" style={{ color: INK }}>{e.designation}</p>
 
-                {/* Department Cell */}
                 <p className="text-[13px] font-semibold truncate" style={{ color: INK }}>{e.department}</p>
 
-                {/* Placement Field */}
                 <p className="text-[12.5px] font-semibold truncate" style={{ color: MUTED }}>
                   {[e.section, e.room || e.cabin].filter(Boolean).join(" · ") || "—"}
                 </p>
 
-                {/* Context Menu Dropdown Anchor Row Layer */}
                 <div className="relative justify-self-end">
                   <button
+                    {...(idx === 0 ? { "data-tour": "employees-row-menu" } : {})}
                     onClick={(eEvent) => {
                       eEvent.stopPropagation();
                       setOpenMenuId(isMenuOpen ? null : e.id);
@@ -214,7 +223,7 @@ export default function Employees() {
                   >
                     <MoreHorizontal size={16} className={`transition-transform duration-200 ${isMenuOpen ? 'rotate-90' : ''}`} />
                   </button>
-                  
+
                   {isMenuOpen && (
                     <div className="absolute right-0 top-full mt-1 z-50">
                       <RowActionsMenu employee={e} onClose={() => setOpenMenuId(null)} onAction={handleAction} />
@@ -227,7 +236,6 @@ export default function Employees() {
         </div>
       </div>
 
-      {/* Modals Injections Core Mounts System */}
       {activeModal?.type === "view" && (
         <ViewEmployeeModal employee={activeModal.employee} onClose={closeModal} />
       )}
