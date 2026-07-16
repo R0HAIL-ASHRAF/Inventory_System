@@ -391,8 +391,7 @@ export default function Devices() {
         )}
       </div>
 
-      {/* Modals Injections Core Mounts System — view is available to everyone,
-          management actions only ever get triggered from admin-only controls above */}
+      
       {activeModal?.type === "view" && <ViewDeviceModal device={activeModal.device} onClose={closeModal} />}
       {isAdmin && activeModal?.type === "edit" && (
         <EditDeviceModal device={activeModal.device} onClose={closeModal} onSave={updateDevice} />

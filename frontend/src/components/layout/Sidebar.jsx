@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
-import piaLogo from "../../assets/12logo.png";
 import {
   LayoutGrid,
   Laptop2,
@@ -43,7 +42,7 @@ const NAV_GROUPS = [
 export default function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const { user } = useAuth();
-  
+
   if (!user) return null;
 
   const visibleGroups = NAV_GROUPS.map((group) => ({
@@ -53,34 +52,21 @@ export default function Sidebar() {
 
   return (
     <aside
-      className="h-screen flex flex-col  transition-all duration-300 ease-in-out relative z-20"
+      className="h-full flex flex-col transition-all duration-300 ease-in-out relative z-0"
       style={{ width: collapsed ? 76 : 256, backgroundColor: CREAM }}
     >
       {/* Floating Border Toggle Button */}
       <button
         onClick={() => setCollapsed(!collapsed)}
-        className="absolute -right-3 top-22 flex items-center justify-center rounded-full transition-transform hover:scale-110 z-30"
+        className="absolute -right-3 top-6 flex items-center justify-center rounded-full transition-transform hover:scale-110 z-30"
         style={{ width: 24, height: 24, backgroundColor: CREAM, color: BRAND, border: `1px solid ${BRAND}` }}
         title={collapsed ? "Expand Sidebar" : "Collapse Sidebar"}
       >
         {collapsed ? <ChevronsRight size={14} strokeWidth={2.5} /> : <ChevronsLeft size={14} strokeWidth={2.5} />}
       </button>
 
-      {/* Brand Header */}
-      <div
-        className="shrink-0 w-full"
-        style={{
-          backgroundColor: "#FFFFFF",
-          height: collapsed ? "0px" : "80px",
-          transition: "height 0.3s ease",
-          paddingTop: collapsed ? 80 : "10px",
-        }}
-      >
-        <img src={piaLogo} alt="PIA Logo" className="w-full h-full " style={{ objectPosition: "top center" }} />
-      </div>
-
       {/* Nav Menu */}
-      <nav className="flex-1 overflow-y-auto py-4 px-3 space-y-6 mt-2">
+      <nav className="flex-1 py-4 px-3 space-y-6 mt-6">
         {visibleGroups.map((group) => (
           <div key={group.label}>
             {!collapsed && (
@@ -130,4 +116,4 @@ export default function Sidebar() {
       </nav>
     </aside>
   );
-} 
+}
