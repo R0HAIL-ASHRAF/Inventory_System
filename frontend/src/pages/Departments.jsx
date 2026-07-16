@@ -142,7 +142,7 @@ export default function Departments() {
 
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <p className="text-[33px] font-semibold" style={{ color: "#FFFFFF", fontFamily: FONT_DISPLAY }}>
+          <p className="text-[33px] font-semibold" style={{ color: ACCENT, fontFamily: FONT_DISPLAY }}>
             Departments
           </p>
           <div className="flex items-center gap-2 mt-1">

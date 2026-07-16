@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Search, Plus, MoreHorizontal, ExternalLink, HelpCircle, Download} from "lucide-react";
-import { INK, MUTED, BORDER, ACCENT, BRAND, CARD, PAGE_BG, FONT_DISPLAY, SURFACE, CREAMt, MONO } from "../theme";
+import { Search, Plus, MoreHorizontal, ExternalLink, HelpCircle, Download } from "lucide-react";
+import { INK, MUTED, BORDER, ACCENT, BRAND, CARD, PAGE_BG, MONO, SURFACE, CREAMt } from "../theme";
 import { DEVICES, DEPARTMENTS } from "../data";
 import StatusBadge from "../components/devices/StatusBadge";
 import RowActionsMenu from "../components/devices/RowActionMenu";
@@ -12,8 +12,10 @@ import MarkFaultyModal from "../components/devices/MarkFaultyModal";
 import DeleteDeviceModal from "../components/devices/DeleteDeviceModal";
 import { useTour } from "../components/tour/Tour";
 import { devicesTourSteps } from "../components/tour/TourSteps";
+import Pagination from "../components/common/Pagination";
 
 const STATUS_FILTERS = ["All", "In-use", "Spare", "Faulty", "Dispatched", "Retired"];
+const PAGE_SIZE = 8;
 
 export default function Devices() {
   const [devices, setDevices] = useState(DEVICES);
@@ -25,6 +27,7 @@ export default function Devices() {
   const [activeModal, setActiveModal] = useState(null); // { type, device }
   const [focusedSearch, setFocusedSearch] = useState(false);
   const [hoveredRowId, setHoveredRowId] = useState(null);
+  const [page, setPage] = useState(1);
   const { startTour, hasSeenTour } = useTour();
 
   const categories = ["All", ...Array.from(new Set(devices.map((d) => d.type)))];
@@ -51,6 +54,14 @@ export default function Devices() {
   });
 
   useEffect(() => {
+    setPage(1);
+  }, [query, statusFilter, categoryFilter, deptFilter]);
+
+  const totalItems = rows.length;
+  const totalPages = Math.max(1, Math.ceil(totalItems / PAGE_SIZE));
+  const pagedRows = rows.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+
+  useEffect(() => {
     if (!hasSeenTour("devices")) {
       const t = setTimeout(() => startTour("devices", devicesTourSteps), 600);
       return () => clearTimeout(t);
@@ -72,12 +83,12 @@ export default function Devices() {
       {/* Header Block */}
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
-          <p className="text-[33px] font-bold tracking-tight" style={{ color: "#FFFFFF" }}>Devices</p>
+          <p className="text-[33px] font-bold tracking-tight" style={{ color: ACCENT }}>Devices</p>
 
           <div className="flex items-center gap-2 mt-1 select-none" data-tour="devices-count">
             <span
               className="inline-flex items-center justify-center px-2 py-0.5 rounded-md text-[23px] font-bold tracking-wide"
-              style={{ backgroundColor: `${BRAND}18`, color: ACCENT, fontFamily: FONT_DISPLAY, fontFeatureSettings: "'tnum'" }}
+              style={{ backgroundColor: `${BRAND}18`, color: ACCENT, fontFamily: MONO, fontFeatureSettings: "'tnum'" }}
             >
               {devices.length}
             </span>
@@ -93,7 +104,7 @@ export default function Devices() {
             className="p-2 rounded-lg hover:bg-black/5"
             title="Take a tour"
           >
-            <HelpCircle size={33} style={{ color: ACCENT }} />
+            <HelpCircle size={23} style={{ color: ACCENT }} />
           </button>
 
           <Link
@@ -103,17 +114,17 @@ export default function Devices() {
             style={{ backgroundColor: ACCENT, color: "#FFFCDC" }}
           >
             <Plus size={16} strokeWidth={2.5} />
-            New Device
+            Export CSV
           </Link>
-          <Link
-            to=""
-            data-tour="devices-new"
+          <button
+            type="button"
+            onClick={() => {}}
             className="flex items-center gap-1.5 rounded-xl px-4 h-10 text-sm font-semibold transition-all duration-200 hover:shadow-md hover:opacity-95 active:scale-95"
-            style={{ backgroundColor: ACCENT, color: "#FFFCDC" }}
+            style={{ border: `1px solid ${BORDER}`, color: SURFACE, backgroundColor: ACCENT }}
           >
             <Download size={16} strokeWidth={2.5} />
-            Import CSV
-          </Link>
+            Export CSV
+          </button>
         </div>
       </div>
 
@@ -207,9 +218,9 @@ export default function Devices() {
           </div>
         )}
 
-        {/* Data Rows Iterator */}
+        {/* Data Rows Iterator — renders only the current page's slice */}
         <div className="divide-y" style={{ borderColor: BORDER }}>
-          {rows.map((d, idx) => {
+          {pagedRows.map((d, idx) => {
             const Icon = d.icon;
             const isHovered = hoveredRowId === d.id;
             const isMenuOpen = openMenuId === d.id;
@@ -272,7 +283,7 @@ export default function Devices() {
 
                 {/* Assignment Target Field */}
                 <p className="text-[13px] font-medium truncate transition-all" style={{ color: d.shared ? ACCENT : INK, fontWeight: d.shared ? 600 : 500 }}>
-                  {d.assignedTo}
+                  {d.assignedTo || "Unassigned"}
                 </p>
 
                 {/* Chronology / Metric Time Field */}
@@ -302,6 +313,20 @@ export default function Devices() {
             );
           })}
         </div>
+
+        {/* Pagination — client-side for now (see PAGE_SIZE); swap totalItems/pagedRows
+            for a real API response later without touching Pagination itself */}
+        {rows.length > 0 && (
+          <div className="px-6 py-4" style={{ borderTop: `1px solid ${BORDER}` }}>
+            <Pagination
+              page={page}
+              totalPages={totalPages}
+              totalItems={totalItems}
+              pageSize={PAGE_SIZE}
+              onPageChange={setPage}
+            />
+          </div>
+        )}
       </div>
 
       {/* Modals Injections Core Mounts System */}

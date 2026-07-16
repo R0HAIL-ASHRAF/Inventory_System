@@ -216,11 +216,11 @@ export default function ActivityLogs() {
             <div key={bucket} className={bIdx > 0 ? "mt-6" : ""}>
               <div
                 className="sticky top-0 z-10 flex items-center gap-2 py-2 mb-1"
-                style={{ background: SURFACE }}
+                style={{ background: "#fcfae9" }}
               >
                 <span
                   className="text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md"
-                  style={{ background: PAGE_BG, color: MUTED, fontFamily: MONO }}
+                  style={{ background: PAGE_BG, color: ACCENT, fontFamily: MONO }}
                 >
                   {bucket}
                 </span>
@@ -229,7 +229,7 @@ export default function ActivityLogs() {
 
               <div className="relative pl-1">
                 {/* connecting timeline rail */}
-                <div className="absolute left-[19px] top-2 bottom-2 w-px" style={{ background: BORDER }} />
+                <div className="absolute left-[19px] top-2 bottom-2 w-px" style={{ background: CREAMt }} />
 
                 {grouped[bucket].map((log, idx) => {
                   const cfg = TYPE_CONFIG[log.type];
@@ -304,7 +304,7 @@ export default function ActivityLogs() {
         {filtered.length > 0 && (
           <button
             className="w-full py-3.5 text-[12.5px] font-semibold flex items-center justify-center gap-1.5 transition-colors duration-150 hover:bg-black/[0.02]"
-            style={{ color: MUTED, borderTop: `1px solid ${BORDER}` }}
+            style={{ color: ACCENT, borderTop: `1px solid ${BORDER}` }}
           >
             Load older events
             <ChevronDown size={13} />

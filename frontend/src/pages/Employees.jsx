@@ -10,8 +10,10 @@ import TransferPlacementModal from "../components/employees/TransferPlacementMod
 import DeleteEmployeeModal from "../components/employees/DeleteEmployeeModal";
 import { useTour } from "../components/tour/Tour";
 import { employeeTourSteps } from "../components/tour/TourSteps";
+import Pagination from "../components/common/Pagination";
 
 const initials = (e) => `${e.name.first[0]}${e.name.last[0]}`.toUpperCase();
+const PAGE_SIZE = 8;
 
 export default function Employees() {
   const [employees, setEmployees] = useState(EMPLOYEES);
@@ -21,6 +23,7 @@ export default function Employees() {
   const [activeModal, setActiveModal] = useState(null); // { type, employee }
   const [focusedSearch, setFocusedSearch] = useState(false);
   const [hoveredRowId, setHoveredRowId] = useState(null);
+  const [page, setPage] = useState(1);
   const { startTour, hasSeenTour } = useTour();
 
   const handleAction = (action, employee) => setActiveModal({ type: action, employee });
@@ -45,6 +48,14 @@ export default function Employees() {
   });
 
   useEffect(() => {
+    setPage(1);
+  }, [query, deptFilter]);
+
+  const totalItems = rows.length;
+  const totalPages = Math.max(1, Math.ceil(totalItems / PAGE_SIZE));
+  const pagedRows = rows.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+
+  useEffect(() => {
     if (!hasSeenTour("employees")) {
       const t = setTimeout(() => startTour("employees", employeeTourSteps), 600);
       return () => clearTimeout(t);
@@ -66,7 +77,7 @@ export default function Employees() {
       {/* Header Block */}
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
-          <p className="text-[33px] font-bold tracking-tight" style={{ color: "#FFFFFF" }}>Employees</p>
+          <p className="text-[33px] font-bold tracking-tight" style={{ color: ACCENT }}>Employees</p>
 
           <div className="flex items-center gap-2 mt-1 select-none" data-tour="employees-count">
             <span
@@ -86,7 +97,7 @@ export default function Employees() {
             className="p-2 rounded-lg hover:bg-black/5"
             title="Take a tour"
           >
-            <HelpCircle size={33} style={{ color: ACCENT }} />
+            <HelpCircle size={23} style={{ color: ACCENT }} />
           </button>
 
           <Link
@@ -98,15 +109,15 @@ export default function Employees() {
             <Plus size={16} strokeWidth={2.5} />
             New Employee
           </Link>
-           <Link
-            to=""
-            data-tour="devices-new"
+          <button
+            type="button"
+            onClick={() => {}}
             className="flex items-center gap-1.5 rounded-xl px-4 h-10 text-sm font-semibold transition-all duration-200 hover:shadow-md hover:opacity-95 active:scale-95"
-            style={{ backgroundColor: ACCENT, color: "#FFFCDC" }}
+            style={{ border: `1px solid ${BORDER}`, color: SURFACE, backgroundColor: ACCENT }}
           >
             <Download size={16} strokeWidth={2.5} />
-            Import CSV
-          </Link>
+            Export CSV
+          </button>
         </div>
       </div>
 
@@ -169,8 +180,9 @@ export default function Employees() {
           </div>
         )}
 
+        {/* Data Rows Iterator — renders only the current page's slice */}
         <div className="divide-y" style={{ borderColor: BORDER }}>
-          {rows.map((e, idx) => {
+          {pagedRows.map((e, idx) => {
             const isHovered = hoveredRowId === e.id;
             const isMenuOpen = openMenuId === e.id;
 
@@ -243,6 +255,20 @@ export default function Employees() {
             );
           })}
         </div>
+
+        {/* Pagination — client-side for now; swap totalItems/pagedRows for a
+            real API response later without touching Pagination itself */}
+        {rows.length > 0 && (
+          <div className="px-6 py-4" style={{ borderTop: `1px solid ${BORDER}` }}>
+            <Pagination
+              page={page}
+              totalPages={totalPages}
+              totalItems={totalItems}
+              pageSize={PAGE_SIZE}
+              onPageChange={setPage}
+            />
+          </div>
+        )}
       </div>
 
       {activeModal?.type === "view" && (
