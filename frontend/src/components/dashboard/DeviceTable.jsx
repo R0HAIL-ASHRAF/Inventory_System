@@ -7,7 +7,6 @@ import DeviceRowActionsMenu from "../devices/RowActionMenu";
 import EmployeeRowActionsMenu from "../employees/RowActionsMenu";
 
 import ViewDeviceModal from "../devices/ViewDeviceModal";
-import EditDeviceModal from "../devices/EditDeviceModal";
 import TransferDepartmentModal from "../devices/TransferDepatModal";
 import MarkFaultyModal from "../devices/MarkFaultyModal";
 import DeleteDeviceModal from "../devices/DeleteDeviceModal";
@@ -97,7 +96,6 @@ export default function DeviceTable() {
                 zIndex: isMenuOpen ? 50 : isHovered ? 20 : 1,
               }}
             >
-              {/* Icon Frame */}
               <div 
                 className="flex items-center justify-center rounded-lg shrink-0 transition-transform duration-200" 
                 style={{ 
@@ -148,7 +146,6 @@ export default function DeviceTable() {
 
               
 
-              {/* Context Action Menu Dropdown Anchor */}
               <div className="relative shrink-0" style={{ zIndex: 60 }}>
                 <button 
                   onClick={(e) => {
@@ -161,15 +158,7 @@ export default function DeviceTable() {
                   <MoreHorizontal size={16} />
                 </button>
                 
-                {isMenuOpen && (
-                  <div className="absolute right-0 top-full mt-1 z-50">
-                    {tab === "devices" ? (
-                      <DeviceRowActionsMenu device={r} onClose={() => setOpenMenuId(null)} onAction={handleAction} />
-                    ) : (
-                      <EmployeeRowActionsMenu employee={r} onClose={() => setOpenMenuId(null)} onAction={handleAction} />
-                    )}
-                  </div>
-                )}
+                
               </div>
 
             </div>
@@ -177,17 +166,6 @@ export default function DeviceTable() {
         })}
       </div>
 
-      {/* Modals Injection System */}
-      {tab === "devices" && activeModal?.type === "view" && <ViewDeviceModal device={activeModal.item} onClose={closeModal} />}
-      {tab === "devices" && activeModal?.type === "edit" && <EditDeviceModal device={activeModal.item} onClose={closeModal} onSave={closeModal} />}
-      {tab === "devices" && activeModal?.type === "transfer" && <TransferDepartmentModal device={activeModal.item} onClose={closeModal} onTransfer={closeModal} />}
-      {tab === "devices" && activeModal?.type === "flag-faulty" && <MarkFaultyModal device={activeModal.item} onClose={closeModal} onConfirm={closeModal} />}
-      {tab === "devices" && activeModal?.type === "delete" && <DeleteDeviceModal device={activeModal.item} onClose={closeModal} onConfirm={closeModal} />}
-
-      {tab === "people" && activeModal?.type === "view" && <ViewEmployeeModal employee={activeModal.item} onClose={closeModal} />}
-      {tab === "people" && activeModal?.type === "edit" && <EditEmployeeModal employee={activeModal.item} onClose={closeModal} onSave={closeModal} />}
-      {tab === "people" && activeModal?.type === "transfer" && <TransferPlacementModal employee={activeModal.item} onClose={closeModal} onTransfer={closeModal} />}
-      {tab === "people" && activeModal?.type === "delete" && <DeleteEmployeeModal employee={activeModal.item} onClose={closeModal} onConfirm={closeModal} />}
     </div>
   );
 }

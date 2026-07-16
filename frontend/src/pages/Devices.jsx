@@ -13,11 +13,13 @@ import DeleteDeviceModal from "../components/devices/DeleteDeviceModal";
 import { useTour } from "../components/tour/Tour";
 import { devicesTourSteps } from "../components/tour/TourSteps";
 import Pagination from "../components/common/Pagination";
+import { useAuth } from "../components/authContexts/AuthContext";
 
 const STATUS_FILTERS = ["All", "In-use", "Spare", "Faulty", "Dispatched", "Retired"];
 const PAGE_SIZE = 8;
 
 export default function Devices() {
+  const { user, loading: authLoading } = useAuth();
   const [devices, setDevices] = useState(DEVICES);
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
@@ -30,7 +32,22 @@ export default function Devices() {
   const [page, setPage] = useState(1);
   const { startTour, hasSeenTour } = useTour();
 
-  const categories = ["All", ...Array.from(new Set(devices.map((d) => d.type)))];
+  const isAdmin = user?.role === "admin";
+
+  // Admins manage the full fleet. Everyone else only sees devices that are
+  // actually theirs: assigned directly to them, or shared devices they're
+  // listed on via assignment.shared_users.
+  const scopedDevices = React.useMemo(() => {
+    if (!user) return [];
+    if (isAdmin) return devices;
+    return devices.filter(
+      (d) =>
+        d.assignedTo === user.id ||
+        (Array.isArray(d.assignment?.shared_users) && d.assignment.shared_users.includes(user.id))
+    );
+  }, [devices, user, isAdmin]);
+
+  const categories = ["All", ...Array.from(new Set(scopedDevices.map((d) => d.type)))];
 
   const handleAction = (action, device) => setActiveModal({ type: action, device });
   const closeModal = () => setActiveModal(null);
@@ -43,7 +60,7 @@ export default function Devices() {
     setDevices((list) => list.filter((d) => d.id !== device.id));
   };
 
-  const rows = devices.filter((d) => {
+  const rows = scopedDevices.filter((d) => {
     const matchesStatus = statusFilter === "All" || d.status === statusFilter.toLowerCase();
     const matchesCategory = categoryFilter === "All" || d.type === categoryFilter;
     const matchesDept = deptFilter === "All" || d.dept === deptFilter;
@@ -66,7 +83,25 @@ export default function Devices() {
       const t = setTimeout(() => startTour("devices", devicesTourSteps), 600);
       return () => clearTimeout(t);
     }
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Auth still resolving (e.g. reading localStorage on refresh) — avoid a
+  // flash of "no devices" before we know who's actually signed in.
+  if (authLoading) {
+    return (
+      <div className="px-6 py-14 text-center text-sm font-medium" style={{ color: MUTED }}>
+        Loading your devices…
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="px-6 py-14 text-center text-sm font-medium" style={{ color: MUTED }}>
+        You need to sign in to view devices.
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -83,17 +118,19 @@ export default function Devices() {
       {/* Header Block */}
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
-          <p className="text-[33px] font-bold tracking-tight" style={{ color: ACCENT }}>Devices</p>
+          <p className="text-[33px] font-bold tracking-tight" style={{ color: ACCENT }}>
+            {isAdmin ? "Devices" : "My Devices"}
+          </p>
 
           <div className="flex items-center gap-2 mt-1 select-none" data-tour="devices-count">
             <span
               className="inline-flex items-center justify-center px-2 py-0.5 rounded-md text-[23px] font-bold tracking-wide"
               style={{ backgroundColor: `${BRAND}18`, color: ACCENT, fontFamily: MONO, fontFeatureSettings: "'tnum'" }}
             >
-              {devices.length}
+              {scopedDevices.length}
             </span>
             <span className="text-[17px] font-semibold tracking-tight" style={{ color: ACCENT }}>
-              active corporate assets cataloged
+              {isAdmin ? "active corporate assets cataloged" : "devices assigned to you"}
             </span>
           </div>
         </div>
@@ -107,24 +144,33 @@ export default function Devices() {
             <HelpCircle size={23} style={{ color: ACCENT }} />
           </button>
 
-          <Link
-            to="/devices/new"
-            data-tour="devices-new"
-            className="flex items-center gap-1.5 rounded-xl px-4 h-10 text-sm font-semibold transition-all duration-200 hover:shadow-md hover:opacity-95 active:scale-95"
-            style={{ backgroundColor: ACCENT, color: "#FFFCDC" }}
-          >
-            <Plus size={16} strokeWidth={2.5} />
-            Export CSV
-          </Link>
-          <button
-            type="button"
-            onClick={() => {}}
-            className="flex items-center gap-1.5 rounded-xl px-4 h-10 text-sm font-semibold transition-all duration-200 hover:shadow-md hover:opacity-95 active:scale-95"
-            style={{ border: `1px solid ${BORDER}`, color: SURFACE, backgroundColor: ACCENT }}
-          >
-            <Download size={16} strokeWidth={2.5} />
-            Export CSV
-          </button>
+          {/* Only admins manage the fleet — add/export only make sense at that scope */}
+          {isAdmin && (
+            <>
+              <button
+                type="button"
+                onClick={() => {
+                  // Wire this up to your real CSV export flow.
+                  console.log("Exporting devices:", rows);
+                }}
+                className="flex items-center gap-1.5 rounded-xl px-4 h-10 text-sm font-semibold transition-all duration-200 hover:shadow-md hover:opacity-95 active:scale-95"
+                style={{ border: `1px solid ${BORDER}`, color: INK, backgroundColor: SURFACE }}
+              >
+                <Download size={16} strokeWidth={2.5} />
+                Export CSV
+              </button>
+
+              <Link
+                to="/devices/new"
+                data-tour="devices-new"
+                className="flex items-center gap-1.5 rounded-xl px-4 h-10 text-sm font-semibold transition-all duration-200 hover:shadow-md hover:opacity-95 active:scale-95"
+                style={{ backgroundColor: ACCENT, color: "#FFFCDC" }}
+              >
+                <Plus size={16} strokeWidth={2.5} />
+                New Device
+              </Link>
+            </>
+          )}
         </div>
       </div>
 
@@ -165,18 +211,20 @@ export default function Devices() {
             ))}
           </select>
 
-          {/* Departments Dropdown List */}
-          <select
-            value={deptFilter}
-            onChange={(e) => setDeptFilter(e.target.value)}
-            className="text-[12.5px] font-semibold px-3 h-10 rounded-xl outline-none cursor-pointer border transition-all hover:bg-slate-50/50"
-            style={{ backgroundColor: CREAMt, color: INK, borderColor: BORDER }}
-          >
-            <option value="All">All Departments</option>
-            {DEPARTMENTS.map((dep) => (
-              <option key={dep} value={dep}>{dep}</option>
-            ))}
-          </select>
+          {/* Departments Dropdown List — only relevant when you're viewing more than your own devices */}
+          {isAdmin && (
+            <select
+              value={deptFilter}
+              onChange={(e) => setDeptFilter(e.target.value)}
+              className="text-[12.5px] font-semibold px-3 h-10 rounded-xl outline-none cursor-pointer border transition-all hover:bg-slate-50/50"
+              style={{ backgroundColor: CREAMt, color: INK, borderColor: BORDER }}
+            >
+              <option value="All">All Departments</option>
+              {DEPARTMENTS.map((dep) => (
+                <option key={dep} value={dep}>{dep}</option>
+              ))}
+            </select>
+          )}
 
           {/* Unified Status Dropdown List */}
           <select
@@ -214,7 +262,9 @@ export default function Devices() {
         {/* Empty States Handling Layer */}
         {rows.length === 0 && (
           <div className="px-6 py-14 text-center text-sm font-medium animate-table-row" style={{ color: MUTED }}>
-            No registered assets match your chosen filters.
+            {isAdmin
+              ? "No registered assets match your chosen filters."
+              : "No devices are currently assigned to you."}
           </div>
         )}
 
@@ -289,24 +339,36 @@ export default function Devices() {
                 {/* Chronology / Metric Time Field */}
                 <p className="text-[12px] font-semibold" style={{ color: MUTED, fontFamily: MONO }}>{d.updated}</p>
 
-                {/* Context Menu Dropdown Anchor Row Layer */}
+                {/* Context Menu Dropdown Anchor Row Layer — only admins get management actions */}
                 <div className="relative justify-self-end">
-                  <button
-                    {...(idx === 0 ? { "data-tour": "devices-row-menu" } : {})}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setOpenMenuId(isMenuOpen ? null : d.id);
-                    }}
-                    style={{ color: isMenuOpen ? ACCENT : MUTED }}
-                    className="p-1.5 rounded-lg transition-all duration-200 hover:bg-black/5 active:scale-90"
-                  >
-                    <MoreHorizontal size={16} className={`transition-transform duration-200 ${isMenuOpen ? 'rotate-90' : ''}`} />
-                  </button>
+                  {isAdmin ? (
+                    <>
+                      <button
+                        {...(idx === 0 ? { "data-tour": "devices-row-menu" } : {})}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setOpenMenuId(isMenuOpen ? null : d.id);
+                        }}
+                        style={{ color: isMenuOpen ? ACCENT : MUTED }}
+                        className="p-1.5 rounded-lg transition-all duration-200 hover:bg-black/5 active:scale-90"
+                      >
+                        <MoreHorizontal size={16} className={`transition-transform duration-200 ${isMenuOpen ? 'rotate-90' : ''}`} />
+                      </button>
 
-                  {isMenuOpen && (
-                    <div className="absolute right-0 top-full mt-1 z-50">
-                      <RowActionsMenu device={d} onClose={() => setOpenMenuId(null)} onAction={handleAction} />
-                    </div>
+                      {isMenuOpen && (
+                        <div className="absolute right-0 top-full mt-1 z-50">
+                          <RowActionsMenu device={d} onClose={() => setOpenMenuId(null)} onAction={handleAction} />
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    <button
+                      onClick={() => handleAction("view", d)}
+                      className="p-1.5 rounded-lg transition-all duration-200 hover:bg-black/5"
+                      title="View details"
+                    >
+                      <ExternalLink size={15} style={{ color: MUTED }} />
+                    </button>
                   )}
                 </div>
               </div>
@@ -329,24 +391,29 @@ export default function Devices() {
         )}
       </div>
 
-      {/* Modals Injections Core Mounts System */}
+      {/* Modals Injections Core Mounts System — view is available to everyone,
+          management actions only ever get triggered from admin-only controls above */}
       {activeModal?.type === "view" && <ViewDeviceModal device={activeModal.device} onClose={closeModal} />}
-      {activeModal?.type === "edit" && <EditDeviceModal device={activeModal.device} onClose={closeModal} onSave={updateDevice} />}
-      {activeModal?.type === "transfer" && (
+      {isAdmin && activeModal?.type === "edit" && (
+        <EditDeviceModal device={activeModal.device} onClose={closeModal} onSave={updateDevice} />
+      )}
+      {isAdmin && activeModal?.type === "transfer" && (
         <TransferDepartmentModal
           device={activeModal.device}
           onClose={closeModal}
           onTransfer={(t) => updateDevice({ ...activeModal.device, dept: t.new_department })}
         />
       )}
-      {activeModal?.type === "flag-faulty" && (
+      {isAdmin && activeModal?.type === "flag-faulty" && (
         <MarkFaultyModal
           device={activeModal.device}
           onClose={closeModal}
           onConfirm={() => updateDevice({ ...activeModal.device, status: "faulty" })}
         />
       )}
-      {activeModal?.type === "delete" && <DeleteDeviceModal device={activeModal.device} onClose={closeModal} onConfirm={removeDevice} />}
+      {isAdmin && activeModal?.type === "delete" && (
+        <DeleteDeviceModal device={activeModal.device} onClose={closeModal} onConfirm={removeDevice} />
+      )}
     </div>
   );
 }
