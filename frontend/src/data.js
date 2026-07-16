@@ -6,6 +6,8 @@ import {
   Printer,
   Server,
   Router,
+  Tablet,
+  ScanLine,
   Network,
 } from "lucide-react";
 
@@ -718,7 +720,6 @@ export const ROLE_LABELS = {
  
 
 
-
 export const DEPARTMENT_TREE = [
   {
     id: "DEP-01",
@@ -728,87 +729,49 @@ export const DEPARTMENT_TREE = [
     locations: [
       {
         id: "LOC-01",
-        branch_location: "Head Office",
+        branch_location: "PIA TOWN OFFICE, LAHORE",
 
         sections: [
           {
             id: "SEC-01",
             name: "Accounts",
-
             rooms: [
-              {
-                id: "RM-01",
-                name: "Accounts Room",
-                person_ids: ["EMP-2208"],
-              },
-              {
-                id: "RM-02",
-                name: "Audit Room",
-                person_ids: ["EMP-2211"],
-              },
+              { id: "RM-01", name: "Accounts Room", person_ids: ["EMP-2208"] },
+              { id: "RM-02", name: "Audit Room", person_ids: ["EMP-2211"] },
             ],
-
             cabins: [
-              {
-                id: "CAB-01",
-                name: "Finance Manager Cabin",
-                person_id: "EMP-2206",
-              },
-              {
-                id: "CAB-02",
-                name: "Senior Accountant Cabin",
-                person_id: "EMP-2208",
-              },
+              { id: "CAB-01", name: "Finance Manager Cabin", person_id: "EMP-2206" },
+              { id: "CAB-02", name: "Senior Accountant Cabin", person_id: "EMP-2208" },
             ],
           },
-
           {
             id: "SEC-02",
             name: "Billing",
-
             rooms: [
-              {
-                id: "RM-03",
-                name: "Billing Room",
-                person_ids: ["EMP-2212", "EMP-2213"],
-              },
+              { id: "RM-03", name: "Billing Room", person_ids: ["EMP-2212", "EMP-2213"] },
             ],
-
             cabins: [],
           },
         ],
       },
-
       {
         id: "LOC-02",
-        branch_location: "Regional Office Lahore",
-
+        branch_location: "ALLAMA IQBAL AIRPORT",
         sections: [
           {
             id: "SEC-03",
             name: "Finance Branch",
-
             rooms: [
-              {
-                id: "RM-04",
-                name: "Finance Operations",
-                person_ids: ["EMP-2214"],
-              },
+              { id: "RM-04", name: "Finance Operations", person_ids: ["EMP-2214"] },
             ],
-
             cabins: [
-              {
-                id: "CAB-03",
-                name: "Branch Finance Head",
-                person_id: "EMP-2215",
-              },
+              { id: "CAB-03", name: "Branch Finance Head", person_id: "EMP-2215" },
             ],
           },
         ],
       },
     ],
   },
-
 
   {
     id: "DEP-02",
@@ -818,100 +781,91 @@ export const DEPARTMENT_TREE = [
     locations: [
       {
         id: "LOC-03",
-        branch_location: "Head Office",
-
+        branch_location: "PIA TOWN OFFICE KARACHI",
         sections: [
           {
             id: "SEC-04",
             name: "Infrastructure",
-
             rooms: [
-              {
-                id: "RM-05",
-                name: "Server Room",
-                person_ids: ["EMP-2204"],
-              },
-
-              {
-                id: "RM-06",
-                name: "Network Room",
-                person_ids: ["EMP-2209"],
-              },
+              { id: "RM-05", name: "Server Room", person_ids: ["EMP-2204"] },
             ],
-
             cabins: [
-              {
-                id: "CAB-04",
-                name: "ICT Manager Cabin",
-                person_id: "EMP-2204",
-              },
-
-              {
-                id: "CAB-05",
-                name: "Network Admin Cabin",
-                person_id: "EMP-2209",
-              },
+              { id: "CAB-04", name: "ICT Manager Cabin", person_id: "EMP-2204" },
             ],
           },
-
           {
             id: "SEC-05",
             name: "Help Desk",
-
             rooms: [
-              {
-                id: "RM-07",
-                name: "Support Room",
-                person_ids: [
-                  "EMP-2210",
-                  "EMP-2216",
-                  "EMP-2217",
-                ],
-              },
+              { id: "RM-07", name: "Support Room", person_ids: ["EMP-2210", "EMP-2216", "EMP-2217"] },
             ],
-
             cabins: [],
+          },
+          {
+            
+            id: "SEC-12",
+            name: "Development",
+            rooms: [
+              { id: "RM-18", name: "Room 201", person_ids: ["EMP-2201"] },
+            ],
+            cabins: [
+              { id: "CAB-11", name: "A-12", person_id: "EMP-2201" },
+            ],
+          },
+          {
+            
+            id: "SEC-13",
+            name: "Systems",
+            rooms: [
+              { id: "RM-19", name: "Server Room", person_ids: ["u1"] },
+            ],
+            cabins: [
+              { id: "CAB-12", name: "Admin Cabin", person_id: "u1" },
+            ],
+          },
+          {
+            // u2 (Bilal Ahmed, it_manager) — same treatment.
+            id: "SEC-14",
+            name: "Asset Management",
+            rooms: [
+              { id: "RM-20", name: "Room 201", person_ids: ["u2"] },
+            ],
+            cabins: [
+              { id: "CAB-13", name: "A-12", person_id: "u2" },
+            ],
           },
         ],
       },
-
-
       {
+       
         id: "LOC-04",
-        branch_location: "Data Center",
-
+        branch_location: "Data Center, KARACHI",
         sections: [
+          {
+            id: "SEC-15",
+            name: "Networking",
+            rooms: [
+              { id: "RM-06", name: "Network Room", person_ids: ["EMP-2209"] },
+            ],
+            cabins: [
+              { id: "CAB-05", name: "Network Admin Cabin", person_id: "EMP-2209" },
+            ],
+          },
           {
             id: "SEC-06",
             name: "Server Operations",
-
             rooms: [
-              {
-                id: "RM-08",
-                name: "Rack Area A",
-                person_ids: ["EMP-2218"],
-              },
-
-              {
-                id: "RM-09",
-                name: "Rack Area B",
-                person_ids: [],
-              },
+              { id: "RM-08", name: "Rack Area A", person_ids: ["EMP-2218"] },
+              { id: "RM-09", name: "Rack Area B", person_ids: [] },
             ],
-
             cabins: [
-              {
-                id: "CAB-06",
-                name: "System Admin Cabin",
-                person_id: "EMP-2218",
-              },
+              { id: "CAB-06", name: "System Admin Cabin", person_id: "EMP-2218" },
             ],
           },
         ],
       },
     ],
   },
-
 
   {
     id: "DEP-03",
@@ -921,68 +875,42 @@ export const DEPARTMENT_TREE = [
     locations: [
       {
         id: "LOC-05",
-        branch_location: "Head Office",
-
+        branch_location: "PIA TOWN OFFICE, LAHORE",
         sections: [
           {
             id: "SEC-07",
             name: "Operations",
-
             rooms: [
-              {
-                id: "RM-10",
-                name: "Operations Room",
-                person_ids: ["EMP-2205"],
-              },
+              
+              { id: "RM-10", name: "Executive Room", person_ids: ["EMP-2205"] },
             ],
-
             cabins: [
-              {
-                id: "CAB-07",
-                name: "General Manager Cabin",
-                person_id: "EMP-2205",
-              },
+             
+              { id: "CAB-07", name: "GM Cabin", person_id: "EMP-2205" },
             ],
           },
         ],
       },
-
-
       {
         id: "LOC-06",
         branch_location: "Workshop",
-
         sections: [
           {
             id: "SEC-08",
             name: "Maintenance",
-
             rooms: [
-              {
-                id: "RM-11",
-                name: "Workshop Floor",
-                person_ids: ["EMP-2219"],
-              },
-
-              {
-                id: "RM-12",
-                name: "Equipment Store",
-                person_ids: [],
-              },
+              { id: "RM-11", name: "Workshop Floor", person_ids: ["EMP-2219"] },
+              { id: "RM-12", name: "Equipment Store", person_ids: [] },
             ],
-
             cabins: [
-              {
-                id: "CAB-08",
-                name: "Supervisor Cabin",
-                person_id: "EMP-2220",
-              },
+              { id: "CAB-08", name: "Supervisor Cabin", person_id: "EMP-2220" },
             ],
           },
         ],
       },
     ],
   },
+
   {
     id: "DEP-04",
     name: "Reservations",
@@ -992,64 +920,36 @@ export const DEPARTMENT_TREE = [
       {
         id: "LOC-07",
         branch_location: "Head Office",
-
         sections: [
           {
             id: "SEC-09",
             name: "Customer Services",
-
             rooms: [
-              {
-                id: "RM-13",
-                name: "Front Desk",
-                person_ids: ["EMP-2203"],
-              },
-
-              {
-                id: "RM-14",
-                name: "Booking Team",
-                person_ids: [
-                  "EMP-2221",
-                  "EMP-2222",
-                ],
-              },
+              { id: "RM-13", name: "Front Desk", person_ids: ["EMP-2203"] },
+              { id: "RM-14", name: "Booking Team", person_ids: ["EMP-2221", "EMP-2222"] },
             ],
-
             cabins: [
-              {
-                id: "CAB-09",
-                name: "Reservations Manager Cabin",
-                person_id: "EMP-2223",
-              },
+              { id: "CAB-09", name: "Reservations Manager Cabin", person_id: "EMP-2223" },
             ],
           },
         ],
       },
-
       {
         id: "LOC-08",
         branch_location: "Airport Branch",
-
         sections: [
           {
             id: "SEC-10",
             name: "Airport Counter",
-
             rooms: [
-              {
-                id: "RM-15",
-                name: "Counter Area",
-                person_ids: ["EMP-2224"],
-              },
+              { id: "RM-15", name: "Counter Area", person_ids: ["EMP-2224"] },
             ],
-
             cabins: [],
           },
         ],
       },
     ],
   },
-
 
   {
     id: "DEP-05",
@@ -1060,35 +960,17 @@ export const DEPARTMENT_TREE = [
       {
         id: "LOC-09",
         branch_location: "Head Office",
-
         sections: [
           {
             id: "SEC-11",
             name: "Human Resources",
-
             rooms: [
-              {
-                id: "RM-16",
-                name: "HR Operations",
-                person_ids: [
-                  "EMP-2202",
-                  "EMP-2207",
-                ],
-              },
-
-              {
-                id: "RM-17",
-                name: "Interview Room",
-                person_ids: [],
-              },
+              { id: "RM-16", name: "HR Operations", person_ids: ["EMP-2202", "EMP-2207"] },
+              { id: "RM-17", name: "Interview Room", person_ids: [] },
             ],
-
             cabins: [
-              {
-                id: "CAB-10",
-                name: "HR Manager Cabin",
-                person_id: "EMP-2207",
-              },
+              { id: "CAB-10", name: "HR Manager Cabin", person_id: "EMP-2207" },
+              { id: "CAB-14", name: "HR-05", person_id: "EMP-2202" },
             ],
           },
         ],
@@ -1096,8 +978,6 @@ export const DEPARTMENT_TREE = [
     ],
   },
 ];
-
-
 
 export const DEPARTMENTS = [
   "Finance",
@@ -1169,7 +1049,7 @@ export const DEVICES = [
       section: "Infrastructure",
       room: "Server Room",
       cabin: "ICT Manager Cabin",
-      shared_users: [],
+      shared_users: ["EMP-2204"],
       assigned_date: "2025-02-12",
     },
   },
@@ -1196,6 +1076,41 @@ export const DEVICES = [
       ip_address: "192.168.10.31",
       mac_address: "A0:BC:DD:12:90:44",
     },
+    
+
+    assignment: {
+      location: "ICT Store",
+      section: "Inventory",
+      room: "Storage",
+      cabin: "",
+      shared_users: [],
+      assigned_date: "",
+    },
+  },
+
+
+  {
+    id: "DV-1003",
+    icon: Computer,
+    type: "Desktop",
+    manufacturer: "Dell",
+    model: "OptiPlex 7010",
+    status: "in-use",
+    dept: "ICT",
+    assignedTo: "EMP-2218",
+    shared: false,
+    updated: "1w ago",
+
+    specs: {
+      cpu: "Intel Core i5-12500",
+      ram_gb: 16,
+      disk_type: "SSD",
+      storage_gb: 512,
+      os: "Windows 11 Pro",
+      ip_address: "192.168.10.31",
+      mac_address: "A0:BC:DD:12:90:44",
+    },
+    
 
     assignment: {
       location: "ICT Store",
@@ -1502,5 +1417,583 @@ export const DEVICES = [
       assigned_date: "2025-04-01",
     },
   },
+    {
+    id: "DV-1013",
+    icon: Laptop2,
+    type: "Laptop",
+    manufacturer: "Dell",
+    model: "Latitude 5440",
+    status: "in-use",
+    dept: "HR",
+    assignedTo: "EMP-2207",
+    shared: false,
+    updated: "6d ago",
+    specs: {
+      cpu: "Intel Core i5-1335U",
+      ram_gb: 16,
+      disk_type: "SSD",
+      storage_gb: 512,
+      os: "Windows 11 Pro",
+      ip_address: "192.168.20.11",
+      mac_address: "6C:2B:59:AA:10:02",
+    },
+    assignment: {
+      location: "Head Office",
+      section: "Human Resources",
+      room: "HR Operations",
+      cabin: "HR Manager Cabin",
+      shared_users: [],
+      assigned_date: "2025-02-04",
+    },
+  },
+ 
+  {
+    id: "DV-1014",
+    icon: Computer,
+    type: "Desktop",
+    manufacturer: "HP",
+    model: "ProDesk 400 G9",
+    status: "in-use",
+    dept: "ICT",
+    assignedTo: "EMP-2210",
+    shared: false,
+    updated: "3d ago",
+    specs: {
+      cpu: "Intel Core i5-13500",
+      ram_gb: 16,
+      disk_type: "SSD",
+      storage_gb: 512,
+      os: "Windows 11 Pro",
+      ip_address: "192.168.10.72",
+      mac_address: "3A:88:12:CC:04:9E",
+    },
+    assignment: {
+      location: "Head Office",
+      section: "Help Desk",
+      room: "Support Room",
+      cabin: "",
+      shared_users: [],
+      assigned_date: "2025-01-28",
+    },
+  },
+ 
+  {
+    id: "DV-1016",
+    icon: Computer,
+    type: "Desktop",
+    manufacturer: "Dell",
+    model: "OptiPlex 5000",
+    status: "in-use",
+    dept: "Finance",
+    assignedTo: "EMP-2214",
+    shared: false,
+    updated: "2w ago",
+    specs: {
+      cpu: "Intel Core i5-12500",
+      ram_gb: 16,
+      disk_type: "SSD",
+      storage_gb: 512,
+      os: "Windows 11 Pro",
+      ip_address: "192.168.30.14",
+      mac_address: "9C:B6:54:11:2D:07",
+    },
+    assignment: {
+      location: "Regional Office Lahore",
+      section: "Finance Branch",
+      room: "Finance Operations",
+      cabin: "",
+      shared_users: [],
+      assigned_date: "2024-11-19",
+    },
+  },
+ 
+  {
+    id: "DV-1017",
+    icon: Laptop2,
+    type: "Laptop",
+    manufacturer: "Lenovo",
+    model: "ThinkPad T14",
+    status: "in-use",
+    dept: "Finance",
+    assignedTo: "EMP-2215",
+    shared: false,
+    updated: "9d ago",
+    specs: {
+      cpu: "Intel Core i7-1355U",
+      ram_gb: 16,
+      disk_type: "SSD",
+      storage_gb: 512,
+      os: "Windows 11 Pro",
+      ip_address: "192.168.30.15",
+      mac_address: "44:D2:19:8B:C0:31",
+    },
+    assignment: {
+      location: "Regional Office Lahore",
+      section: "Finance Branch",
+      room: "",
+      cabin: "Branch Finance Head",
+      shared_users: [],
+      assigned_date: "2024-09-02",
+    },
+  },
+ 
+  {
+    id: "DV-1018",
+    icon: Laptop2,
+    type: "Laptop",
+    manufacturer: "HP",
+    model: "ProBook 450 G10",
+    status: "in-use",
+    dept: "ICT",
+    assignedTo: "EMP-2216",
+    shared: false,
+    updated: "1d ago",
+    specs: {
+      cpu: "Intel Core i5-1335U",
+      ram_gb: 16,
+      disk_type: "SSD",
+      storage_gb: 512,
+      os: "Windows 11 Pro",
+      ip_address: "192.168.10.73",
+      mac_address: "B8:27:44:5C:91:0A",
+    },
+    assignment: {
+      location: "Head Office",
+      section: "Help Desk",
+      room: "Support Room",
+      cabin: "",
+      shared_users: [],
+      assigned_date: "2025-03-11",
+    },
+  },
+ 
+  {
+    id: "DV-1019",
+    icon: Computer,
+    type: "Desktop",
+    manufacturer: "Lenovo",
+    model: "ThinkCentre M70s",
+    status: "in-use",
+    dept: "ICT",
+    assignedTo: "EMP-2217",
+    shared: false,
+    updated: "4d ago",
+    specs: {
+      cpu: "Intel Core i5-13400",
+      ram_gb: 16,
+      disk_type: "SSD",
+      storage_gb: 512,
+      os: "Windows 11 Pro",
+      ip_address: "192.168.10.74",
+      mac_address: "F0:1D:BC:22:6E:5A",
+    },
+    assignment: {
+      location: "Head Office",
+      section: "Help Desk",
+      room: "Support Room",
+      cabin: "",
+      shared_users: [],
+      assigned_date: "2025-03-11",
+    },
+  },
+ 
+  {
+    id: "DV-1020",
+    icon: Tablet,
+    type: "Tablet",
+    manufacturer: "Samsung",
+    model: "Galaxy Tab Active4 Pro",
+    status: "in-use",
+    dept: "Works",
+    assignedTo: "EMP-2219",
+    shared: false,
+    updated: "12h ago",
+    specs: {
+      storage_gb: 128,
+      os: "Android 13",
+      ruggedized: true,
+      ip_address: "192.168.40.21",
+      mac_address: "5E:9A:33:C1:07:88",
+    },
+    assignment: {
+      location: "Workshop",
+      section: "Maintenance",
+      room: "Workshop Floor",
+      cabin: "",
+      shared_users: [],
+      assigned_date: "2025-04-22",
+    },
+  },
+ 
+  {
+    id: "DV-1021",
+    icon: Laptop2,
+    type: "Laptop",
+    manufacturer: "Dell",
+    model: "Latitude 5540",
+    status: "in-use",
+    dept: "Works",
+    assignedTo: "EMP-2220",
+    shared: false,
+    updated: "5d ago",
+    specs: {
+      cpu: "Intel Core i5-1345U",
+      ram_gb: 16,
+      disk_type: "SSD",
+      storage_gb: 256,
+      os: "Windows 11 Pro",
+      ip_address: "192.168.40.22",
+      mac_address: "7A:11:6D:44:BB:02",
+    },
+    assignment: {
+      location: "Workshop",
+      section: "Maintenance",
+      room: "",
+      cabin: "Supervisor Cabin",
+      shared_users: [],
+      assigned_date: "2025-01-30",
+    },
+  },
+ 
+  {
+    id: "DV-1022",
+    icon: Laptop2,
+    type: "Laptop",
+    manufacturer: "HP",
+    model: "EliteBook 640 G10",
+    status: "in-use",
+    dept: "Reservations",
+    assignedTo: "EMP-2223",
+    shared: false,
+    updated: "2d ago",
+    specs: {
+      cpu: "Intel Core i5-1335U",
+      ram_gb: 16,
+      disk_type: "SSD",
+      storage_gb: 512,
+      os: "Windows 11 Pro",
+      ip_address: "192.168.10.81",
+      mac_address: "2F:98:C7:10:44:2B",
+    },
+    assignment: {
+      location: "Head Office",
+      section: "Customer Services",
+      room: "",
+      cabin: "Reservations Manager Cabin",
+      shared_users: [],
+      assigned_date: "2025-02-18",
+    },
+  },
+ 
+  {
+    id: "DV-1023",
+    icon: Computer,
+    type: "Desktop",
+    manufacturer: "HP",
+    model: "ProDesk 600 G9",
+    status: "in-use",
+    dept: "Reservations",
+    assignedTo: "EMP-2224",
+    shared: false,
+    updated: "6d ago",
+    specs: {
+      cpu: "Intel Core i5-13500",
+      ram_gb: 16,
+      disk_type: "SSD",
+      storage_gb: 512,
+      os: "Windows 11 Pro",
+      ip_address: "192.168.50.11",
+      mac_address: "88:66:5A:D2:19:0C",
+    },
+    assignment: {
+      location: "Airport Branch",
+      section: "Airport Counter",
+      room: "Counter Area",
+      cabin: "",
+      shared_users: [],
+      assigned_date: "2025-01-05",
+    },
+  },
+ 
+  {
+    id: "DV-1024",
+    icon: Laptop2,
+    type: "Laptop",
+    manufacturer: "Lenovo",
+    model: "ThinkPad X1 Carbon Gen 11",
+    status: "in-use",
+    dept: "ICT",
+    assignedTo: "u1",
+    shared: false,
+    updated: "1d ago",
+    specs: {
+      cpu: "Intel Core i7-1365U",
+      ram_gb: 32,
+      disk_type: "SSD",
+      storage_gb: 1024,
+      os: "Windows 11 Pro",
+      ip_address: "192.168.10.05",
+      mac_address: "00:AA:11:BB:22:CC",
+    },
+    assignment: {
+      location: "Head Office",
+      section: "Systems",
+      room: "Server Room",
+      cabin: "Admin Cabin",
+      shared_users: [],
+      assigned_date: "2024-08-01",
+    },
+  },
+ 
+  {
+    id: "DV-1025",
+    icon: Laptop2,
+    type: "Laptop",
+    manufacturer: "Dell",
+    model: "Latitude 7440",
+    status: "in-use",
+    dept: "ICT",
+    assignedTo: "u2",
+    shared: false,
+    updated: "3h ago",
+    specs: {
+      cpu: "Intel Core i7-1365U",
+      ram_gb: 16,
+      disk_type: "SSD",
+      storage_gb: 512,
+      os: "Windows 11 Pro",
+      ip_address: "192.168.10.06",
+      mac_address: "10:22:33:44:55:66",
+    },
+    assignment: {
+      location: "Head Office",
+      section: "Asset Management",
+      room: "Room 201",
+      cabin: "A-12",
+      shared_users: [],
+      assigned_date: "2024-09-15",
+    },
+  },
+ 
+  // ---- New shared devices, to increase overlap across employees ----
+ 
+  {
+    id: "DV-1015",
+    icon: ScanLine,
+    type: "Scanner",
+    manufacturer: "Fujitsu",
+    model: "fi-8170",
+    status: "in-use",
+    dept: "Finance",
+    assignedTo: "EMP-2212",
+    shared: true,
+    updated: "2d ago",
+    specs: {
+      technology: "Duplex CIS",
+      resolution_dpi: 600,
+      scan_speed_ppm: 70,
+      ip_address: "192.168.30.20",
+      mac_address: "AC:12:34:56:78:90",
+    },
+    assignment: {
+      location: "Head Office",
+      section: "Billing",
+      room: "Billing Room",
+      cabin: "",
+      shared_users: ["EMP-2212", "EMP-2213"],
+      assigned_date: "2025-02-10",
+    },
+  },
+ 
+  {
+    id: "DV-1026",
+    icon: Tablet,
+    type: "Tablet",
+    manufacturer: "Apple",
+    model: "iPad 10th Gen",
+    status: "in-use",
+    dept: "ICT",
+    assignedTo: "u2",
+    shared: true,
+    updated: "4h ago",
+    specs: {
+      storage_gb: 256,
+      os: "iPadOS 17",
+      ip_address: "192.168.10.07",
+      mac_address: "AA:BB:CC:11:22:33",
+    },
+    assignment: {
+      location: "Head Office",
+      section: "Asset Management",
+      room: "Room 201",
+      cabin: "A-12",
+      shared_users: ["u2", "u1"],
+      assigned_date: "2025-05-01",
+    },
+  },
+ 
+  {
+    id: "DV-1027",
+    icon: Computer,
+    type: "Desktop",
+    manufacturer: "Dell",
+    model: "OptiPlex 7020",
+    status: "in-use",
+    dept: "Works",
+    assignedTo: "EMP-2205",
+    shared: false,
+    updated: "1w ago",
+    specs: {
+      cpu: "Intel Core i7-13700",
+      ram_gb: 16,
+      disk_type: "SSD",
+      storage_gb: 512,
+      os: "Windows 11 Pro",
+      ip_address: "192.168.40.05",
+      mac_address: "12:34:56:78:9A:BC",
+    },
+    assignment: {
+      location: "Head Office",
+      section: "Operations",
+      room: "Executive Room",
+      cabin: "GM Cabin",
+      shared_users: [],
+      assigned_date: "2024-06-10",
+    },
+  },
+ 
+  {
+    id: "DV-1028",
+    icon: Router,
+    type: "Router",
+    manufacturer: "Ubiquiti",
+    model: "EdgeRouter 12",
+    status: "in-use",
+    dept: "Works",
+    assignedTo: "EMP-2220",
+    shared: true,
+    updated: "2d ago",
+    specs: {
+      port_count: 12,
+      speed: "1 Gbps",
+      managed: true,
+      ip_address: "172.16.1.1",
+      mac_address: "DC:9F:DB:00:11:22",
+    },
+    assignment: {
+      location: "Workshop",
+      section: "Maintenance",
+      room: "Workshop Floor",
+      cabin: "",
+      shared_users: ["EMP-2220", "EMP-2219", "EMP-2205"],
+      assigned_date: "2025-03-20",
+    },
+  },
+
+
+
+  {
+    id: "DV-1003",
+    icon: Computer,
+    type: "Desktop",
+    manufacturer: "Dell",
+    model: "OptiPlex 7010",
+    status: "in-use",
+    dept: "ICT",
+    assignedTo: "EMP-2218",
+    shared: false,
+    updated: "1w ago",
+
+    specs: {
+      cpu: "Intel Core i5-12500",
+      ram_gb: 16,
+      disk_type: "SSD",
+      storage_gb: 512,
+      os: "Windows 11 Pro",
+      ip_address: "192.168.10.31",
+      mac_address: "A0:BC:DD:12:90:44",
+    },
+    
+
+    assignment: {
+      location: "ICT Store",
+      section: "Inventory",
+      room: "Storage",
+      cabin: "",
+      shared_users: [],
+      assigned_date: "",
+    },
+  },
+
+
+  {
+    id: "DV-1003",
+    icon: Computer,
+    type: "Desktop",
+    manufacturer: "Dell",
+    model: "OptiPlex 7010",
+    status: "in-use",
+    dept: "ICT",
+    assignedTo: "EMP-2219",
+    shared: false,
+    updated: "1w ago",
+
+    specs: {
+      cpu: "Intel Core i5-12500",
+      ram_gb: 16,
+      disk_type: "SSD",
+      storage_gb: 512,
+      os: "Windows 11 Pro",
+      ip_address: "192.168.10.31",
+      mac_address: "A0:BC:DD:12:90:44",
+    },
+    
+
+    assignment: {
+      location: "ICT Store",
+      section: "Inventory",
+      room: "Storage",
+      cabin: "",
+      shared_users: [],
+      assigned_date: "",
+    },
+  },
+
+
+  {
+    id: "DV-1003",
+    icon: Computer,
+    type: "Desktop",
+    manufacturer: "Dell",
+    model: "OptiPlex 7010",
+    status: "in-use",
+    dept: "ICT",
+    assignedTo: "EMP-2220",
+    shared: false,
+    updated: "1w ago",
+
+    specs: {
+      cpu: "Intel Core i5-12500",
+      ram_gb: 16,
+      disk_type: "SSD",
+      storage_gb: 512,
+      os: "Windows 11 Pro",
+      ip_address: "192.168.10.31",
+      mac_address: "A0:BC:DD:12:90:44",
+    },
+    
+
+    assignment: {
+      location: "ICT Store",
+      section: "Inventory",
+      room: "Storage",
+      cabin: "",
+      shared_users: [],
+      assigned_date: "",
+    },
+  },
+
+
+
 
 ];

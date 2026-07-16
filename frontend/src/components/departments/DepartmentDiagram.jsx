@@ -1,5 +1,19 @@
 import React from "react";
-import { X, User, DoorOpen, Cpu, Share2 } from "lucide-react";
+import {
+  X,
+  User,
+  DoorOpen,
+  Cpu,
+  Share2,
+  Laptop,
+  Monitor,
+  Printer,
+  ScanLine,
+  Server,
+  Tablet,
+  Router,
+  HardDrive,
+} from "lucide-react";
 import { INK, MUTED, BORDER, ACCENT, BRAND, CARD, PAGE_BG, CREAM } from "../../theme";
 import { EMPLOYEES, DEVICES } from "../../data";
 
@@ -7,6 +21,25 @@ const findEmployee = (id) => EMPLOYEES.find((e) => e.id === id);
 
 const personalDevicesFor = (employeeId) =>
   DEVICES.filter((d) => !d.shared && d.assignedTo === employeeId);
+
+const DEVICE_ICON_MAP = {
+  laptop: Laptop,
+  notebook: Laptop,
+  desktop: Monitor,
+  monitor: Monitor,
+  printer: Printer,
+  scanner: ScanLine,
+  server: Server,
+  tablet: Tablet,
+  router: Router,
+  storage: HardDrive,
+  nas: HardDrive,
+};
+
+function getDeviceIcon(type) {
+  if (!type) return Cpu;
+  return DEVICE_ICON_MAP[type.toLowerCase().trim()] || Cpu;
+}
 
 export default function DepartmentDiagram({ department, onClose }) {
   const manager = department.manager_id ? findEmployee(department.manager_id) : null;
@@ -35,7 +68,7 @@ export default function DepartmentDiagram({ department, onClose }) {
           <div className="flex flex-wrap justify-center gap-6 mb-5">
             {department.locations.map((loc) => (
               <div key={loc.id} className="flex flex-col items-center">
-                <Block title={loc.branch_location} subtitle="Location" />
+                <Block title={loc.branch_location}  />
                 <Connector small />
 
                 <div className="flex flex-wrap justify-center gap-4">
@@ -49,27 +82,28 @@ export default function DepartmentDiagram({ department, onClose }) {
                           {r.person_ids.map((pid) => {
                             const emp = findEmployee(pid);
                             if (!emp) return null;
-                            const devices = personalDevicesFor(pid); // was personalDevicesFor(empName)
-                            return (
-                              <React.Fragment key={pid}>
-                                <Tag>{emp.name.first} {emp.name.last}</Tag>
-                                {devices.map((d) => (
-                                  <Tag key={d.id} icon={Cpu} muted>{d.manufacturer} {d.model}</Tag>
-                                ))}
-                              </React.Fragment>
-                            );
+                            const devices = personalDevicesFor(pid);
+                            const userName = `${emp.name.first} ${emp.name.last}`;
+                            if (devices.length === 0) {
+                              return <PersonTag key={pid}>{userName}</PersonTag>;
+                            }
+                            return devices.map((d) => (
+                              <DeviceCard key={d.id} device={d} userName={userName} />
+                            ));
                           })}
                         </MiniBlock>
                       ))}
                       {sec.cabins.map((c) => {
                         const emp = c.person_id ? findEmployee(c.person_id) : null;
-                        const devices = c.person_id ? personalDevicesFor(c.person_id) : []; // was personalDevicesFor(empName)
+                        const devices = c.person_id ? personalDevicesFor(c.person_id) : [];
+                        const userName = emp ? `${emp.name.first} ${emp.name.last}` : null;
                         return (
                           <MiniBlock key={c.id} icon={User} label={c.name}>
-                            {emp && <Tag>{emp.name.first} {emp.name.last}</Tag>}
-                            {devices.map((d) => (
-                              <Tag key={d.id} icon={Cpu} muted>{d.manufacturer} {d.model}</Tag>
-                            ))}
+                            {devices.length > 0 ? (
+                              devices.map((d) => <DeviceCard key={d.id} device={d} userName={userName} />)
+                            ) : (
+                              emp && <PersonTag>{userName}</PersonTag>
+                            )}
                           </MiniBlock>
                         );
                       })}
@@ -88,8 +122,7 @@ export default function DepartmentDiagram({ department, onClose }) {
             ))}
           </div>
 
-          {/* Shared equipment — sits inside the department container, outside
-              every room/cabin, since it isn't tied to one person. */}
+          
           {sharedDevices.length > 0 && (
             <div className="flex flex-col items-center pt-3" style={{ borderTop: `1px dashed ${BORDER}` }}>
               <div className="flex items-center gap-1.5 mb-2">
@@ -100,7 +133,7 @@ export default function DepartmentDiagram({ department, onClose }) {
               </div>
               <div className="flex flex-wrap justify-center gap-2 max-w-2xl">
                 {sharedDevices.map((d) => (
-                  <Tag key={d.id} icon={Cpu}>{d.manufacturer} {d.model} · {d.id}</Tag>
+                  <DeviceCard key={d.id} device={d} />
                 ))}
               </div>
             </div>
@@ -143,18 +176,36 @@ function MiniBlock({ icon: Icon, label, children }) {
         <Icon size={11} style={{ color: MUTED }} />
         <span className="text-[11.5px] font-medium" style={{ color: INK }}>{label}</span>
       </div>
-      <div className="flex flex-wrap gap-1">{children}</div>
+      <div className="flex flex-wrap gap-1.5">{children}</div>
     </div>
   );
 }
 
-function Tag({ children, icon: Icon, muted }) {
+function DeviceCard({ device, userName }) {
+  const Icon = getDeviceIcon(device.type);
+  return (
+    <div
+      className="flex flex-col items-center text-center rounded-lg px-2 py-2 gap-0.5"
+      style={{ border: `1px solid ${BORDER}`, backgroundColor: PAGE_BG, minWidth: 78, maxWidth: 96 }}
+    >
+      <Icon size={16} style={{ color: ACCENT }} />
+      <p className="text-[10px] font-medium leading-tight break-words" style={{ color: INK }}>
+        {device.manufacturer} {device.model}
+      </p>
+      <p className="text-[9px] leading-tight" style={{ color: userName ? MUTED : ACCENT, fontStyle: userName ? "normal" : "italic" }}>
+        {userName || "Shared"}
+      </p>
+    </div>
+  );
+}
+
+function PersonTag({ children }) {
   return (
     <span
       className="flex items-center gap-1 text-[10.5px] px-2 py-0.5 rounded-full"
-      style={{ backgroundColor: muted ? "#F0EEE4" : PAGE_BG, color: muted ? MUTED : ACCENT }}
+      style={{ backgroundColor: PAGE_BG, color: ACCENT }}
     >
-      {Icon && <Icon size={10} />}
+      <User size={10} />
       {children}
     </span>
   );

@@ -45,7 +45,6 @@ const countRooms = (dep) =>
     0
   );
 
-const TILE_TONES = [ACCENT, CREAM, SUCCESS];
 
 function initialsOf(name = "") {
   return name
@@ -194,7 +193,7 @@ export default function Departments() {
           {departments.map((dep, idx) => {
             const isHovered = hoveredId === dep.id;
             const isMenuOpen = openMenuId === dep.id;
-            const tone = TILE_TONES[idx % TILE_TONES.length];
+            const tone = ACCENT;
             const roomCount = countRooms(dep);
             const sectionCount = countSections(dep);
             const locationCount = dep.locations.length;
@@ -259,7 +258,6 @@ export default function Departments() {
                   <MiniStat icon={DoorOpen} label="Rooms/Cabins" value={roomCount} tone={tone} />
                 </div>
 
-                <FootprintBar locationCount={locationCount} sectionCount={sectionCount} roomCount={roomCount} tone={tone} />
               </div>
             );
           })}
@@ -276,7 +274,7 @@ export default function Departments() {
             <span>Locations</span>
             <span>Sections</span>
             <span>Rooms/Cabins</span>
-            <span>Footprint</span>
+            
             <span />
             <span />
           </div>
@@ -285,7 +283,7 @@ export default function Departments() {
             {departments.map((dep, idx) => {
               const isMenuOpen = openMenuId === dep.id;
               const isExpanded = expandedId === dep.id;
-              const tone = TILE_TONES[idx % TILE_TONES.length];
+              const tone = CREAM;
               const roomCount = countRooms(dep);
               const sectionCount = countSections(dep);
               const locationCount = dep.locations.length;
@@ -317,9 +315,7 @@ export default function Departments() {
                     <span className="text-[13px] font-semibold" style={{ color: INK, fontFamily: MONO }}>{sectionCount}</span>
                     <span className="text-[13px] font-semibold" style={{ color: INK, fontFamily: MONO }}>{roomCount}</span>
 
-                    <div className="pr-4">
-                      <InlineBar value={roomCount} max={maxRooms} tone={tone} />
-                    </div>
+                   
 
                     <div className="relative justify-self-end">
                       <button

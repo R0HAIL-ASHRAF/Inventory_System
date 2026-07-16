@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { X, Plus, Trash2, ChevronDown, ChevronRight } from "lucide-react";
 import { INK, MUTED, BORDER, BRAND, DANGER, CARD, PAGE_BG } from "../../theme";
 
-// Small helper: immutably update a nested location/section by id.
 const updateLocation = (locations, locId, fn) =>
   locations.map((l) => (l.id === locId ? fn(l) : l));
 const updateSection = (sections, secId, fn) =>
@@ -10,8 +9,8 @@ const updateSection = (sections, secId, fn) =>
 
 export default function ManageStructureModal({ department, onClose, onSave }) {
   const [locations, setLocations] = useState(department.locations);
-  const [expanded, setExpanded] = useState({}); // { [locId or secId]: bool }
-  const [drafts, setDrafts] = useState({}); // input text per add-row key
+  const [expanded, setExpanded] = useState({});
+  const [drafts, setDrafts] = useState({});
 
   const toggle = (key) => setExpanded((e) => ({ ...e, [key]: !e[key] }));
   const setDraft = (key, value) => setDrafts((d) => ({ ...d, [key]: value }));

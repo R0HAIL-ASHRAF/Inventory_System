@@ -214,30 +214,7 @@ export default function NewCategory() {
             </Field>
           </div>
 
-          {/* Forced base fields — informational, not editable */}
-          <div className="rounded-xl p-3.5 mt-4" style={{ background: PAGE_BG, border: `1px solid ${BORDER}` }}>
-            <div className="flex items-center gap-1.5 mb-2">
-              <Info size={13} style={{ color: MUTED, opacity: 0.6 }} />
-              <p className="text-[11px] font-semibold uppercase tracking-wide" style={{ color: MUTED, opacity: 0.6 }}>
-                Always included, every category
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-1.5">
-              {FORCED_BASE_FIELDS.map((f) => (
-                <span
-                  key={f}
-                  className="text-[10.5px] px-2 py-1 rounded-md"
-                  style={{ background: SURFACE, border: `1px solid ${BORDER}`, color: MUTED, fontFamily: MONO }}
-                >
-                  {f}
-                </span>
-              ))}
-            </div>
-            <p className="text-[11px] mt-2.5 leading-relaxed" style={{ color: MUTED, opacity: 0.75 }}>
-              These come from the shared device schema and apply to every category automatically —
-              only the fields you add below become that category's <code style={{ fontFamily: MONO }}>specs</code> object.
-            </p>
-          </div>
+          
         </Section>
 
         {/* Dynamic spec fields */}
