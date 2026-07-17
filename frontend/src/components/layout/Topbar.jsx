@@ -35,7 +35,7 @@ export default function Topbar() {
 
   return (
     <header
-      className="relative w-full flex items-center justify-between gap-4 px-6 transition-all duration-300 z-0"
+      className="relative w-full flex items-center justify-between gap-4 px-6 transition-all duration-300 z-20"
       style={{
         height: 80,
         backgroundColor: SURFACE,
@@ -43,7 +43,6 @@ export default function Topbar() {
         boxShadow: "0 4px 20px rgba(58,71,66,0.02)",
       }}
     >
-      {/* Embedded High-Fidelity Interaction Keyframes */}
       <style>{`
         @keyframes bellRing {
           0%, 100% { transform: rotate(0deg); }
@@ -71,7 +70,6 @@ export default function Topbar() {
         }
       `}</style>
 
-      {/* Left Area: Logo + Search with Command Hint & System Status */}
       <div className="flex items-center gap-4 min-w-0 flex-1">
         <img
           src={piaLogo}
@@ -107,7 +105,6 @@ export default function Topbar() {
           />
         </div>
 
-        {/* Live Network Sync Status Beacon */}
         <div className="hidden lg:flex items-center gap-2 px-3 py-1 rounded-full border border-emerald-500/10 bg-emerald-500/5 select-none">
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 live-heartbeat" />
           <span className="text-[11px] font-semibold tracking-wide uppercase text-emerald-600" style={{ fontFamily: MONO }}>
@@ -116,10 +113,8 @@ export default function Topbar() {
         </div>
       </div>
 
-      {/* Right Area: Interactive Actions & Profile Panel */}
       <div className="flex items-center gap-4 shrink-0">
 
-        {/* Ringing Notification Center */}
         <div className="relative">
           <button
             onClick={() => setNotifOpen((v) => !v)}
