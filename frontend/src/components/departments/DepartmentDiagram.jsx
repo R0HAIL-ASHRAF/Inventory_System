@@ -48,14 +48,14 @@ export default function DepartmentDiagram({ department, onClose }) {
   const sharedDevices = deptDevices.filter((d) => d.shared);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 p-4" onClick={onClose}>
-      <div className="w-full max-w-4xl rounded-2xl p-6 max-h-[90vh] overflow-y-auto" style={CARD} onClick={(e) => e.stopPropagation()}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 p-4" onClick={onClose}
+    >
+      <div className="w-full max-w-4xl rounded-2xl p-6 max-h-[90vh] p-[72px] overflow-y-auto" style={CARD}  onClick={(e) => e.stopPropagation()}>
         <div className="flex items-start justify-between mb-5">
           <p className="text-sm font-semibold" style={{ color: INK }}>{department.name} - Structure Diagram</p>
           <button onClick={onClose} style={{ color: CREAM }}><X size={16} /></button>
         </div>
 
-        {/* Root: department + manager */}
         <div className="flex justify-center mb-4" style={{color: CREAM}}>
           <Block CREAM title={department.name} 
           subtitle={manager ? `Manager: ${manager.name.first} ${manager.name.last}` : "No manager assigned"} icon={User} />
